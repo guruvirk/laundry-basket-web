@@ -18,10 +18,11 @@ export default function FAQ() {
 
   return (
     <Container
-      id="faq"
+      maxWidth='xlg'
+      id='faq'
       sx={{
-        pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 },
+        pt: { xs: 4, sm: 8 },
+        pb: { xs: 8, sm: 0 },
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -30,8 +31,8 @@ export default function FAQ() {
       }}
     >
       <Typography
-        component="h2"
-        variant="h4"
+        component='h2'
+        variant='h4'
         sx={{
           color: 'text.primary',
           width: { sm: '100%', md: '60%' },
@@ -41,105 +42,55 @@ export default function FAQ() {
         Frequently asked questions
       </Typography>
       <Box sx={{ width: '100%' }}>
-        <Accordion
-          expanded={expanded === 'panel1'}
-          onChange={handleChange('panel1')}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1d-content"
-            id="panel1d-header"
-          >
-            <Typography component="h3" variant="subtitle2">
+        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1d-content' id='panel1d-header'>
+            <Typography component='h3' variant='subtitle2'>
               How do I contact customer support if I have a question or issue?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography
-              variant="body2"
-              gutterBottom
-              sx={{ maxWidth: { sm: '100%', md: '70%' } }}
-            >
+            <Typography variant='body2' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' } }}>
               You can reach our customer support team by emailing
               <Link> support@email.com </Link>
-              or calling our toll-free number. We&apos;re here to assist you
-              promptly.
+              or calling our toll-free number. We&apos;re here to assist you promptly.
             </Typography>
           </AccordionDetails>
         </Accordion>
-        <Accordion
-          expanded={expanded === 'panel2'}
-          onChange={handleChange('panel2')}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel2d-content"
-            id="panel2d-header"
-          >
-            <Typography component="h3" variant="subtitle2">
-              Can I return the product if it doesn&apos;t meet my expectations?
+        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel2d-content' id='panel2d-header'>
+            <Typography component='h3' variant='subtitle2'>
+              Do you offer pickup and delivery services?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography
-              variant="body2"
-              gutterBottom
-              sx={{ maxWidth: { sm: '100%', md: '70%' } }}
-            >
-              Absolutely! We offer a hassle-free return policy. If you&apos;re not
-              completely satisfied, you can return the product within [number of
-              days] days for a full refund or exchange.
+            <Typography variant='body2' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' } }}>
+              Yes, we provide convenient pickup and delivery services. You can schedule a pickup through our website or by
+              calling us.
             </Typography>
           </AccordionDetails>
         </Accordion>
-        <Accordion
-          expanded={expanded === 'panel3'}
-          onChange={handleChange('panel3')}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel3d-content"
-            id="panel3d-header"
-          >
-            <Typography component="h3" variant="subtitle2">
-              What makes your product stand out from others in the market?
+        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel3d-content' id='panel3d-header'>
+            <Typography component='h3' variant='subtitle2'>
+              How do you handle delicate or special fabrics?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography
-              variant="body2"
-              gutterBottom
-              sx={{ maxWidth: { sm: '100%', md: '70%' } }}
-            >
-              Our product distinguishes itself through its adaptability, durability,
-              and innovative features. We prioritize user satisfaction and
-              continually strive to exceed expectations in every aspect.
+            <Typography variant='body2' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' } }}>
+              We treat delicate and special fabrics with the utmost care. Our team is trained in handling various fabric
+              types and follows specific guidelines to ensure the best care for your items.
             </Typography>
           </AccordionDetails>
         </Accordion>
-        <Accordion
-          expanded={expanded === 'panel4'}
-          onChange={handleChange('panel4')}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel4d-content"
-            id="panel4d-header"
-          >
-            <Typography component="h3" variant="subtitle2">
-              Is there a warranty on the product, and what does it cover?
+        <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
+          <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel4d-content' id='panel4d-header'>
+            <Typography component='h3' variant='subtitle2'>
+              What payment methods do you accept?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography
-              variant="body2"
-              gutterBottom
-              sx={{ maxWidth: { sm: '100%', md: '70%' } }}
-            >
-              Yes, our product comes with a [length of warranty] warranty. It covers
-              defects in materials and workmanship. If you encounter any issues
-              covered by the warranty, please contact our customer support for
-              assistance.
+            <Typography variant='body2' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' } }}>
+              We accept cash, credit/debit cards, and mobile payment options like Apple Pay and Google Wallet.
             </Typography>
           </AccordionDetails>
         </Accordion>

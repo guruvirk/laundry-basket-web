@@ -12,6 +12,7 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ToggleColorMode from './ToggleColorMode';
+import { Link } from 'react-router-dom';
 
 function AppAppBar({ mode, toggleColorMode }) {
   const [open, setOpen] = React.useState(false);
@@ -35,66 +36,41 @@ function AppAppBar({ mode, toggleColorMode }) {
   };
 
   return (
-    <AppBar
-      position="fixed"
-      sx={{ boxShadow: 0, bgcolor: 'transparent', backgroundImage: 'none', mt: 2 }}
-    >
-      <Container maxWidth="lg">
+    <AppBar position='fixed' sx={{ boxShadow: 0, bgcolor: 'transparent', backgroundImage: 'none', mt: 2 }}>
+      <Container maxWidth='xlg'>
         <Toolbar
-          variant="regular"
+          variant='regular'
           sx={(theme) => ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexShrink: 0,
-            borderRadius: '999px',
+            borderRadius: '15px',
             backdropFilter: 'blur(24px)',
             maxHeight: 40,
             border: '1px solid',
             borderColor: 'divider',
             bgcolor: 'white',
-            boxShadow:
-              '0 1px 2px hsla(210, 0%, 0%, 0.05), 0 2px 12px hsla(210, 100%, 80%, 0.5)',
+            boxShadow: '0 1px 2px hsla(210, 0%, 0%, 0.05), 0 2px 12px hsla(210, 100%, 80%, 0.5)',
             ...theme.applyStyles('dark', {
               bgcolor: 'hsla(220, 0%, 0%, 0.7)',
-              boxShadow:
-                '0 1px 2px hsla(210, 0%, 0%, 0.5), 0 2px 12px hsla(210, 100%, 25%, 0.3)',
+              boxShadow: '0 1px 2px hsla(210, 0%, 0%, 0.5), 0 2px 12px hsla(210, 100%, 25%, 0.3)',
             }),
           })}
         >
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-          <img style={{height: 80}} src={require('../assets/images/logo.png')} />
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection('features')}
-              >
+            <img style={{ height: 90 }} src={require('../assets/images/logo.png')} />
+            <Box sx={{ display: { xs: 'none', md: 'flex' }, pl: 2 }}>
+              <Button variant='text' color='info' size='small' onClick={() => scrollToSection('features')}>
                 Services
               </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection('testimonials')}
-              >
+              <Button variant='text' color='info' size='small' onClick={() => scrollToSection('testimonials')}>
                 Pricing
               </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection('highlights')}
-              >
+              <Button variant='text' color='info' size='small' onClick={() => scrollToSection('highlights')}>
                 About Us
               </Button>
-              <Button
-                variant="text"
-                color="info"
-                size="small"
-                onClick={() => scrollToSection('pricing')}
-              >
+              <Button variant='text' color='info' size='small' onClick={() => scrollToSection('pricing')}>
                 Contact Us
               </Button>
             </Box>
@@ -106,20 +82,16 @@ function AppAppBar({ mode, toggleColorMode }) {
               alignItems: 'center',
             }}
           >
-            <ToggleColorMode
-              data-screenshot="toggle-mode"
-              mode={mode}
-              toggleColorMode={toggleColorMode}
-            />
-            <Button color="primary" variant="contained" size="small">
-              Sign in
+            <ToggleColorMode data-screenshot='toggle-mode' mode={mode} toggleColorMode={toggleColorMode} />
+            <Button color='primary' variant='contained' size='small'>
+              <Link to='/login'>Sign in</Link>
             </Button>
           </Box>
           <Box sx={{ display: { sm: 'flex', md: 'none' } }}>
-            <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
+            <IconButton aria-label='Menu button' onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
-            <Drawer anchor="top" open={open} onClose={toggleDrawer(false)}>
+            <Drawer anchor='top' open={open} onClose={toggleDrawer(false)}>
               <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
                 <Box
                   sx={{
@@ -134,27 +106,14 @@ function AppAppBar({ mode, toggleColorMode }) {
                   </IconButton>
                 </Box>
                 <Divider sx={{ my: 3 }} />
-                <MenuItem onClick={() => scrollToSection('features')}>
-                  Features
-                </MenuItem>
-                <MenuItem onClick={() => scrollToSection('testimonials')}>
-                  Testimonials
-                </MenuItem>
-                <MenuItem onClick={() => scrollToSection('highlights')}>
-                  Highlights
-                </MenuItem>
-                <MenuItem onClick={() => scrollToSection('pricing')}>
-                  Pricing
-                </MenuItem>
+                <MenuItem onClick={() => scrollToSection('features')}>Features</MenuItem>
+                <MenuItem onClick={() => scrollToSection('testimonials')}>Testimonials</MenuItem>
+                <MenuItem onClick={() => scrollToSection('highlights')}>Highlights</MenuItem>
+                <MenuItem onClick={() => scrollToSection('pricing')}>Pricing</MenuItem>
                 <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
                 <MenuItem>
-                  <Button color="primary" variant="contained" fullWidth>
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
+                  <Button color='primary' variant='outlined' fullWidth>
+                    <Link to='/login'>Sign in</Link>
                   </Button>
                 </MenuItem>
               </Box>

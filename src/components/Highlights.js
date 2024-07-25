@@ -5,64 +5,64 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import AutoFixHighRoundedIcon from '@mui/icons-material/AutoFixHighRounded';
-import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
-import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
-import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
-import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import {
+  Inventory2TwoTone,
+  InventoryTwoTone,
+  IronTwoTone,
+  LocalLaundryServiceTwoTone,
+  LocalShippingTwoTone,
+} from '@mui/icons-material';
 
 const items = [
   {
-    icon: <SettingsSuggestRoundedIcon />,
-    title: 'Adaptable performance',
+    icon: <LocalShippingTwoTone fontSize='large' />,
+    title: 'Pick Up',
     description:
-      'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+      "A designated Laundry Basket driver arrives at the customer's location to collect the laundry at the scheduled time.",
   },
   {
-    icon: <ConstructionRoundedIcon />,
-    title: 'Built to last',
+    icon: <LocalLaundryServiceTwoTone fontSize='large' />,
+    title: 'Wash',
     description:
-      'Experience unmatched durability that goes above and beyond with lasting investment.',
+      'Items are sorted based on fabric, color, and care requirments, then undergo washing or dry-cleaning at the Laundry Basket facility',
   },
   {
-    icon: <ThumbUpAltRoundedIcon />,
-    title: 'Great user experience',
+    icon: <InventoryTwoTone fontSize='large' />,
+    title: 'Quality Check',
     description:
-      'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+      'Cleaned items pass through a rigorous quality check at Laundry Basket, ensuring they meet the highest standards.',
   },
   {
-    icon: <AutoFixHighRoundedIcon />,
-    title: 'Innovative functionality',
-    description:
-      'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
+    icon: <IronTwoTone fontSize='large' />,
+    title: 'Iron or Fold',
+    description: 'Place the ironing board on a flat, stable surface. Ensure it is clean and free of any dirt or residue.',
   },
   {
-    icon: <SupportAgentRoundedIcon />,
-    title: 'Reliable support',
+    icon: <Inventory2TwoTone fontSize='large' />,
+    title: 'Packaging',
     description:
-      'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
+      'The cleaned and inspected items are expertly folded or hung and then carefully packaged by Laundry Basket team.',
   },
   {
-    icon: <QueryStatsRoundedIcon />,
-    title: 'Precision in every detail',
-    description:
-      'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
+    icon: <LocalShippingTwoTone fontSize='large' />,
+    title: 'Delivery',
+    description: "A designated Laundry Basket driver delivers the package at the customer's location at the scheduled time.",
   },
 ];
 
 export default function Highlights() {
   return (
     <Box
-      id="highlights"
+      id='how-we-work'
       sx={{
-        pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 },
+        pt: { xs: 4, sm: 8 },
+        pb: { xs: 8, sm: 0 },
         color: 'white',
         bgcolor: 'hsl(220, 30%, 2%)',
       }}
     >
       <Container
+        maxWidth='xlg'
         sx={{
           position: 'relative',
           display: 'flex',
@@ -77,20 +77,18 @@ export default function Highlights() {
             textAlign: { sm: 'left', md: 'center' },
           }}
         >
-          <Typography component="h2" variant="h4">
-            Highlights
+          <Typography component='h2' variant='h4'>
+            How We Work ?
           </Typography>
-          <Typography variant="body1" sx={{ color: 'grey.400' }}>
-            Explore why our product stands out: adaptability, durability,
-            user-friendly design, and innovation. Enjoy reliable customer support and
-            precision in every detail.
+          <Typography variant='body1' sx={{ color: 'grey.400' }}>
+            Just hand off your clothes to us. We will do the rest!
           </Typography>
         </Box>
         <Grid container spacing={2.5}>
           {items.map((item, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Stack
-                direction="column"
+                direction='column'
                 component={Card}
                 spacing={1}
                 useFlexGap
@@ -105,12 +103,20 @@ export default function Highlights() {
                   boxShadow: 'none',
                 }}
               >
-                <Box sx={{ opacity: '50%' }}>{item.icon}</Box>
+                <Box
+                  sx={[
+                    (theme) => ({
+                      color: 'primary.main',
+                    }),
+                  ]}
+                >
+                  {item.icon}
+                </Box>
                 <div>
                   <Typography gutterBottom sx={{ fontWeight: 'medium' }}>
                     {item.title}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: 'grey.400' }}>
+                  <Typography variant='body2' sx={{ color: 'grey.400' }}>
                     {item.description}
                   </Typography>
                 </div>

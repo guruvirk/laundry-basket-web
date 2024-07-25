@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -67,7 +68,7 @@ export default function Features() {
   const selectedFeature = items[selectedItemIndex];
 
   return (
-    <Container id='features' sx={{ py: { xs: 8, sm: 16 } }}>
+    <Container id='features' maxWidth='xlg' sx={{ pt: { xs: 4, sm: 8 }, pb: { xs: 8, sm: 0 } }}>
       <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
           <div>
@@ -97,11 +98,16 @@ export default function Features() {
           <Card variant='outlined' sx={{ display: { xs: 'auto', sm: 'none' }, mt: 4 }}>
             <Box
               sx={(theme) => ({
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                minHeight: 280,
+                height: 240,
               })}
-            />
+            >
+              <img
+                style={{
+                  height: 240,
+                }}
+                src={selectedFeature.image}
+              />
+            </Box>
             <Box sx={{ px: 2, pb: 2 }}>
               <Typography gutterBottom sx={{ color: 'text.primary', fontWeight: 'medium' }}>
                 {selectedFeature.title}

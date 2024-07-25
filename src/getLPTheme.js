@@ -67,6 +67,19 @@ export const red = {
   900: 'hsl(0, 93%, 12%)',
 };
 
+export const white = {
+  50: 'hsl(0, 100%, 100%)',
+  100: 'hsl(0, 100%, 100%)',
+  200: 'hsl(0, 100%, 100%)',
+  300: 'hsl(0, 100%, 100%)',
+  400: 'hsl(0, 100%, 100%)',
+  500: 'hsl(0, 100%, 100%)',
+  600: 'hsl(0, 100%, 100%)',
+  700: 'hsl(0, 100%, 100%)',
+  800: 'hsl(0, 100%, 100%)',
+  900: 'hsl(0, 100%, 100%)',
+};
+
 const getDesignTokens = (mode) => ({
   palette: {
     mode,
@@ -161,19 +174,23 @@ const getDesignTokens = (mode) => ({
     },
     h3: {
       fontSize: customTheme.typography.pxToRem(42),
+      fontWeight: 500,
       lineHeight: 1.2,
     },
     h4: {
-      fontSize: customTheme.typography.pxToRem(36),
+      fontSize: customTheme.typography.pxToRem(32),
       fontWeight: 500,
-      lineHeight: 1.5,
+      lineHeight: 1.2,
     },
     h5: {
-      fontSize: customTheme.typography.pxToRem(20),
-      fontWeight: 600,
+      fontSize: customTheme.typography.pxToRem(24),
+      fontWeight: 500,
+      lineHeight: 1.2,
     },
     h6: {
       fontSize: customTheme.typography.pxToRem(18),
+      fontWeight: 500,
+      lineHeight: 1.2,
     },
     subtitle1: {
       fontSize: customTheme.typography.pxToRem(18),
@@ -309,6 +326,27 @@ export default function getLPTheme(mode) {
                   '&:active': {
                     backgroundColor: brand[700],
                     boxShadow: `inset 0 2.5px 0 ${alpha(brand[700], 0.4)}`,
+                  },
+                },
+              },
+              {
+                props: {
+                  color: 'secondary',
+                  variant: 'contained',
+                },
+                style: {
+                  color: brand[300],
+                  backgroundColor: 'white',
+                  backgroundImage: `linear-gradient(to bottom, ${alpha(white[400], 0.8)}, ${white[500]})`,
+                  boxShadow: `inset 0 2px 0 ${alpha(white[200], 0.2)}, inset 0 -2px 0 ${alpha(white[700], 0.4)}`,
+                  border: `1px solid ${white[500]}`,
+                  '&:hover': {
+                    backgroundColor: white[700],
+                    boxShadow: 'none',
+                  },
+                  '&:active': {
+                    backgroundColor: white[700],
+                    boxShadow: `inset 0 2.5px 0 ${alpha(white[700], 0.4)}`,
                   },
                 },
               },
@@ -450,10 +488,7 @@ export default function getLPTheme(mode) {
                   ...theme.applyStyles('dark', {
                     border: `1px solid ${alpha(gray[700], 0.4)}`,
                     boxShadow: 'none',
-                    background: `linear-gradient(to bottom, ${gray[900]}, ${alpha(
-                      gray[800],
-                      0.5,
-                    )})`,
+                    background: `linear-gradient(to bottom, ${gray[900]}, ${alpha(gray[800], 0.5)})`,
                   }),
                 },
               },
@@ -713,100 +748,6 @@ export default function getLPTheme(mode) {
       MuiStack: {
         defaultProps: {
           useFlexGap: true,
-        },
-      },
-      MuiSwitch: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            boxSizing: 'border-box',
-            width: 36,
-            height: 24,
-            padding: 0,
-            transition: 'background-color 100ms ease-in',
-            '&:hover': {
-              '& .MuiSwitch-track': {
-                backgroundColor: brand[600],
-              },
-            },
-            '& .MuiSwitch-switchBase': {
-              '&.Mui-checked': {
-                transform: 'translateX(13px)',
-              },
-            },
-            '& .MuiSwitch-track': {
-              borderRadius: 50,
-            },
-            '& .MuiSwitch-thumb': {
-              boxShadow: '0 0 2px 2px hsla(220, 0%, 0%, 0.2)',
-              backgroundColor: 'hsl(0, 0%, 100%)',
-              width: 16,
-              height: 16,
-              margin: 2,
-            },
-            ...theme.applyStyles('dark', {
-              width: 36,
-              height: 24,
-              padding: 0,
-              transition: 'background-color 100ms ease-in',
-              '&:hover': {
-                '& .MuiSwitch-track': {
-                  backgroundColor: brand[600],
-                },
-              },
-              '& .MuiSwitch-switchBase': {
-                '&.Mui-checked': {
-                  transform: 'translateX(13px)',
-                },
-              },
-              '& .MuiSwitch-thumb': {
-                boxShadow: '0 0 2px 2px hsla(220, 0%, 0%, 0.2)',
-                backgroundColor: 'hsl(0, 0%, 100%)',
-                width: 16,
-                height: 16,
-                margin: 2,
-              },
-            }),
-          }),
-          switchBase: {
-            height: 24,
-            width: 24,
-            padding: 0,
-            color: 'hsl(0, 0%, 100%)',
-            '&.Mui-checked + .MuiSwitch-track': {
-              opacity: 1,
-            },
-          },
-        },
-      },
-      MuiToggleButtonGroup: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            borderRadius: theme.shape.borderRadius,
-            boxShadow: `0 1px 2px hsla(210, 0%, 0%, 0.05), 0 2px 12px ${alpha(brand[200], 0.5)}`,
-            '& .Mui-selected': {
-              color: brand[500],
-            },
-            ...theme.applyStyles('dark', {
-              '& .Mui-selected': {
-                color: 'hsl(0, 0%, 100%)',
-              },
-              boxShadow: `0 0 0 1px hsla(210, 0%, 0%, 0.5), 0 2px 12px ${alpha(brand[700], 0.5)}`,
-            }),
-          }),
-        },
-      },
-      MuiToggleButton: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            padding: '12px 16px',
-            textTransform: 'none',
-            borderRadius: theme.shape.borderRadius,
-            fontWeight: 500,
-            ...theme.applyStyles('dark', {
-              color: gray[400],
-              '&.Mui-selected': { color: brand[300] },
-            }),
-          }),
         },
       },
     },

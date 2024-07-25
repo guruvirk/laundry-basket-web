@@ -17,12 +17,7 @@ const tiers = [
   {
     title: 'Free',
     price: '0',
-    description: [
-      '10 users included',
-      '2 GB of storage',
-      'Help center access',
-      'Email support',
-    ],
+    description: ['10 users included', '2 GB of storage', 'Help center access', 'Email support'],
     buttonText: 'Sign up for free',
     buttonVariant: 'outlined',
   },
@@ -44,12 +39,7 @@ const tiers = [
   {
     title: 'Enterprise',
     price: '30',
-    description: [
-      '50 users included',
-      '30 GB of storage',
-      'Help center access',
-      'Phone & email support',
-    ],
+    description: ['50 users included', '30 GB of storage', 'Help center access', 'Phone & email support'],
     buttonText: 'Contact us',
     buttonVariant: 'outlined',
   },
@@ -58,7 +48,8 @@ const tiers = [
 export default function Pricing() {
   return (
     <Container
-      id="pricing"
+      maxWidth='xlg'
+      id='pricing'
       sx={{
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
@@ -75,29 +66,17 @@ export default function Pricing() {
           textAlign: { sm: 'left', md: 'center' },
         }}
       >
-        <Typography component="h2" variant="h4" sx={{ color: 'text.primary' }}>
+        <Typography component='h2' variant='h4' sx={{ color: 'text.primary' }}>
           Pricing
         </Typography>
-        <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-          Quickly build an effective pricing table for your potential customers with
-          this layout. <br />
-          It&apos;s built with default Material UI components with little
-          customization.
+        <Typography variant='body1' sx={{ color: 'text.secondary' }}>
+          Quickly build an effective pricing table for your potential customers with this layout. <br />
+          It&apos;s built with default Material UI components with little customization.
         </Typography>
       </Box>
-      <Grid
-        container
-        spacing={3}
-        sx={{ alignItems: 'center', justifyContent: 'center' }}
-      >
+      <Grid container spacing={3} sx={{ alignItems: 'center', justifyContent: 'center' }}>
         {tiers.map((tier) => (
-          <Grid
-            item
-            key={tier.title}
-            xs={12}
-            sm={tier.title === 'Enterprise' ? 12 : 6}
-            md={4}
-          >
+          <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
             <Card
               sx={[
                 {
@@ -109,8 +88,7 @@ export default function Pricing() {
                 tier.title === 'Professional' &&
                   ((theme) => ({
                     border: 'none',
-                    background:
-                      'radial-gradient(circle at 50% 0%, hsl(210, 98%, 35%), hsl(210, 100%, 16%))',
+                    background: 'radial-gradient(circle at 50% 0%, hsl(210, 98%, 35%), hsl(210, 100%, 16%))',
                     boxShadow: `0 8px 12px hsla(210, 98%, 42%, 0.2)`,
                     ...theme.applyStyles('dark', {
                       boxShadow: `0 8px 12px hsla(0, 0%, 0%, 0.8)`,
@@ -128,19 +106,17 @@ export default function Pricing() {
                       alignItems: 'center',
                       gap: 2,
                     },
-                    tier.title === 'Professional'
-                      ? { color: 'grey.100' }
-                      : { color: '' },
+                    tier.title === 'Professional' ? { color: 'grey.100' } : { color: '' },
                   ]}
                 >
-                  <Typography component="h3" variant="h6">
+                  <Typography component='h3' variant='h6'>
                     {tier.title}
                   </Typography>
                   {tier.title === 'Professional' && (
                     <Chip
                       icon={<AutoAwesomeIcon />}
                       label={tier.subheader}
-                      size="small"
+                      size='small'
                       sx={{
                         borderColor: 'hsla(220, 60%, 99%, 0.3)',
                         backgroundColor: 'hsla(220, 60%, 99%, 0.1)',
@@ -160,42 +136,31 @@ export default function Pricing() {
                       display: 'flex',
                       alignItems: 'baseline',
                     },
-                    tier.title === 'Professional'
-                      ? { color: 'grey.50' }
-                      : { color: null },
+                    tier.title === 'Professional' ? { color: 'grey.50' } : { color: null },
                   ]}
                 >
-                  <Typography component="h3" variant="h2">
+                  <Typography component='h3' variant='h2'>
                     ${tier.price}
                   </Typography>
-                  <Typography component="h3" variant="h6">
+                  <Typography component='h3' variant='h6'>
                     &nbsp; per month
                   </Typography>
                 </Box>
                 <Divider sx={{ my: 2, opacity: 0.8, borderColor: 'divider' }} />
                 {tier.description.map((line) => (
-                  <Box
-                    key={line}
-                    sx={{ py: 1, display: 'flex', gap: 1.5, alignItems: 'center' }}
-                  >
+                  <Box key={line} sx={{ py: 1, display: 'flex', gap: 1.5, alignItems: 'center' }}>
                     <CheckCircleRoundedIcon
                       sx={[
                         {
                           width: 20,
                         },
-                        tier.title === 'Professional'
-                          ? { color: 'primary.light' }
-                          : { color: 'primary.main' },
+                        tier.title === 'Professional' ? { color: 'primary.light' } : { color: 'primary.main' },
                       ]}
                     />
                     <Typography
-                      variant="subtitle2"
+                      variant='subtitle2'
                       component={'span'}
-                      sx={[
-                        tier.title === 'Professional'
-                          ? { color: 'grey.50' }
-                          : { color: null },
-                      ]}
+                      sx={[tier.title === 'Professional' ? { color: 'grey.50' } : { color: null }]}
                     >
                       {line}
                     </Typography>
