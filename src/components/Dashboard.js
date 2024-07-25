@@ -18,7 +18,7 @@ function Dashboard(props) {
       setServicesLoaded(props.servicesLoaded);
       setServices(props.services);
     }
-  }, []);
+  }, [props.services, props.servicesLoaded, props.tenant]);
 
   return (
     <>

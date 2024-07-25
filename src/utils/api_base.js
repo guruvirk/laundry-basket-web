@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const URL = 'http://192.168.1.9:8080/api/';
+const URL = 'http://192.168.1.7:8080/api/';
 const tenant = 'gs';
 
 const config = {
