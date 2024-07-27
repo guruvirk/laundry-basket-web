@@ -20,7 +20,8 @@ export default function Services(props) {
       maxWidth='xlg'
       id='pricing'
       sx={{
-        pt: { xs: 4, sm: 8 }, pb: { xs: 8, sm:  0 },
+        pt: { xs: 4, sm: 8 },
+        pb: { xs: 8, sm: 0 },
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -85,7 +86,7 @@ export default function Services(props) {
                       alt='new'
                     />
                     {service.isItem ? (
-                      <Typography component='h4' variant='h4'>
+                      <Typography component='h5' variant='h5'>
                         ${service.currentPrice} / lbs
                       </Typography>
                     ) : null}
@@ -98,13 +99,13 @@ export default function Services(props) {
                       { color: 'grey.50' },
                     ]}
                   >
-                    <Typography component='h4' variant='h4'>
+                    <Typography component='h5' variant='h5'>
                       {service.name}
                     </Typography>
                   </Box>
                   <Divider sx={{ my: 2, opacity: 0.8, borderColor: 'divider' }} />
                   {service.pointers?.map((line) => (
-                    <Box key={line} sx={{ py: 1, display: 'flex', gap: 1.5, alignItems: 'center' }}>
+                    <Box key={line} sx={{ py: 1, display: 'flex', gap: .5, alignItems: 'center' }}>
                       {line ? (
                         <CheckCircleRounded
                           sx={[
@@ -116,7 +117,7 @@ export default function Services(props) {
                         />
                       ) : null}
                       <br />
-                      <Typography variant='subtitle2' component={'span'} sx={[{ color: 'grey.50' }]}>
+                      <Typography variant='body1' component={'span'} sx={[{ color: 'grey.50', whiteSpace: 'nowrap' }]}>
                         {line}
                       </Typography>
                     </Box>

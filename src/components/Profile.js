@@ -1,0 +1,271 @@
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Avatar,
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  FormHelperText,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { Delete, Edit, Mail, Person, Phone, Save } from '@mui/icons-material';
+import { updateUser } from '../utils/api_base';
+
+function Profile(props) {
+  const navigate = useNavigate();
+
+  const [user, setUser] = useState(null);
+  const [userLoaded, setUserLoaded] = useState(false);
+  const [mobile, setMobile] = useState('');
+  const [mobileError, setMobileError] = useState(null);
+  const [name, setName] = useState(null);
+  const [nameError, setNameError] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState();
+
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      setImage(event.target.files[0]);
+      setImageUrl(URL.createObjectURL(event.target.files[0]));
+    }
+  };
+
+  const deleteImage = () => {
+    if (image) {
+      setImage();
+      setImageUrl();
+    } else {
+      setUser({ ...user, pic: null });
+    }
+  };
+
+  useEffect(() => {
+    if (props.isLoggedIn === false) {
+      navigate('/');
+    }
+    let res = localStorage.getItem('user');
+    if (res) {
+      const user = JSON.parse(res);
+      if (user) {
+        setUser(user);
+        setEmail(user.email);
+        setName(user.name);
+        setMobile(user.phone);
+      }
+    }
+    setUserLoaded(true);
+  }, [navigate, props.isLoggedIn]);
+
+  const refreshUser = () => {
+    let res = localStorage.getItem('user');
+    if (res) {
+      const user = JSON.parse(res);
+      if (user) {
+        setUser(user);
+        setEmail(user.email);
+        setName(user.name);
+        setMobile(user.phone);
+        props.setUser(user);
+      }
+    }
+    setUserLoaded(true);
+  };
+
+  const update = async () => {
+    let isError = false;
+    if (!name || name.length < 3) {
+      setNameError('Invalid Name');
+      setTimeout(() => {
+        setNameError(null);
+      }, 2500);
+      isError = true;
+    }
+    if (!email || email.length < 8) {
+      setEmailError('Invalid Email');
+      setTimeout(() => {
+        setEmailError(null);
+      }, 2500);
+      isError = true;
+    }
+    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(email) === false) {
+      setEmailError('Invalid Email');
+      setTimeout(() => {
+        setEmailError(null);
+      }, 2500);
+      isError = true;
+    }
+    if (isError) {
+      return;
+    }
+    var formData = new FormData();
+    if (image) {
+      formData.append('image', image);
+    }
+    if (!image && !user.pic) {
+      formData.append('pic', 'delete');
+    }
+    formData.append('name', name);
+    formData.append('email', email);
+    setLoading(true);
+    let userResp = await updateUser(user.id, formData);
+    if (userResp) {
+      localStorage.setItem('user', JSON.stringify(userResp));
+      refreshUser();
+    }
+    setLoading(false);
+  };
+
+  return (
+    <Container maxWidth='lg' id='features' sx={{ pt: { xs: 12, sm: 16 } }}>
+      <Box
+        sx={{
+          width: '100%',
+          textAlign: 'center',
+          pb: 4,
+        }}
+      >
+        <Typography component='h2' variant='h4' sx={{ color: 'text.primary' }}>
+          My Profile
+        </Typography>
+
+        {userLoaded && (
+          <Grid container alignItems='center' justifyContent='center' spacing={2.5} sx={{ pt: 6, pb: 4 }}>
+            <Grid item xs={12} sm={6} md={6}>
+              <InputLabel sx={{}} shrink={false} htmlFor='is-default'>
+                <Typography>Profile Pic</Typography>
+              </InputLabel>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  margin: 'auto',
+                  width: 'fit-content',
+                }}
+              >
+                <Avatar
+                  sx={{ backgroundColor: 'primary.main', color: 'white', width: 80, height: 80 }}
+                  alt='username'
+                  src={imageUrl || user.pic}
+                >
+                  {user.name.charAt(0)}
+                </Avatar>
+                <Box
+                  sx={{
+                    display: 'grid',
+                    marginLeft: 2,
+                  }}
+                >
+                  <Button
+                    variant='contained'
+                    size='small'
+                    sx={{ marginBottom: 1, p: 1 }}
+                    startIcon={<Edit />}
+                    component='label'
+                    disabled={loading}
+                  >
+                    Change Pic
+                    <input type='file' hidden accept='image/*' onChange={onImageChange} />
+                  </Button>
+                  <Button
+                    size='small'
+                    onClick={deleteImage}
+                    sx={{ p: 1 }}
+                    variant='contained'
+                    disabled={loading}
+                    startIcon={<Delete />}
+                  >
+                    Delete Pic
+                  </Button>
+                </Box>
+              </Box>
+              <TextField
+                sx={{ mt: 3 }}
+                inputProps={{ type: 'text', readOnly: loading }}
+                id='name'
+                name='name'
+                label='Name'
+                value={name}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <Person />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+                variant='standard'
+              />
+              {nameError ? <FormHelperText error>{nameError}</FormHelperText> : null}
+              <TextField
+                sx={{ mt: 3 }}
+                inputProps={{ type: 'email', readOnly: loading }}
+                id='email'
+                name='email'
+                label='Email'
+                value={email}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <Mail />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                variant='standard'
+              />
+              {emailError ? <FormHelperText error>{emailError}</FormHelperText> : null}
+              <TextField
+                sx={{ mt: 3 }}
+                inputProps={{ type: 'tel', readOnly: true || loading }}
+                id='phone'
+                name='phone'
+                label='Phone'
+                value={mobile}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position='start'>
+                      <Phone />
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={(e) => {
+                  setMobile(e.target.value);
+                }}
+                variant='standard'
+              />
+              {mobileError ? <FormHelperText error>{mobileError}</FormHelperText> : null}
+              <Button onClick={update} sx={{ mt: 4 }} variant='contained'>
+                {loading ? <CircularProgress size={25} color='inherit' /> : 'Update'}
+              </Button>
+            </Grid>
+          </Grid>
+        )}
+        {/* <Modal
+          open={isAddressDialogOpen}
+          onClose={() => setIsAddressDialogOpen(false)}
+          aria-labelledby='modal-modal-title'
+          aria-describedby='modal-modal-description'
+        ></Modal> */}
+      </Box>
+    </Container>
+  );
+}
+
+export default Profile;

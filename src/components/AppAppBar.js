@@ -11,13 +11,40 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ToggleColorMode from './ToggleColorMode';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Avatar, Menu, Tooltip, Typography } from '@mui/material';
+import { LocationOn, Person } from '@mui/icons-material';
 
-function AppAppBar({ mode, toggleColorMode, isLoggedIn, user }) {
+function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
   const [open, setOpen] = React.useState(false);
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const navigation = useNavigate();
+
+  const settings = ['My Addresses', 'Account', 'Logout'];
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
+  };
+
+  const openLogin = () => {
+    setOpen(false);
+    navigation('/login');
+  };
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
+  const handleMenuItemClick = (setting) => {
+    if (setting === 'Logout') {
+      setAnchorElUser(null);
+      logout();
+    }
   };
 
   const scrollToSection = (sectionId) => {
@@ -57,7 +84,9 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user }) {
         })}
       >
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-          <img style={{ height: 90 }} src={require('../assets/images/logo.png')} />
+          <Link to='/'>
+            <img style={{ height: 90 }} src={require('../assets/images/logo.png')} alt='logo' />
+          </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, pl: 2 }}>
             <Button variant='text' color='info' size='small' onClick={() => scrollToSection('features')}>
               Services
@@ -81,13 +110,9 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user }) {
           }}
         >
           <ToggleColorMode data-screenshot='toggle-mode' mode={mode} toggleColorMode={toggleColorMode} />
-          {isLoggedIn ? (
-            <Button color='primary' variant='contained' size='small'>
-              <Link to='/profile'>{user?.name}</Link>
-            </Button>
-          ) : (
-            <Button color='primary' variant='contained' size='small'>
-              <Link to='/login'>Sign in</Link>
+          {isLoggedIn ? null : (
+            <Button onClick={openLogin} color='primary' variant='contained' size='small'>
+              Login
             </Button>
           )}
         </Box>
@@ -115,20 +140,91 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user }) {
               <MenuItem onClick={() => scrollToSection('highlights')}>Highlights</MenuItem>
               <MenuItem onClick={() => scrollToSection('pricing')}>Pricing</MenuItem>
               <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
-              <MenuItem>
-                {isLoggedIn ? (
-                  <Button color='primary' variant='contained' fullWidth>
-                    <Link to='/profile'>{user?.name}</Link>
+              {isLoggedIn ? null : (
+                <MenuItem>
+                  <Button onClick={openLogin} color='primary' variant='contained' fullWidth>
+                    Login
                   </Button>
-                ) : (
-                  <Button color='primary' variant='contained' fullWidth>
-                    <Link to='/login'>Sign in</Link>
-                  </Button>
-                )}
-              </MenuItem>
+                </MenuItem>
+              )}
             </Box>
           </Drawer>
         </Box>
+        {isLoggedIn ? (
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title='Open settings'>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar sx={{ backgroundColor: 'primary.main', color: 'white' }} alt='username' src={user.pic}>
+                  {user.name.charAt(0)}
+                </Avatar>
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id='menu-appbar'
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem
+                  sx={{ px: 2, display: 'block', borderBottomWidth: 1 }}
+                  key={setting}
+                  onClick={() => (setting === 'Logout' ? handleMenuItemClick(setting) : {})}
+                >
+                  {setting === 'Logout' ? (
+                    <Typography sx={{ marginLeft: 0.5 }} variant='subtitle1' textAlign='start'>
+                      {setting}
+                    </Typography>
+                  ) : (
+                    <Link to={setting === 'My Addresses' ? '/my-addresses' : setting === 'Account' ? '/my-profile' : ''}>
+                      <Typography sx={{ marginLeft: 0.5 }} variant='subtitle1' textAlign='start'>
+                        {setting}
+                      </Typography>
+                      {setting === 'My Addresses' && user.addresses && user.addresses.length && (
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <LocationOn sx={{ fontSize: 15 }} />
+                          <Typography variant='body2' textAlign='start'>
+                            {user.addresses[0].city} {user.addresses[0].zipCode}
+                          </Typography>
+                        </Box>
+                      )}
+                      {setting === 'Account' && user.addresses && user.addresses.length && (
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                          }}
+                        >
+                          <Person sx={{ fontSize: 15 }} />
+                          <Typography variant='body2' textAlign='start'>
+                            {user.name}
+                          </Typography>
+                        </Box>
+                      )}
+                    </Link>
+                  )}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        ) : null}
       </Toolbar>
     </AppBar>
   );

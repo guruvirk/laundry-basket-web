@@ -183,12 +183,12 @@ const getDesignTokens = (mode) => ({
       lineHeight: 1.2,
     },
     h5: {
-      fontSize: customTheme.typography.pxToRem(24),
+      fontSize: customTheme.typography.pxToRem(26),
       fontWeight: 500,
       lineHeight: 1.2,
     },
     h6: {
-      fontSize: customTheme.typography.pxToRem(18),
+      fontSize: customTheme.typography.pxToRem(20),
       fontWeight: 500,
       lineHeight: 1.2,
     },

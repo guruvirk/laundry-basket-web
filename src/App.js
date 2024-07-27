@@ -7,6 +7,10 @@ import AppAppBar from './components/AppAppBar';
 import { getItems, getServices, getTenantData } from './utils/api_base';
 import Dashboard from './components/Dashboard';
 import Login from './components/Login';
+import StickyFooter from './components/Footer';
+import SignUp from './components/SignUp';
+import MyAddresses from './components/MyAddresses';
+import Profile from './components/Profile';
 
 function App() {
   const navRef = useRef();
@@ -66,12 +70,16 @@ function App() {
       setIsLoggedIn(true);
     } else {
       if (user && (!user.name || !user.addresses || !user.addresses.length)) {
-        // setIsLoggedIn(false);
         setUser(user);
         setIsLoggedIn(true);
-        // navRef.current.navigate('/signup');
       }
     }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('user');
+    setIsLoggedIn(false);
+    setUser(null);
   };
 
   useEffect(() => {
@@ -86,13 +94,39 @@ function App() {
   return (
     <BrowserRouter ref={navRef}>
       <ThemeProvider theme={LPtheme}>
-        <AppAppBar isLoggedIn={isLoggedIn} user={user} mode={mode} toggleColorMode={toggleColorMode} />
-        <Box sx={{ bgcolor: 'background.default' }}>
+        <AppAppBar isLoggedIn={isLoggedIn} user={user} mode={mode} toggleColorMode={toggleColorMode} logout={logout} />
+        <Box sx={{ bgcolor: 'background.default', minHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
           <Routes>
             <Route path='/' element={<Dashboard tenant={tenant} services={services} servicesLoaded={servicesLoaded} />} />
             <Route path='/login' element={<Login tenant={tenant} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
+            <Route path='/signup' element={<SignUp tenant={tenant} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
+            <Route
+              path='/my-addresses'
+              element={
+                <MyAddresses
+                  tenant={tenant}
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  setUser={setUser}
+                  user={user}
+                />
+              }
+            />
+            <Route
+              path='/my-profile'
+              element={
+                <Profile
+                  tenant={tenant}
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  setUser={setUser}
+                  user={user}
+                />
+              }
+            />
           </Routes>
         </Box>
+        <StickyFooter></StickyFooter>
       </ThemeProvider>
     </BrowserRouter>
   );

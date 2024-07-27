@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import { MuiOtpInput } from 'mui-one-time-password-input';
 import {
@@ -7,14 +7,18 @@ import {
   Container,
   FormHelperText,
   Grid,
+  IconButton,
   InputAdornment,
+  InputLabel,
+  Modal,
   Snackbar,
   TextField,
   Typography,
 } from '@mui/material';
 import { getError, post } from '../utils/api_base';
 import { Link, useNavigate } from 'react-router-dom';
-import { Phone } from '@mui/icons-material';
+import { AddLocation, Edit, Mail, Person, Phone } from '@mui/icons-material';
+import AddressPicker from '../Modals/AddressPicker';
 
 export function matchIsNumeric(text) {
   const isNumber = typeof text === 'number';
@@ -22,9 +26,8 @@ export function matchIsNumeric(text) {
   return (isNumber || (isString && text !== '')) && !isNaN(Number(text));
 }
 
-export default function Login(props) {
+export default function SignUp(props) {
   const navigate = useNavigate();
-
   const otpRef = useRef();
 
   const [otpSent, setOtpSent] = useState(false);
@@ -34,8 +37,25 @@ export default function Login(props) {
   const [otp, setOtp] = useState('');
   const [otpError, setOtpError] = useState(null);
 
-  const [loading, setLoading] = useState(false);
+  const [name, setName] = useState(null);
+  const [nameError, setNameError] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [emailError, setEmailError] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [isAddressAdded, setIsAddressAdded] = useState(false);
+  const [isAddressDialogOpen, setIsAddressDialogOpen] = useState(false);
+  const [addressError, setAddressError] = useState(null);
   const [apiError, setApiError] = useState(null);
+
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (newValue) => {
+    setOtp(newValue);
+  };
+
+  const validateChar = (value, index) => {
+    return matchIsNumeric(value);
+  };
 
   useEffect(() => {
     props.setIsLoggedIn(false);
@@ -49,14 +69,6 @@ export default function Login(props) {
     }
   }, []);
 
-  const handleChange = (newValue) => {
-    setOtp(newValue);
-  };
-
-  const validateChar = (value, index) => {
-    return matchIsNumeric(value);
-  };
-
   const sendOtp = async () => {
     if (!mobile || mobile.length !== 10) {
       setMobileError('Invalid Mobile Number');
@@ -67,7 +79,7 @@ export default function Login(props) {
     }
     setLoading(true);
     try {
-      let user = await post('users/sendOtpCheck', {
+      let user = await post('users/sendOtpExists', {
         phone: mobile,
       });
       setLoading(false);
@@ -88,35 +100,64 @@ export default function Login(props) {
     }
   };
 
-  const login = async (code) => {
-    if (!code) {
-      code = otp;
-    }
-    if (!code || code.length !== 4) {
+  const signUp = async () => {
+    let isError = false;
+    if (!otp || otp.length !== 4) {
       setOtpError('Invalid OTP');
       setTimeout(() => {
         setOtpError(null);
-      }, 3000);
+      }, 2500);
+      isError = true;
+    }
+    if (!name || name.length < 3) {
+      setNameError('Invalid Name');
+      setTimeout(() => {
+        setNameError(null);
+      }, 2500);
+      isError = true;
+    }
+    if (!email || email.length < 8) {
+      setEmailError('Invalid Email');
+      setTimeout(() => {
+        setEmailError(null);
+      }, 2500);
+      isError = true;
+    }
+    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
+    if (reg.test(email) === false) {
+      setEmailError('Invalid Email');
+      setTimeout(() => {
+        setEmailError(null);
+      }, 2500);
+      isError = true;
+    }
+    if (isError) {
+      return;
+    }
+    if (!isAddressAdded) {
+      setAddressError('Address is Required');
+      setTimeout(() => {
+        setAddressError(null);
+      }, 2500);
+      isError = true;
+    }
+    if (isError) {
       return;
     }
     setLoading(true);
     try {
       let user = await post('users/confirm', {
         phone: mobile,
-        otp: code,
+        otp: otp,
+        name: name,
+        email: email,
+        addresses: [address],
       });
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('token', user?.session?.token);
-        if (user.name && user.addresses && user.addresses.length) {
-          navigate('/');
-          props.setUser(user);
-          props.setIsLoggedIn(true);
-        } else {
-          navigate('/signup');
-        }
-        setOtp('');
-        setOtpSent(false);
+        props.setIsLoggedIn(true);
+        props.setUser(user);
+        navigate('/');
       } else {
         setApiError(getError(''));
         setTimeout(() => {
@@ -144,12 +185,26 @@ export default function Login(props) {
           setApiError(null);
         }, 2500);
       }
-      setLoading(false);
     }
   };
 
   const resendOtp = () => {
     console.log('resendOtp');
+  };
+
+  const openAddressDialog = () => {
+    setTimeout(() => {
+      setIsAddressDialogOpen(true);
+    });
+  };
+
+  const addAddress = (address) => {
+    setAddress(address);
+    setIsAddressAdded(true);
+  };
+
+  const closeAddressDialog = (id) => {
+    setIsAddressDialogOpen(false);
   };
 
   return (
@@ -162,7 +217,7 @@ export default function Login(props) {
         }}
       >
         <Typography component='h2' variant='h4' sx={{ color: 'text.primary' }}>
-          Login
+          SignUp
         </Typography>
       </Box>
       <Box
@@ -202,9 +257,9 @@ export default function Login(props) {
             textAlign: 'center',
           }}
         >
-          <Link to='/signup'>
+          <Link to='/login'>
             <Button disabled={loading} type='submit' variant='text' sx={{ mt: 2 }}>
-              Don't have an Account? &nbsp; <span className='font-bold'>SignUp</span>
+              Already have an Account? &nbsp; <span className='font-bold'>Login</span>
             </Button>
           </Link>
         </Box>
@@ -216,14 +271,26 @@ export default function Login(props) {
               width: { xs: '100%', sm: '50%' },
               margin: 'auto',
               display: 'flex',
+              textAlign: 'start',
+            }}
+          >
+            <InputLabel shrink={true} htmlFor='otp'>
+              <Typography>OTP</Typography>
+            </InputLabel>
+          </Box>
+          <Box
+            sx={{
+              width: { xs: '100%', sm: '50%' },
+              margin: 'auto',
+              display: 'flex',
               textAlign: 'center',
               justifyContent: 'center',
-              pb: 1,
+              pb: 3,
             }}
           >
             <MuiOtpInput
               ref={otpRef}
-              TextFieldsProps={{ type: 'tel' }}
+              TextFieldsProps={{ type: 'tel', name: 'otp', disabled: loading, placeholder: '-' }}
               validateChar={validateChar}
               className='w-full'
               value={otp}
@@ -232,7 +299,6 @@ export default function Login(props) {
               onChange={handleChange}
               onComplete={(value) => {
                 setOtp(value);
-                login(value);
               }}
               length={4}
             />
@@ -251,6 +317,118 @@ export default function Login(props) {
               <FormHelperText error>{otpError}</FormHelperText>
             </Box>
           ) : null}
+          <Box
+            sx={{
+              width: { xs: '100%', sm: '50%' },
+              margin: 'auto',
+              textAlign: 'center',
+              pb: 3,
+            }}
+          >
+            <TextField
+              inputProps={{ type: 'text', readOnly: loading }}
+              id='name'
+              name='name'
+              label='Name'
+              value={name}
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Person />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              variant='standard'
+            />
+            {nameError ? <FormHelperText error>{nameError}</FormHelperText> : null}
+          </Box>
+          <Box
+            sx={{
+              width: { xs: '100%', sm: '50%' },
+              margin: 'auto',
+              textAlign: 'center',
+              pb: 3,
+            }}
+          >
+            <TextField
+              inputProps={{ type: 'email', readOnly: loading }}
+              id='email'
+              name='email'
+              label='Email'
+              value={email}
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Mail />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              variant='standard'
+            />
+            {emailError ? <FormHelperText error>{emailError}</FormHelperText> : null}
+          </Box>
+          {!isAddressAdded ? (
+            <Box
+              sx={{
+                width: { xs: '100%', sm: '50%' },
+                margin: 'auto',
+                textAlign: 'center',
+              }}
+            >
+              <Button onClick={openAddressDialog} variant='contained' startIcon={<AddLocation />}>
+                Add Address
+              </Button>
+            </Box>
+          ) : (
+            <Box
+              alignItems={'center'}
+              sx={{
+                width: { xs: '100%', sm: '50%' },
+                margin: 'auto',
+                textAlign: 'center',
+                bgcolor: 'background.paper',
+                borderRadius: '15px',
+                boxShadow: 0,
+                p: 4,
+                position: 'relative',
+              }}
+            >
+              <IconButton
+                onClick={() => openAddressDialog()}
+                sx={{
+                  position: 'absolute',
+                  top: 0,
+                  right: 0,
+                  zIndex: 999,
+                }}
+                aria-label='delete'
+                size='large'
+              >
+                <Edit sx={{ fontSize: 20 }} />
+              </IconButton>
+              <Box
+                sx={{
+                  width: '100%',
+                  textAlign: 'center',
+                }}
+              >
+                <Typography className='font-bold'>
+                  {address.address1}, {address.address2}
+                </Typography>
+                <Typography className='font-bold'>
+                  {address.city}, {address.state} {address.zipCode}
+                </Typography>
+              </Box>
+            </Box>
+          )}
           <Box
             sx={{
               width: { xs: '100%', sm: '50%' },
@@ -277,13 +455,13 @@ export default function Login(props) {
       <div className='text-center pt-1'>
         {otpSent ? (
           <Button
-            onClick={login}
+            onClick={signUp}
             disabled={loading}
             type='submit'
             variant='contained'
             sx={{ mt: 2, width: { xs: '75%', sm: '25%' } }}
           >
-            {loading ? <CircularProgress size={25} color='inherit' /> : 'Login'}
+            {loading ? <CircularProgress size={25} color='inherit' /> : 'SignUp'}
           </Button>
         ) : (
           <Button
@@ -297,7 +475,22 @@ export default function Login(props) {
           </Button>
         )}
       </div>
+      <Modal
+        open={isAddressDialogOpen}
+        onClose={() => setIsAddressDialogOpen(false)}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <AddressPicker closeModal={closeAddressDialog} addAddress={addAddress}></AddressPicker>
+      </Modal>
       <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          open={!!addressError}
+          message={addressError}
+          severity='error'
+          key={'bottomcenter'}
+        />
         <Snackbar
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           open={!!apiError}
