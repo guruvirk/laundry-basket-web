@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Delete, Edit, Mail, Person, Phone, Save } from '@mui/icons-material';
+import { Delete, Edit, Mail, Person, Phone } from '@mui/icons-material';
 import { updateUser } from '../utils/api_base';
 
 function Profile(props) {
@@ -62,7 +62,7 @@ function Profile(props) {
       }
     }
     setUserLoaded(true);
-  }, [navigate, props.isLoggedIn]);
+  }, [navigate, props.isLoggedIn, props.user]);
 
   const refreshUser = () => {
     let res = localStorage.getItem('user');
@@ -257,12 +257,6 @@ function Profile(props) {
             </Grid>
           </Grid>
         )}
-        {/* <Modal
-          open={isAddressDialogOpen}
-          onClose={() => setIsAddressDialogOpen(false)}
-          aria-labelledby='modal-modal-title'
-          aria-describedby='modal-modal-description'
-        ></Modal> */}
       </Box>
     </Container>
   );

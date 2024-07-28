@@ -1,20 +1,19 @@
 import { Box, ThemeProvider, createTheme } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import getLPTheme from './getLPTheme';
 import AppAppBar from './components/AppAppBar';
-import { getItems, getServices, getTenantData } from './utils/api_base';
+import { getItems, getServices, getTenantData, getUser } from './utils/api_base';
 import Dashboard from './components/Dashboard';
-import Login from './components/Login';
 import StickyFooter from './components/Footer';
 import SignUp from './components/SignUp';
 import MyAddresses from './components/MyAddresses';
 import Profile from './components/Profile';
+import Pricing from './components/Pricing';
+import BookOrder from './components/BookOrder';
 
 function App() {
-  const navRef = useRef();
-
   const [mode, setMode] = useState('light');
   const LPtheme = createTheme(getLPTheme(mode));
   const [tenant, setTenant] = useState({});
@@ -29,9 +28,6 @@ function App() {
 
   useEffect(() => {
     getTenant();
-  }, []);
-
-  useEffect(() => {
     getServicesData();
   }, []);
 
@@ -59,7 +55,7 @@ function App() {
     }
   };
 
-  const _retriveData = () => {
+  const _retriveData = async () => {
     let res = localStorage.getItem('user');
     if (!res) {
       setIsLoggedIn(false);
@@ -68,10 +64,9 @@ function App() {
     if (user && user.name && user.addresses && user.addresses.length) {
       setUser(user);
       setIsLoggedIn(true);
-    } else {
-      if (user && (!user.name || !user.addresses || !user.addresses.length)) {
-        setUser(user);
-        setIsLoggedIn(true);
+      let userResp = await getUser('my');
+      if (userResp) {
+        localStorage.setItem('user', JSON.stringify({ ...userResp, session: user.session }));
       }
     }
   };
@@ -83,46 +78,38 @@ function App() {
   };
 
   useEffect(() => {
-    setInterval(() => {
+    const updateUserInfo = setInterval(() => {
       _retriveData();
-    }, 5000);
+    }, 10000);
     setTimeout(() => {
       _retriveData();
     });
+    return () => clearInterval(updateUserInfo);
   }, []);
 
   return (
-    <BrowserRouter ref={navRef}>
+    <BrowserRouter>
       <ThemeProvider theme={LPtheme}>
         <AppAppBar isLoggedIn={isLoggedIn} user={user} mode={mode} toggleColorMode={toggleColorMode} logout={logout} />
         <Box sx={{ bgcolor: 'background.default', minHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
           <Routes>
             <Route path='/' element={<Dashboard tenant={tenant} services={services} servicesLoaded={servicesLoaded} />} />
-            <Route path='/login' element={<Login tenant={tenant} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
-            <Route path='/signup' element={<SignUp tenant={tenant} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
+            <Route
+              path='/pricing'
+              element={<Pricing tenant={tenant} services={services} servicesLoaded={servicesLoaded} />}
+            />
+            <Route
+              path='/book-order'
+              element={<BookOrder isLoggedIn={isLoggedIn} services={services} servicesLoaded={servicesLoaded} user={user} />}
+            />
+            <Route path='/login' element={<SignUp tenant={tenant} setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
             <Route
               path='/my-addresses'
-              element={
-                <MyAddresses
-                  tenant={tenant}
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  setUser={setUser}
-                  user={user}
-                />
-              }
+              element={<MyAddresses isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser} user={user} />}
             />
             <Route
               path='/my-profile'
-              element={
-                <Profile
-                  tenant={tenant}
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  setUser={setUser}
-                  user={user}
-                />
-              }
+              element={<Profile isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser} user={user} />}
             />
           </Routes>
         </Box>

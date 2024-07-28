@@ -14,6 +14,7 @@ import { styled } from '@mui/material/styles';
 import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 import SearchIcon from '@mui/icons-material/Search';
 import BoltIcon from '@mui/icons-material/Bolt';
+import { Link } from 'react-router-dom';
 
 const items = [
   {
@@ -221,7 +222,7 @@ export default function Features() {
               </Typography>
             </CardContent>
             <CardActions className='justify-center'>
-              <Button variant='contained'>Book Now</Button>
+            <Button sx={{ fontSize: 18, fontWeight: 600, px: 3 }} variant='contained-banner'><Link to='/book-order'>Book Now</Link></Button>
             </CardActions>
           </Card>
         </Grid>

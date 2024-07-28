@@ -1,22 +1,16 @@
-import React, { useEffect, useState, useImperativeHandle } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddressPicker from '../Modals/AddressPicker';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Container, Grid, IconButton, Modal, Stack, Typography } from '@mui/material';
 import { AddLocation, Delete, Edit } from '@mui/icons-material';
 
-function MyAddresses(props, ref) {
+function MyAddresses(props) {
   const navigate = useNavigate();
 
   const [isAddressDialogOpen, setIsAddressDialogOpen] = useState(false);
   const [addressId, setAddressId] = useState(null);
   const [addresses, setAddresses] = useState([]);
   const [addresseLoaded, setAddresseLoaded] = useState(false);
-
-  useImperativeHandle(ref, () => ({
-    openAddressDialog: () => {
-      openAddressDialog(null);
-    },
-  }));
 
   useEffect(() => {
     if (props.isLoggedIn === false) {
@@ -91,13 +85,15 @@ function MyAddresses(props, ref) {
                 >
                   <Grid container spacing={2.5}>
                     <Grid item xs={9} sm={9} md={9}>
-                      <Typography variant='subtitle2'>
+                      <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
                         {address.address1}, {address.address2}{' '}
                       </Typography>
-                      <Typography variant='subtitle2'>
+                      <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
                         {address.city}, {address.state}
                       </Typography>
-                      <Typography variant='subtitle2'>{address.zipCode}</Typography>
+                      <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                        {address.zipCode}
+                      </Typography>
                       {address.isDefault && (
                         <Box
                           className='flex items-center ml-3 px-3 py-1.5'
@@ -149,16 +145,18 @@ function MyAddresses(props, ref) {
           aria-labelledby='modal-modal-title'
           aria-describedby='modal-modal-description'
         >
-          <AddressPicker
-            closeModal={closeAddressDialog}
-            refreshAddress={refreshAddress}
-            addressId={addressId}
-            canUpdate={true}
-          ></AddressPicker>
+          <div>
+            <AddressPicker
+              closeModal={closeAddressDialog}
+              refreshAddress={refreshAddress}
+              addressId={addressId}
+              canUpdate={true}
+            ></AddressPicker>
+          </div>
         </Modal>
       </Box>
     </Container>
   );
 }
 
-export default React.forwardRef(MyAddresses);
+export default MyAddresses;

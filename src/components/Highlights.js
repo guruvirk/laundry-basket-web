@@ -56,9 +56,9 @@ export default function Highlights() {
       id='how-we-work'
       sx={{
         pt: { xs: 4, sm: 8 },
-        pb: { xs: 8, sm: 0 },
+        pb: { xs: 8, sm: 8 },
         color: 'white',
-        bgcolor: 'hsl(220, 30%, 2%)',
+        background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
       }}
     >
       <Container

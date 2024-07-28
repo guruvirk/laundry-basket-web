@@ -34,12 +34,14 @@ export default function SignUp(props) {
   const [mobile, setMobile] = useState('');
   const [mobileError, setMobileError] = useState(null);
 
+  const [isVerified, setIsVerified] = useState(false);
+
   const [otp, setOtp] = useState('');
   const [otpError, setOtpError] = useState(null);
 
-  const [name, setName] = useState(null);
+  const [name, setName] = useState('');
   const [nameError, setNameError] = useState(null);
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(null);
   const [address, setAddress] = useState(null);
   const [isAddressAdded, setIsAddressAdded] = useState(false);
@@ -79,11 +81,14 @@ export default function SignUp(props) {
     }
     setLoading(true);
     try {
-      let user = await post('users/sendOtpExists', {
+      let user = await post('users/sendOtp', {
         phone: mobile,
       });
       setLoading(false);
       if (user) {
+        if (user.isValidated) {
+          setIsVerified(true);
+        }
         setOtpSent(true);
       } else {
         setApiError(getError(''));
@@ -100,59 +105,67 @@ export default function SignUp(props) {
     }
   };
 
-  const signUp = async () => {
+  const signUp = async (code) => {
+    if (!code) {
+      code = otp;
+    }
     let isError = false;
-    if (!otp || otp.length !== 4) {
+    if (!code || code.length !== 4) {
       setOtpError('Invalid OTP');
       setTimeout(() => {
         setOtpError(null);
       }, 2500);
       isError = true;
     }
-    if (!name || name.length < 3) {
-      setNameError('Invalid Name');
-      setTimeout(() => {
-        setNameError(null);
-      }, 2500);
-      isError = true;
-    }
-    if (!email || email.length < 8) {
-      setEmailError('Invalid Email');
-      setTimeout(() => {
-        setEmailError(null);
-      }, 2500);
-      isError = true;
-    }
-    let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
-    if (reg.test(email) === false) {
-      setEmailError('Invalid Email');
-      setTimeout(() => {
-        setEmailError(null);
-      }, 2500);
-      isError = true;
-    }
-    if (isError) {
-      return;
-    }
-    if (!isAddressAdded) {
-      setAddressError('Address is Required');
-      setTimeout(() => {
-        setAddressError(null);
-      }, 2500);
-      isError = true;
+    if (!isVerified) {
+      if (!name || name.length < 3) {
+        setNameError('Invalid Name');
+        setTimeout(() => {
+          setNameError(null);
+        }, 2500);
+        isError = true;
+      }
+      if (!email || email.length < 8) {
+        setEmailError('Invalid Email');
+        setTimeout(() => {
+          setEmailError(null);
+        }, 2500);
+        isError = true;
+      }
+      let reg = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w\w+)+$/;
+      if (reg.test(email) === false) {
+        setEmailError('Invalid Email');
+        setTimeout(() => {
+          setEmailError(null);
+        }, 2500);
+        isError = true;
+      }
+      if (isError) {
+        return;
+      }
+      if (!isAddressAdded) {
+        setAddressError('Address is Required');
+        setTimeout(() => {
+          setAddressError(null);
+        }, 2500);
+        isError = true;
+      }
     }
     if (isError) {
       return;
     }
     setLoading(true);
+    let userObj = {
+      phone: mobile,
+      otp: code,
+    };
+    if (!isVerified) {
+      userObj.name = name;
+      userObj.email = email;
+      userObj.addresses = [address];
+    }
     try {
-      let user = await post('users/confirm', {
-        phone: mobile,
-        otp: otp,
-        name: name,
-        email: email,
-        addresses: [address],
-      });
+      let user = await post('users/confirm', userObj);
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
         props.setIsLoggedIn(true);
@@ -185,6 +198,7 @@ export default function SignUp(props) {
           setApiError(null);
         }, 2500);
       }
+      setLoading(false);
     }
   };
 
@@ -217,7 +231,7 @@ export default function SignUp(props) {
         }}
       >
         <Typography component='h2' variant='h4' sx={{ color: 'text.primary' }}>
-          SignUp
+          Login / SignUp
         </Typography>
       </Box>
       <Box
@@ -249,21 +263,6 @@ export default function SignUp(props) {
         />
         {mobileError ? <FormHelperText error>{mobileError}</FormHelperText> : null}
       </Box>
-      {!otpSent && (
-        <Box
-          sx={{
-            width: { xs: '100%', sm: '50%' },
-            margin: 'auto',
-            textAlign: 'center',
-          }}
-        >
-          <Link to='/login'>
-            <Button disabled={loading} type='submit' variant='text' sx={{ mt: 2 }}>
-              Already have an Account? &nbsp; <span className='font-bold'>Login</span>
-            </Button>
-          </Link>
-        </Box>
-      )}
       {otpSent && (
         <>
           <Box
@@ -299,6 +298,9 @@ export default function SignUp(props) {
               onChange={handleChange}
               onComplete={(value) => {
                 setOtp(value);
+                if (isVerified) {
+                  signUp(value);
+                }
               }}
               length={4}
             />
@@ -317,117 +319,121 @@ export default function SignUp(props) {
               <FormHelperText error>{otpError}</FormHelperText>
             </Box>
           ) : null}
-          <Box
-            sx={{
-              width: { xs: '100%', sm: '50%' },
-              margin: 'auto',
-              textAlign: 'center',
-              pb: 3,
-            }}
-          >
-            <TextField
-              inputProps={{ type: 'text', readOnly: loading }}
-              id='name'
-              name='name'
-              label='Name'
-              value={name}
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <Person />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              variant='standard'
-            />
-            {nameError ? <FormHelperText error>{nameError}</FormHelperText> : null}
-          </Box>
-          <Box
-            sx={{
-              width: { xs: '100%', sm: '50%' },
-              margin: 'auto',
-              textAlign: 'center',
-              pb: 3,
-            }}
-          >
-            <TextField
-              inputProps={{ type: 'email', readOnly: loading }}
-              id='email'
-              name='email'
-              label='Email'
-              value={email}
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position='start'>
-                    <Mail />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-              variant='standard'
-            />
-            {emailError ? <FormHelperText error>{emailError}</FormHelperText> : null}
-          </Box>
-          {!isAddressAdded ? (
-            <Box
-              sx={{
-                width: { xs: '100%', sm: '50%' },
-                margin: 'auto',
-                textAlign: 'center',
-              }}
-            >
-              <Button onClick={openAddressDialog} variant='contained' startIcon={<AddLocation />}>
-                Add Address
-              </Button>
-            </Box>
-          ) : (
-            <Box
-              alignItems={'center'}
-              sx={{
-                width: { xs: '100%', sm: '50%' },
-                margin: 'auto',
-                textAlign: 'center',
-                bgcolor: 'background.paper',
-                borderRadius: '15px',
-                boxShadow: 0,
-                p: 4,
-                position: 'relative',
-              }}
-            >
-              <IconButton
-                onClick={() => openAddressDialog()}
-                sx={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  zIndex: 999,
-                }}
-                aria-label='delete'
-                size='large'
-              >
-                <Edit sx={{ fontSize: 20 }} />
-              </IconButton>
+          {!isVerified && (
+            <>
               <Box
                 sx={{
-                  width: '100%',
+                  width: { xs: '100%', sm: '50%' },
+                  margin: 'auto',
                   textAlign: 'center',
+                  pb: 3,
                 }}
               >
-                <Typography className='font-bold'>
-                  {address.address1}, {address.address2}
-                </Typography>
-                <Typography className='font-bold'>
-                  {address.city}, {address.state} {address.zipCode}
-                </Typography>
+                <TextField
+                  inputProps={{ type: 'text', readOnly: loading }}
+                  id='name'
+                  name='name'
+                  label='Name'
+                  value={name}
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Person />
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  variant='standard'
+                />
+                {nameError ? <FormHelperText error>{nameError}</FormHelperText> : null}
               </Box>
-            </Box>
+              <Box
+                sx={{
+                  width: { xs: '100%', sm: '50%' },
+                  margin: 'auto',
+                  textAlign: 'center',
+                  pb: 3,
+                }}
+              >
+                <TextField
+                  inputProps={{ type: 'email', readOnly: loading }}
+                  id='email'
+                  name='email'
+                  label='Email'
+                  value={email}
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position='start'>
+                        <Mail />
+                      </InputAdornment>
+                    ),
+                  }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  variant='standard'
+                />
+                {emailError ? <FormHelperText error>{emailError}</FormHelperText> : null}
+              </Box>
+              {!isAddressAdded ? (
+                <Box
+                  sx={{
+                    width: { xs: '100%', sm: '50%' },
+                    margin: 'auto',
+                    textAlign: 'center',
+                  }}
+                >
+                  <Button onClick={openAddressDialog} variant='contained' startIcon={<AddLocation />}>
+                    Add Address
+                  </Button>
+                </Box>
+              ) : (
+                <Box
+                  alignItems={'center'}
+                  sx={{
+                    width: { xs: '100%', sm: '50%' },
+                    margin: 'auto',
+                    textAlign: 'center',
+                    bgcolor: 'background.paper',
+                    borderRadius: '15px',
+                    boxShadow: 0,
+                    p: 4,
+                    position: 'relative',
+                  }}
+                >
+                  <IconButton
+                    onClick={() => openAddressDialog()}
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      right: 0,
+                      zIndex: 999,
+                    }}
+                    aria-label='delete'
+                    size='large'
+                  >
+                    <Edit sx={{ fontSize: 20 }} />
+                  </IconButton>
+                  <Box
+                    sx={{
+                      width: '100%',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Typography className='font-bold'>
+                      {address.address1}, {address.address2}
+                    </Typography>
+                    <Typography className='font-bold'>
+                      {address.city}, {address.state} {address.zipCode}
+                    </Typography>
+                  </Box>
+                </Box>
+              )}
+            </>
           )}
           <Box
             sx={{
@@ -455,13 +461,13 @@ export default function SignUp(props) {
       <div className='text-center pt-1'>
         {otpSent ? (
           <Button
-            onClick={signUp}
+            onClick={() => signUp(null)}
             disabled={loading}
             type='submit'
             variant='contained'
             sx={{ mt: 2, width: { xs: '75%', sm: '25%' } }}
           >
-            {loading ? <CircularProgress size={25} color='inherit' /> : 'SignUp'}
+            {loading ? <CircularProgress size={25} color='inherit' /> : isVerified ? 'Login' : 'SignUp'}
           </Button>
         ) : (
           <Button
@@ -481,7 +487,9 @@ export default function SignUp(props) {
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
-        <AddressPicker closeModal={closeAddressDialog} addAddress={addAddress}></AddressPicker>
+        <div>
+          <AddressPicker closeModal={closeAddressDialog} addAddress={addAddress}></AddressPicker>
+        </div>
       </Modal>
       <Box sx={{ width: 500 }}>
         <Snackbar
@@ -496,7 +504,7 @@ export default function SignUp(props) {
           open={!!apiError}
           message={apiError}
           severity='error'
-          key={'bottomcenter'}
+          key={'bottomcenterapi'}
         />
       </Box>
     </Container>

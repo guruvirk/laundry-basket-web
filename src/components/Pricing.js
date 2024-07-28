@@ -1,181 +1,253 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import Chip from '@mui/material/Chip';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { Button, Grid, IconButton, Paper } from '@mui/material';
+import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import cover from '../assets/images/saloon.jpg';
+import { Link } from 'react-router-dom';
 
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+export default function Pricing(props) {
+  const [tenant, setTenant] = React.useState({});
+  const [services, setServices] = React.useState([]);
+  const [servicesLoaded, setServicesLoaded] = React.useState(false);
 
-const tiers = [
-  {
-    title: 'Free',
-    price: '0',
-    description: ['10 users included', '2 GB of storage', 'Help center access', 'Email support'],
-    buttonText: 'Sign up for free',
-    buttonVariant: 'outlined',
-  },
-  {
-    title: 'Professional',
-    subheader: 'Recommended',
-    price: '15',
-    description: [
-      '20 users included',
-      '10 GB of storage',
-      'Help center access',
-      'Priority email support',
-      'Dedicated team',
-      'Best deals',
-    ],
-    buttonText: 'Start now',
-    buttonVariant: 'contained',
-  },
-  {
-    title: 'Enterprise',
-    price: '30',
-    description: ['50 users included', '30 GB of storage', 'Help center access', 'Phone & email support'],
-    buttonText: 'Contact us',
-    buttonVariant: 'outlined',
-  },
-];
+  const [index, setIndex] = React.useState(0);
 
-export default function Pricing() {
+  React.useEffect(() => {
+    if (props.tenant) {
+      setTenant(props.tenant);
+    }
+    if (props.servicesLoaded) {
+      setServicesLoaded(props.servicesLoaded);
+      setServices(props.services);
+    }
+  }, [props.services, props.servicesLoaded, props.tenant]);
+
+  const increaseIndex = () => {
+    if (index < services.length - 1) {
+      setIndex(index + 1);
+    }
+  };
+
+  const decreaseIndex = () => {
+    if (index > 0) {
+      setIndex(index - 1);
+    }
+  };
+
   return (
     <Container
-      maxWidth='xlg'
-      id='pricing'
-      sx={{
-        pt: { xs: 4, sm: 12 },
-        pb: { xs: 8, sm: 16 },
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: { xs: 3, sm: 6 },
+      style={{
+        paddingLeft: '0px',
+        paddingRight: '0px',
+        paddingTop: '60px',
+        paddingBottom: '30px',
       }}
+      sx={{ width: '100%' }}
     >
-      <Box
+      <Paper
         sx={{
-          width: { sm: '100%', md: '60%' },
-          textAlign: { sm: 'left', md: 'center' },
+          height: { xs: '180px', sm: '280px' },
+          width: '100%',
+          borderRadius: 0,
+          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundImage: `url(${cover})`,
         }}
       >
-        <Typography component='h2' variant='h4' sx={{ color: 'text.primary' }}>
-          Pricing
-        </Typography>
-        <Typography variant='body1' sx={{ color: 'text.secondary' }}>
-          Quickly build an effective pricing table for your potential customers with this layout. <br />
-          It&apos;s built with default Material UI components with little customization.
-        </Typography>
-      </Box>
-      <Grid container spacing={3} sx={{ alignItems: 'center', justifyContent: 'center' }}>
-        {tiers.map((tier) => (
-          <Grid item key={tier.title} xs={12} sm={tier.title === 'Enterprise' ? 12 : 6} md={4}>
-            <Card
-              sx={[
-                {
-                  p: 2,
+        <div
+          style={{
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0, 0.65)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 20,
+          }}
+        >
+          <div className='text-center'>
+            <div className='text-center'>
+              <Typography className='text-center' sx={{ color: 'text.primary', typography: { sm: 'h4', xs: 'h6' } }}>
+                HASSLE-FREE LAUNDRY AT AFFORDABLE PRICING
+              </Typography>
+            </div>
+            <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained-banner'>
+              <Link to='/book-order'>Book Now</Link>
+            </Button>
+          </div>
+        </div>
+      </Paper>
+
+      {servicesLoaded && (
+        <>
+          <Grid container alignItems='center' justifyContent='center' spacing={1} sx={{ pt: 6, pb: 4 }}>
+            <Grid textAlign={'center'} item xs={2} sm={2} md={2}>
+              {index > 0 && (
+                <IconButton onClick={decreaseIndex} className='flex text-right justify-center'>
+                  <ChevronLeft sx={{ fontSize: 40 }} />
+                </IconButton>
+              )}
+            </Grid>
+            <Grid item xs={8} sm={6} md={4}>
+              <Box
+                sx={{
+                  width: 'fit-content',
+                  m: 'auto',
                   display: 'flex',
-                  flexDirection: 'column',
-                  gap: 4,
-                },
-                tier.title === 'Professional' &&
-                  ((theme) => ({
-                    border: 'none',
-                    background: 'radial-gradient(circle at 50% 0%, hsl(210, 98%, 35%), hsl(210, 100%, 16%))',
-                    boxShadow: `0 8px 12px hsla(210, 98%, 42%, 0.2)`,
-                    ...theme.applyStyles('dark', {
-                      boxShadow: `0 8px 12px hsla(0, 0%, 0%, 0.8)`,
-                    }),
-                  })),
-              ]}
-            >
-              <CardContent>
-                <Box
-                  sx={[
-                    {
-                      mb: 1,
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      gap: 2,
-                    },
-                    tier.title === 'Professional' ? { color: 'grey.100' } : { color: '' },
-                  ]}
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <img
+                  style={{
+                    height: '45px',
+                  }}
+                  src={services[index]?.webImages?.primary}
+                  alt='new'
+                />
+                <Typography variant='h6' sx={{ paddingLeft: 2, paddingRight: 2, color: 'text.primary' }}>
+                  {services[index].name}
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid textAlign={'center'} item xs={2} sm={2} md={2}>
+              {index < services.length - 1 && (
+                <IconButton
+                  onClick={(e) => {
+                    e.currentTarget.blur();
+                    increaseIndex();
+                  }}
+                  className='flex text-right justify-center'
                 >
-                  <Typography component='h3' variant='h6'>
-                    {tier.title}
-                  </Typography>
-                  {tier.title === 'Professional' && (
-                    <Chip
-                      icon={<AutoAwesomeIcon />}
-                      label={tier.subheader}
-                      size='small'
-                      sx={{
-                        borderColor: 'hsla(220, 60%, 99%, 0.3)',
-                        backgroundColor: 'hsla(220, 60%, 99%, 0.1)',
-                        '& .MuiChip-label': {
-                          color: 'hsl(0, 0%, 100%)',
-                        },
-                        '& .MuiChip-icon': {
-                          color: 'primary.light',
-                        },
-                      }}
-                    />
-                  )}
-                </Box>
-                <Box
-                  sx={[
-                    {
-                      display: 'flex',
-                      alignItems: 'baseline',
-                    },
-                    tier.title === 'Professional' ? { color: 'grey.50' } : { color: null },
-                  ]}
-                >
-                  <Typography component='h3' variant='h2'>
-                    ${tier.price}
-                  </Typography>
-                  <Typography component='h3' variant='h6'>
-                    &nbsp; per month
-                  </Typography>
-                </Box>
-                <Divider sx={{ my: 2, opacity: 0.8, borderColor: 'divider' }} />
-                {tier.description.map((line) => (
-                  <Box key={line} sx={{ py: 1, display: 'flex', gap: 1.5, alignItems: 'center' }}>
-                    <CheckCircleRoundedIcon
-                      sx={[
-                        {
-                          width: 20,
-                        },
-                        tier.title === 'Professional' ? { color: 'primary.light' } : { color: 'primary.main' },
-                      ]}
-                    />
-                    <Typography
-                      variant='subtitle2'
-                      component={'span'}
-                      sx={[tier.title === 'Professional' ? { color: 'grey.50' } : { color: null }]}
-                    >
-                      {line}
-                    </Typography>
-                  </Box>
-                ))}
-              </CardContent>
-              <CardActions>
-                <Button fullWidth variant={tier.buttonVariant}>
-                  {tier.buttonText}
-                </Button>
-              </CardActions>
-            </Card>
+                  <ChevronRight sx={{ fontSize: 40 }} />
+                </IconButton>
+              )}
+            </Grid>
           </Grid>
-        ))}
-      </Grid>
+
+          {services[index].isItem ? (
+            <>
+              <TableContainer
+                sx={{
+                  width: {
+                    xs: '90%',
+                    sm: '60%',
+                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
+                  },
+                  m: 'auto',
+                }}
+                component={Paper}
+              >
+                <Table sx={{ width: '100%' }} aria-label='items'>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>
+                        <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
+                          Price
+                        </Typography>
+                      </TableCell>
+                      <TableCell align='right'>
+                        <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
+                          ${Number(services[index].currentPrice).toFixed(2)}/lbs
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                </Table>
+              </TableContainer>
+              <Paper
+                sx={{
+                  borderRadius: '15px',
+                  height: { xs: '180px', sm: '280px' },
+                  width: { xs: '90%', sm: '60%' },
+                  m: 'auto',
+                  mt: 4,
+                  backgroundPosition: 'center',
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundImage: `url(${services[index].banner.url})`,
+                }}
+              >
+                <div
+                  style={{
+                    borderRadius: '15px',
+                    height: '100%',
+                    backgroundColor: 'rgba(0,0,0, 0.65)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: 20,
+                  }}
+                >
+                  <div className='text-center'>
+                    <div className='text-center'>
+                      <Typography className='text-center' sx={{ color: 'text.primary', typography: { sm: 'h4', xs: 'h6' } }}>
+                        {services[index].banner.title}
+                      </Typography>
+                      <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white text-center'>
+                        {services[index].banner.text}
+                      </Typography>
+                    </div>
+                    <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained-banner'>
+                      <Link to='/book-order'>Book Now</Link>
+                    </Button>
+                  </div>
+                </div>
+              </Paper>
+            </>
+          ) : (
+            <TableContainer
+              sx={{
+                width: { xs: '90%', sm: '60%' },
+                m: 'auto',
+                background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
+              }}
+              component={Paper}
+            >
+              <Table sx={{ width: '100%' }} aria-label='items'>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
+                        Item
+                      </Typography>
+                    </TableCell>
+                    <TableCell align='right'>
+                      <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
+                        Price
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {services[index].items.map((item) => (
+                    <TableRow key={item.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                      <TableCell component='th' scope='row'>
+                        <Typography sx={{ typography: { sm: 'subtitle2', xs: 'body1' } }} className='text-white'>
+                          {item.name}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align='right'>
+                        <Typography sx={{ typography: { sm: 'subtitle2', xs: 'body1' } }} className='text-white'>
+                          ${Number(item.currentPrice).toFixed(2)}
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+        </>
+      )}
     </Container>
   );
 }

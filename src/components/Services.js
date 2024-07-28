@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { CheckCircleRounded } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 library.add(faUser);
 
@@ -18,10 +19,8 @@ export default function Services(props) {
   return (
     <Container
       maxWidth='xlg'
-      id='pricing'
       sx={{
         pt: { xs: 4, sm: 8 },
-        pb: { xs: 8, sm: 0 },
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -57,7 +56,7 @@ export default function Services(props) {
                   },
                   (theme) => ({
                     border: 'none',
-                    background: 'radial-gradient(circle at 50% 0%, hsl(210, 98%, 35%), hsl(210, 100%, 16%))',
+                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
                     boxShadow: `0 8px 12px hsla(210, 98%, 42%, 0.2)`,
                     ...theme.applyStyles('dark', {
                       boxShadow: `0 8px 12px hsla(0, 0%, 0%, 0.8)`,
@@ -105,7 +104,7 @@ export default function Services(props) {
                   </Box>
                   <Divider sx={{ my: 2, opacity: 0.8, borderColor: 'divider' }} />
                   {service.pointers?.map((line) => (
-                    <Box key={line} sx={{ py: 1, display: 'flex', gap: .5, alignItems: 'center' }}>
+                    <Box key={line} sx={{ py: 1, display: 'flex', gap: 0.5, alignItems: 'center' }}>
                       {line ? (
                         <CheckCircleRounded
                           sx={[
@@ -124,8 +123,8 @@ export default function Services(props) {
                   ))}
                 </CardContent>
                 <CardActions>
-                  <Button fullWidth color='secondary' variant='contained'>
-                    Schedule Pickup
+                  <Button fullWidth sx={{ fontSize: 18, fontWeight: 600 }} color='secondary' variant='contained'>
+                    <Link to='/book-order'>Book Now</Link>
                   </Button>
                 </CardActions>
               </Card>

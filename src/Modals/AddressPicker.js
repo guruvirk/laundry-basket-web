@@ -41,12 +41,12 @@ export default function AddressPicker(props) {
   const [isDefault, setIsDefault] = useState(false);
   const [isDefaultError, setIsDefaultError] = useState(null);
   const [isDefaultOtherExists, setIsDefaultOtherExists] = useState(false);
-  const [address1, setAddres1] = useState(null);
+  const [address1, setAddres1] = useState('');
   const [address1Error, setAddres1Error] = useState(null);
-  const [address2, setAddres2] = useState(null);
-  const [city, setCity] = useState(null);
-  const [state, setState] = useState(null);
-  const [zipCode, setZipCode] = useState(null);
+  const [address2, setAddres2] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [zipCode, setZipCode] = useState('');
   const [address2Error, setAddres2Error] = useState(null);
   const [cityError, setCityError] = useState(null);
   const [stateError, setStateError] = useState(null);
@@ -258,7 +258,7 @@ export default function AddressPicker(props) {
           }
         })();
         setIsLoading(false);
-      }, 1000);
+      }, 2500);
       if (!props.canUpdate) {
         if (props.address) {
           setZipCode(props.address.zipCode);
@@ -399,7 +399,7 @@ export default function AddressPicker(props) {
           position: 'absolute',
           top: 0,
           right: 0,
-          zIndex: 999,
+          zindex: 999,
         }}
         aria-label='delete'
         size='large'

@@ -21,11 +21,13 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
 
   const navigation = useNavigate();
 
-  const settings = ['My Addresses', 'Account', 'Logout'];
+  const settings = ['Orders', 'My Addresses', 'Account', 'Logout'];
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
+
+  React.useEffect(() => {}, [user]);
 
   const openLogin = () => {
     setOpen(false);
@@ -43,6 +45,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
   const handleMenuItemClick = (setting) => {
     if (setting === 'Logout') {
       setAnchorElUser(null);
+      setOpen(false);
       logout();
     }
   };
@@ -76,10 +79,8 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
           border: '1px solid',
           borderColor: 'divider',
           bgcolor: 'white',
-          boxShadow: '0 1px 2px hsla(210, 0%, 0%, 0.05), 0 2px 12px hsla(210, 100%, 80%, 0.5)',
           ...theme.applyStyles('dark', {
             bgcolor: 'hsla(220, 0%, 0%, 0.7)',
-            boxShadow: '0 1px 2px hsla(210, 0%, 0%, 0.5), 0 2px 12px hsla(210, 100%, 25%, 0.3)',
           }),
         })}
       >
@@ -88,18 +89,23 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
             <img style={{ height: 90 }} src={require('../assets/images/logo.png')} alt='logo' />
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, pl: 2 }}>
-            <Button variant='text' color='info' size='small' onClick={() => scrollToSection('features')}>
-              Services
-            </Button>
-            <Button variant='text' color='info' size='small' onClick={() => scrollToSection('testimonials')}>
-              Pricing
-            </Button>
-            <Button variant='text' color='info' size='small' onClick={() => scrollToSection('highlights')}>
-              About Us
-            </Button>
-            <Button variant='text' color='info' size='small' onClick={() => scrollToSection('pricing')}>
-              Contact Us
-            </Button>
+            <MenuItem onClick={() => scrollToSection('about')}>
+              <Typography variant='nav' textAlign='center'>
+                About Us
+              </Typography>
+            </MenuItem>
+            <MenuItem onClick={() => scrollToSection('services')}>
+              <Typography variant='nav' textAlign='center'>
+                Services
+              </Typography>
+            </MenuItem>
+            <Link to='/pricing'>
+              <MenuItem onClick={() => setOpen(false)}>
+                <Typography variant='nav' textAlign='center'>
+                  Pricing
+                </Typography>
+              </MenuItem>
+            </Link>
           </Box>
         </Box>
         <Box
@@ -109,7 +115,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
             alignItems: 'center',
           }}
         >
-          <ToggleColorMode data-screenshot='toggle-mode' mode={mode} toggleColorMode={toggleColorMode} />
+          <ToggleColorMode sx={{ mr: 2 }} data-screenshot='toggle-mode' mode={mode} toggleColorMode={toggleColorMode} />
           {isLoggedIn ? null : (
             <Button onClick={openLogin} color='primary' variant='contained' size='small'>
               Login
@@ -134,13 +140,68 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                   <CloseRoundedIcon />
                 </IconButton>
               </Box>
-              <Divider sx={{ my: 3 }} />
-              <MenuItem onClick={() => scrollToSection('features')}>Features</MenuItem>
-              <MenuItem onClick={() => scrollToSection('testimonials')}>Testimonials</MenuItem>
-              <MenuItem onClick={() => scrollToSection('highlights')}>Highlights</MenuItem>
-              <MenuItem onClick={() => scrollToSection('pricing')}>Pricing</MenuItem>
-              <MenuItem onClick={() => scrollToSection('faq')}>FAQ</MenuItem>
-              {isLoggedIn ? null : (
+              <Divider sx={{ my: 1 }} />
+              <MenuItem onClick={() => scrollToSection('about')}>
+                <Typography variant='subtitle2'>About Us</Typography>
+              </MenuItem>
+              <MenuItem onClick={() => scrollToSection('services')}>
+                <Typography variant='subtitle2'>Services</Typography>
+              </MenuItem>
+              <Link to='/pricing'>
+                <MenuItem onClick={() => setOpen(false)}>
+                  <Typography variant='subtitle2'>Pricing</Typography>
+                </MenuItem>
+              </Link>
+              {isLoggedIn ? (
+                <>
+                  {settings.map((setting) => (
+                    <MenuItem
+                      key={'menu' + setting}
+                      onClick={() => (setting === 'Logout' ? handleMenuItemClick(setting) : {})}
+                    >
+                      {setting === 'Logout' ? (
+                        <Typography variant='subtitle2'>{setting}</Typography>
+                      ) : (
+                        <Link
+                          onClick={() => {
+                            setAnchorElUser(null);
+                            setOpen(false);
+                          }}
+                          to={setting === 'My Addresses' ? '/my-addresses' : setting === 'Account' ? '/my-profile' : ''}
+                        >
+                          <Typography variant='subtitle2'>{setting}</Typography>
+                          {setting === 'My Addresses' && user.addresses && user.addresses.length && (
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <LocationOn sx={{ fontSize: 15 }} />
+                              <Typography>
+                                {user.addresses[0].city} {user.addresses[0].zipCode}
+                              </Typography>
+                            </Box>
+                          )}
+                          {setting === 'Account' && user.addresses && user.addresses.length && (
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <Person sx={{ fontSize: 15 }} />
+                              <Typography>{user.name}</Typography>
+                            </Box>
+                          )}
+                        </Link>
+                      )}
+                    </MenuItem>
+                  ))}
+                </>
+              ) : (
                 <MenuItem>
                   <Button onClick={openLogin} color='primary' variant='contained' fullWidth>
                     Login
@@ -186,11 +247,14 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                       {setting}
                     </Typography>
                   ) : (
-                    <Link to={setting === 'My Addresses' ? '/my-addresses' : setting === 'Account' ? '/my-profile' : ''}>
+                    <Link
+                      onClick={() => setAnchorElUser(null)}
+                      to={setting === 'My Addresses' ? '/my-addresses' : setting === 'Account' ? '/my-profile' : ''}
+                    >
                       <Typography sx={{ marginLeft: 0.5 }} variant='subtitle1' textAlign='start'>
                         {setting}
                       </Typography>
-                      {setting === 'My Addresses' && user.addresses && user.addresses.length && (
+                      {setting === 'My Addresses' && user && user.addresses && user.addresses.length && (
                         <Box
                           sx={{
                             display: 'flex',
@@ -204,7 +268,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                           </Typography>
                         </Box>
                       )}
-                      {setting === 'Account' && user.addresses && user.addresses.length && (
+                      {setting === 'Account' && user && user.addresses && user.addresses.length && (
                         <Box
                           sx={{
                             display: 'flex',

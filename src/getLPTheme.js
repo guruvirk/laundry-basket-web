@@ -189,7 +189,13 @@ const getDesignTokens = (mode) => ({
     },
     h6: {
       fontSize: customTheme.typography.pxToRem(20),
-      fontWeight: 500,
+      fontWeight: 600,
+      lineHeight: 1.2,
+    },
+    nav: {
+      color: brand[800],
+      fontSize: customTheme.typography.pxToRem(16),
+      fontWeight: 600,
       lineHeight: 1.2,
     },
     subtitle1: {
@@ -306,6 +312,23 @@ export default function getLPTheme(mode) {
                 },
                 style: {
                   height: '2.5rem', // 40px
+                },
+              },
+              {
+                props: {
+                  color: 'primary',
+                  variant: 'contained-banner',
+                },
+                style: {
+                  color: 'white',
+                  background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
+                  '&:hover': {
+                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
+                    boxShadow: 'none',
+                  },
+                  '&:active': {
+                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
+                  },
                 },
               },
               {
@@ -501,12 +524,10 @@ export default function getLPTheme(mode) {
           root: ({ theme }) => ({
             py: 1.5,
             px: 0.5,
-            border: '1px solid',
-            borderColor: brand[100],
             fontWeight: 600,
             backgroundColor: brand[50],
             '&:hover': {
-              backgroundColor: brand[500],
+              background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
             },
             '&:focus-visible': {
               borderColor: brand[300],
@@ -749,7 +770,7 @@ export default function getLPTheme(mode) {
         defaultProps: {
           useFlexGap: true,
         },
-      },
+      }
     },
   };
 }

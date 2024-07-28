@@ -53,10 +53,14 @@ const config = {
 };
 
 const getTokenConfig = async () => {
-  const token = localStorage.getItem('token');
+  let res = localStorage.getItem('user');
+  if (!res) {
+    return {};
+  }
+  const user = JSON.parse(res);
   return {
     headers: {
-      Authorization: token,
+      Authorization: user?.session?.token,
     },
   };
 };
@@ -93,6 +97,21 @@ export const updateUser = async (id, data) => {
   try {
     let config = await getTokenConfig();
     const response = await axios.put(URL + 'users/' + id, data, config);
+    if (response.data && response.data.isSuccess) {
+      return response.data.data;
+    } else {
+      console.error(response.data.error);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return;
+  }
+};
+
+export const getUser = async (id) => {
+  try {
+    let config = await getTokenConfig();
+    const response = await axios.get(URL + 'users/' + id, config);
     if (response.data && response.data.isSuccess) {
       return response.data.data;
     } else {
