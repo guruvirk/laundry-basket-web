@@ -346,7 +346,7 @@ function BookOrder(props) {
             </Stepper>
             {activeStep === 0 && (
               <Box sx={{ px: { xs: 0, sm: 1 } }}>
-                <Typography sx={{ pt: 3, color: 'text.primary' }} variant='h6' textAlign='center'>
+                <Typography sx={{ pt: 3, color: 'text.primary' }} component='h6' variant='h6' textAlign='center'>
                   Select Address
                 </Typography>
                 {userLoaded && (

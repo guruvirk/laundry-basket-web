@@ -1,5 +1,5 @@
 import { Box, ThemeProvider, createTheme } from '@mui/material';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { useEffect, useState } from 'react';
 import getLPTheme from './getLPTheme';
@@ -88,7 +88,7 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <ThemeProvider theme={LPtheme}>
         <AppAppBar isLoggedIn={isLoggedIn} user={user} mode={mode} toggleColorMode={toggleColorMode} logout={logout} />
         <Box sx={{ bgcolor: 'background.default', minHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
@@ -115,7 +115,7 @@ function App() {
         </Box>
         <StickyFooter></StickyFooter>
       </ThemeProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

@@ -73,7 +73,7 @@ export default function Features() {
       <Grid container spacing={6}>
         <Grid item xs={12} md={6}>
           <div>
-            <Typography component='h2' variant='h4' sx={{ color: 'text.primary' }}>
+            <Typography component='h1' variant='h3' sx={{ color: 'text.primary' }}>
               Our Promise
             </Typography>
             <Typography variant='body1' sx={{ color: 'text.secondary', mb: { xs: 2, sm: 4 } }}>
@@ -211,10 +211,10 @@ export default function Features() {
           >
             <CardMedia
               component='img'
-              alt={'alt'}
+              alt={`feature-${selectedFeature.title}`}
               sx={{ height: 250, objectFit: 'contain' }}
               image={selectedFeature.image}
-              title='green iguana'
+              title={`feature-${selectedFeature.title}`}
             />
             <CardContent>
               <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
@@ -222,7 +222,9 @@ export default function Features() {
               </Typography>
             </CardContent>
             <CardActions className='justify-center'>
-            <Button sx={{ fontSize: 18, fontWeight: 600, px: 3 }} variant='contained-banner'><Link to='/book-order'>Book Now</Link></Button>
+              <Button sx={{ fontSize: 18, fontWeight: 600, px: 3 }} variant='contained-banner'>
+                <Link to='/book-order'>Book Now</Link>
+              </Button>
             </CardActions>
           </Card>
         </Grid>

@@ -77,7 +77,7 @@ export default function Highlights() {
             textAlign: { sm: 'left', md: 'center' },
           }}
         >
-          <Typography component='h2' variant='h4'>
+          <Typography component='h4' variant='h4'>
             How We Work ?
           </Typography>
           <Typography variant='body1' sx={{ color: 'grey.400' }}>

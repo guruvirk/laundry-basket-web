@@ -86,7 +86,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
       >
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
           <Link to='/'>
-            <img style={{ height: 60 }} src={require('../assets/images/logo.png')} alt='logo' />
+            <img alt='logo' style={{ height: 60 }} src={require('../assets/images/logo.png')} alt='logo' />
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, pl: 2 }}>
             <MenuItem onClick={() => scrollToSection('about')}>

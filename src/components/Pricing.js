@@ -49,6 +49,7 @@ export default function Pricing(props) {
         paddingRight: '0px',
         paddingTop: '60px',
         paddingBottom: '30px',
+        maxWidth: 'none',
       }}
       sx={{ width: '100%' }}
     >
@@ -150,12 +151,12 @@ export default function Pricing(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell>
-                        <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
+                        <Typography component='h6' sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
                           Price
                         </Typography>
                       </TableCell>
                       <TableCell align='right'>
-                        <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
+                        <Typography component='h6' sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
                           ${Number(services[index].currentPrice).toFixed(2)}/lbs
                         </Typography>
                       </TableCell>
@@ -216,12 +217,12 @@ export default function Pricing(props) {
                 <TableHead>
                   <TableRow>
                     <TableCell>
-                      <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
+                      <Typography component='h6' sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
                         Item
                       </Typography>
                     </TableCell>
                     <TableCell align='right'>
-                      <Typography sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
+                      <Typography component='h6' sx={{ typography: { sm: 'h6', xs: 'subtitle2' } }} className='text-white'>
                         Price
                       </Typography>
                     </TableCell>

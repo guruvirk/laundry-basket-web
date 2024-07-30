@@ -61,7 +61,7 @@ function MyAddresses(props) {
           pb: 4,
         }}
       >
-        <Typography component='h2' variant='h4' sx={{ color: 'text.primary' }}>
+        <Typography component='h4' variant='h4' sx={{ color: 'text.primary' }}>
           My Addresses
         </Typography>
 

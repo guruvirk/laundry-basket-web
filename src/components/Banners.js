@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import { Paper, Button } from '@mui/material';
 import Container from '@mui/material/Container';
@@ -6,10 +6,29 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 
 export default function Banners(props) {
+  const [banners, setBanners] = useState([
+    {
+      image: require('../assets/images/saloon.jpg'),
+      text: 'Freshness Guaranteed, Every Time',
+      title: 'Save 50% Launch Offer',
+    },
+    {
+      image: require('../assets/images/coats.jpg'),
+      text: 'Experience the Magic of Clean Clothes',
+      title: 'Laundry Basket',
+    },
+  ]);
+
+  useEffect(() => {
+    // if (props.tenant && props.tenant.banners) {
+    //   setBanners(props.tenant.banners);
+    // }
+  }, []);
+
   return (
     <Container maxWidth='xlg' id='features' sx={{ pt: { xs: 12, sm: 16 } }}>
-      <Carousel>
-        {props.tenant?.banners?.map((item, i) => (
+      <Carousel swipe={false}>
+        {banners.map((item, i) => (
           <Item key={i} item={item} />
         ))}
       </Carousel>
@@ -22,7 +41,7 @@ function Item(props) {
     <Paper
       style={{
         borderRadius: '15px',
-        backgroundImage: `url(${props.item.url})`,
+        backgroundImage: `url(${props.item.image})`,
         height: 400,
         width: '100%',
         backgroundPosition: 'center',
@@ -43,10 +62,14 @@ function Item(props) {
       >
         <div className='text-center'>
           <div className='text-center' style={{ height: 120 }}>
-            <Typography className='text-center pb-5' sx={{ color: 'text.primary', typography: { sm: 'h2', xs: 'h5' } }}>
+            <Typography
+              component='h1'
+              className='text-center pb-5'
+              sx={{ color: 'text.primary', typography: { sm: 'h2', xs: 'h5' } }}
+            >
               {props.item.title}
             </Typography>
-            <Typography sx={{ typography: { sm: 'h5', xs: 'h6' } }} className='text-white text-center pb-10'>
+            <Typography component='h5' sx={{ typography: { sm: 'h5', xs: 'h6' } }} className='text-white text-center pb-10'>
               {props.item.text}
             </Typography>
           </div>
