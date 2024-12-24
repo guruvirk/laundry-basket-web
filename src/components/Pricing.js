@@ -115,7 +115,7 @@ export default function Pricing(props) {
                   alt='new'
                 />
                 <Typography variant='h6' sx={{ paddingLeft: 2, paddingRight: 2, color: 'text.primary' }}>
-                  {services[index].name}
+                  {services[index]?.name}
                 </Typography>
               </Box>
             </Grid>
@@ -134,7 +134,7 @@ export default function Pricing(props) {
             </Grid>
           </Grid>
 
-          {services[index].isItem ? (
+          {services[index]?.isItem ? (
             <>
               <TableContainer
                 sx={{
@@ -229,7 +229,7 @@ export default function Pricing(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {services[index].items.map((item) => (
+                  {services[index]?.items.map((item) => (
                     <TableRow key={item.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                       <TableCell component='th' scope='row'>
                         <Typography sx={{ typography: { sm: 'subtitle2', xs: 'body1' } }} className='text-white'>

@@ -1,5 +1,5 @@
 import { Box, ThemeProvider, createTheme } from '@mui/material';
-import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { useEffect, useState } from 'react';
 import getLPTheme from './getLPTheme';
@@ -12,6 +12,7 @@ import MyAddresses from './components/MyAddresses';
 import Profile from './components/Profile';
 import Pricing from './components/Pricing';
 import BookOrder from './components/BookOrder';
+import OrderDetails from './components/OrderDetails';
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -32,7 +33,7 @@ function App() {
   }, []);
 
   const getServicesData = async () => {
-    let servicesData = await getServices({ category: 'Laundry Basket' });
+    let servicesData = await getServices({ category: 'laundry' });
     if (servicesData) {
       servicesData.forEach((service, index) => {
         getItems({ service: service.id }).then((items) => {
@@ -88,7 +89,7 @@ function App() {
   }, []);
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ThemeProvider theme={LPtheme}>
         <AppAppBar isLoggedIn={isLoggedIn} user={user} mode={mode} toggleColorMode={toggleColorMode} logout={logout} />
         <Box sx={{ bgcolor: 'background.default', minHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
@@ -111,11 +112,15 @@ function App() {
               path='/my-profile'
               element={<Profile isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser} user={user} />}
             />
+            <Route
+              path='/orders/:id'
+              element={<OrderDetails isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser} user={user} />}
+            />
           </Routes>
         </Box>
         <StickyFooter></StickyFooter>
       </ThemeProvider>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

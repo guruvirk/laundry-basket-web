@@ -164,3 +164,48 @@ export const getItems = async (params) => {
     return;
   }
 };
+
+export const createOrder = async (data) => {
+  try {
+    let config = await getTokenConfig();
+    const response = await axios.post(URL + 'orders', data, config);
+    if (response.data && response.data.isSuccess) {
+      return response.data.data;
+    } else {
+      console.error(response.data.error);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return;
+  }
+};
+
+export const createTransactionOrder = async (id, data) => {
+  try {
+    let config = await getTokenConfig();
+    const response = await axios.put(URL + 'orders/createTransaction/' + id, data, config);
+    if (response.data && response.data.isSuccess) {
+      return response.data.data;
+    } else {
+      console.error(response.data.error);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return;
+  }
+};
+
+export const getOrder = async (id) => {
+  try {
+    let config = await getTokenConfig();
+    const response = await axios.get(URL + 'orders/' + id, config);
+    if (response.data && response.data.isSuccess) {
+      return response.data.data;
+    } else {
+      console.error(response.data.error);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return;
+  }
+};
