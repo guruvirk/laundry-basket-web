@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import Highlights from './Highlights';
 import Services from './Services';
-import Features from './Features';
 import FAQ from './FAQ';
 import Banners from './Banners';
+import BookNow from './BookNow';
 
 function Dashboard(props) {
   const [tenant, setTenant] = useState({});
@@ -23,9 +23,9 @@ function Dashboard(props) {
   return (
     <>
       <Banners tenant={tenant}></Banners>
-      <Features />
-      <Highlights />
       <Services services={services} servicesLoaded={servicesLoaded} />
+      <BookNow />
+      <Highlights />
       <FAQ />
     </>
   );

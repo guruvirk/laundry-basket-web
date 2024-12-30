@@ -22,7 +22,7 @@ export default function FAQ() {
       id='faq'
       sx={{
         pt: { xs: 4, sm: 8 },
-        pb: { xs: 8, sm: 0 },
+        pb: { xs: 8, sm: 8 },
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -41,7 +41,7 @@ export default function FAQ() {
       >
         Frequently asked questions
       </Typography>
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', px: { xs: 0, sm: 2, md: 5 } }} >
         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1d-content' id='panel1d-header'>
             <Typography component='h3' variant='subtitle2'>

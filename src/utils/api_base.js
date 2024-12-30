@@ -209,3 +209,18 @@ export const getOrder = async (id) => {
     return;
   }
 };
+
+export const getOrders = async (query) => {
+  try {
+    let config = await getTokenConfig();
+    const response = await axios.get(URL + 'orders', { headers: config.headers, params: query });
+    if (response.data && response.data.isSuccess) {
+      return response.data.page;
+    } else {
+      console.error(response.data.error);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    return;
+  }
+};

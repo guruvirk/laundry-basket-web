@@ -15,12 +15,13 @@ import { Link } from 'react-router-dom';
 
 library.add(faUser);
 
-export default function Services(props) {
+export default function ServicesPricing(props) {
   return (
     <Container
       maxWidth='xlg'
       sx={{
         pt: { xs: 4, sm: 8 },
+        pb: { xs: 8, sm: 8 },
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -34,16 +35,19 @@ export default function Services(props) {
           textAlign: { sm: 'left', md: 'center' },
         }}
       >
-        <Typography component='h2' variant='h4' sx={{ color: 'text.primary' }}>
-          Services
+        <Typography component='h3' variant='h3' sx={{ color: 'text.secondary' }}>
+          A wide range of{' '}
+          <Typography component='h3' variant='h3' sx={{ color: 'text.primary', display: 'inline' }}>
+            Services
+          </Typography>
         </Typography>
-        <Typography variant='body1' sx={{ color: 'text.secondary' }}>
+        <Typography variant='body1' sx={{ color: 'text.neutral', mt: 2 }}>
           Laundry Basket is committed to provide you with the best dry clean, laundry, shoe repairs and bag repairs, leather
           spa services in Bangalore at the most affordable rates with no compromise on quality.
         </Typography>
       </Box>
       {props.servicesLoaded ? (
-        <Grid container spacing={3} sx={{ alignItems: 'center', justifyContent: 'center' }}>
+        <Grid container spacing={5} sx={{ alignItems: 'center', justifyContent: 'center', px: { xs: 0, sm: 2, md: 5 } }}>
           {props.services.map((service) => (
             <Grid item key={service.id} xs={12} sm={6} md={4}>
               <Card
@@ -56,10 +60,9 @@ export default function Services(props) {
                   },
                   (theme) => ({
                     border: 'none',
-                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
-                    boxShadow: `0 8px 12px hsla(210, 98%, 42%, 0.2)`,
+                    boxShadow: `0 0 12px hsla(210, 98%, 42%, 0.2)`,
                     ...theme.applyStyles('dark', {
-                      boxShadow: `0 8px 12px hsla(0, 0%, 0%, 0.8)`,
+                      boxShadow: `0 0 12px hsla(0, 0%, 0%, 0.8)`,
                     }),
                   }),
                 ]}
@@ -68,65 +71,28 @@ export default function Services(props) {
                   <Box
                     sx={[
                       {
+                        textAlign: 'center',
+                        justifyItems: 'center',
                         mb: 1,
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
                         gap: 2,
                       },
-                      { color: 'grey.100' },
                     ]}
                   >
                     <img
                       style={{
-                        height: '60px',
+                        width: '50%',
                       }}
-                      src={service.webImages?.default}
+                      src={service.pic3}
                       alt='new'
                     />
-                    {service.isItem ? (
-                      <Typography component='h5' variant='h5'>
-                        ${service.currentPrice} / lbs
-                      </Typography>
-                    ) : null}
-                  </Box>
-                  <Box
-                    sx={[
-                      {
-                        mt: 3,
-                      },
-                      { color: 'grey.50' },
-                    ]}
-                  >
-                    <Typography component='h5' variant='h5'>
+                    <Typography sx={{ mt: 2, color: 'text.secondary' }} component='h5' variant='h5'>
                       {service.name}
                     </Typography>
+                    <Typography variant='body1' sx={{ color: 'text.neutral', mt: 2, height: '70px' }}>
+                      {service.description}
+                    </Typography>
                   </Box>
-                  <Divider sx={{ my: 2, opacity: 0.8, borderColor: 'divider' }} />
-                  {service.pointers?.map((line) => (
-                    <Box key={line} sx={{ py: 1, display: 'flex', gap: 0.5, alignItems: 'center' }}>
-                      {line ? (
-                        <CheckCircleRounded
-                          sx={[
-                            {
-                              width: 20,
-                            },
-                            { color: 'white' },
-                          ]}
-                        />
-                      ) : null}
-                      <br />
-                      <Typography variant='body1' component={'span'} sx={[{ color: 'grey.50', whiteSpace: 'nowrap' }]}>
-                        {line}
-                      </Typography>
-                    </Box>
-                  ))}
                 </CardContent>
-                <CardActions>
-                  <Button fullWidth sx={{ fontSize: 18, fontWeight: 600 }} color='secondary' variant='contained'>
-                    <Link to='/book-order'>Book Now</Link>
-                  </Button>
-                </CardActions>
               </Card>
             </Grid>
           ))}

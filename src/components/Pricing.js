@@ -80,7 +80,7 @@ export default function Pricing(props) {
                 HASSLE-FREE LAUNDRY AT AFFORDABLE PRICING
               </Typography>
             </div>
-            <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained-banner'>
+            <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained'>
               <Link to='/book-order'>Book Now</Link>
             </Button>
           </div>
@@ -197,7 +197,7 @@ export default function Pricing(props) {
                         {services[index].banner.text}
                       </Typography>
                     </div>
-                    <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained-banner'>
+                    <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained'>
                       <Link to='/book-order'>Book Now</Link>
                     </Button>
                   </div>

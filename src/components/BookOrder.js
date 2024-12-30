@@ -6,19 +6,14 @@ import {
   Button,
   CircularProgress,
   Container,
-  FormControl,
   Grid,
   IconButton,
   InputAdornment,
-  InputLabel,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  MenuItem,
   Modal,
-  Paper,
-  Select,
   Stack,
   Tab,
   Tabs,
@@ -49,11 +44,10 @@ import {
   PersonPin,
   Remove,
 } from '@mui/icons-material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import ConfirmOrder from '../Modals/ConfirmOrder';
+import '@hassanmojab/react-modern-calendar-datepicker/lib/DatePicker.css';
+import { Calendar } from '@hassanmojab/react-modern-calendar-datepicker';
 
 const QontoStepIconRoot = styled('div')(({ theme, ownerState }) => ({
   color: theme.palette.mode === 'dark' ? theme.palette.grey[700] : '#eaeaf0',
@@ -191,7 +185,26 @@ function BookOrder(props) {
   const [deliverySelected, setDeliverySelected] = useState(false);
   const [delivery, setDelivery] = useState('standard');
 
+  const defaultValue = {
+    year: 2024,
+    month: 12,
+    day: 30,
+  };
+
+  const minimumDate = {
+    year: 2024,
+    month: 12,
+    day: 30,
+  };
+
+  const maximumDate = {
+    year: 2025,
+    month: 1,
+    day: 14,
+  };
+
   const [selectedDate, setSelectedDate] = useState();
+  const [selectedDateObj, setSelectedDateObj] = useState(defaultValue);
   const [selectedSlot, setSelectedSlot] = useState();
   const [timeSlots, setTimeSlots] = useState();
 
@@ -331,10 +344,14 @@ function BookOrder(props) {
     }
     setAddressSelected(true);
     setActiveStep(1);
+    onDateSelect(selectedDateObj);
   };
 
   const completeDelivery = async () => {
     let isError = false;
+    if (!selectedSlot) {
+      isError = true;
+    }
     if (isError) {
       return;
     }
@@ -352,7 +369,16 @@ function BookOrder(props) {
     }
   };
 
-  const onDateSelect = (date) => {
+  const onDateSelect = (dateObj) => {
+    setSelectedSlot();
+    let date = moment(
+      `${dateObj.day < 10 ? '0' + Number(dateObj.day) : dateObj.day}-${
+        dateObj.month < 10 ? '0' + Number(dateObj.month) : dateObj.month
+      }-${dateObj.year}`,
+      'DD-MM-YYYY'
+    );
+    date.set('hour', moment().get('hour')).set('minute', moment().get('minute'));
+    setSelectedDateObj(dateObj);
     setSelectedDate(date);
     var iscurrentDate = moment(date).isSame(new Date(), 'day');
     if (iscurrentDate) {
@@ -442,22 +468,19 @@ function BookOrder(props) {
           pb: 4,
         }}
       >
-        <Stepper sx={{ pb: 4 }} alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
         <Box sx={{ display: { xs: 'inherit', sm: 'flex' }, flexDirection: { xs: 'inherit', sm: 'row' } }}>
-          <Box sx={{ width: { xs: '100%', sm: '65%' }, px: { xs: 1, sm: 5 } }}>
+          <Box sx={{ width: { xs: '100%', sm: '65%' }, px: { xs: 1, sm: 5 }, mt: 2 }}>
+            <Stepper sx={{ pb: 4 }} alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
+              {steps.map((label) => (
+                <Step key={label}>
+                  <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                </Step>
+              ))}
+            </Stepper>
             {activeStep === 0 && (
               <Box sx={{ px: { xs: 0, sm: 1 } }}>
-                <Typography sx={{ pt: 3, color: 'text.primary' }} component='h6' variant='h6' textAlign='center'>
-                  Select Address
-                </Typography>
                 {userLoaded && (
-                  <Grid container alignItems='center' justifyContent='center' spacing={2.5} sx={{ pt: 4, pb: 4 }}>
+                  <Grid container alignItems='center' justifyContent='center' spacing={2.5} sx={{ pt: 2, pb: 4 }}>
                     {addresses.map((address, index) => (
                       <Grid item xs={12} sm={6} md={6} key={index}>
                         <div
@@ -473,10 +496,11 @@ function BookOrder(props) {
                             useFlexGap
                             sx={{
                               borderRadius: '15px',
-                              py: 4,
-                              px: 2,
-                              border: '1px solid',
-                              borderColor: 'hsla(220, 25%, 25%, .3)',
+                              py: 2,
+                              px: 1,
+                              border: '2px solid',
+                              backgroundColor: index === selectedAddress ? 'action.selected' : 'none',
+                              borderColor: index === selectedAddress ? 'primary.main' : 'hsla(220, 25%, 25%, .3)',
                               boxShadow: 'none',
                             }}
                           >
@@ -495,8 +519,8 @@ function BookOrder(props) {
                               className='flex items-center ml-3 px-3 py-1.5'
                               style={{
                                 position: 'absolute',
-                                top: 0,
-                                right: 0,
+                                top: 5,
+                                right: 5,
                                 marginLeft: 'auto',
                                 alignContent: 'flex-end',
                                 zIndex: 30,
@@ -572,76 +596,72 @@ function BookOrder(props) {
               </Box>
             )}
             {activeStep === 1 && (
-              <Box sx={{ px: { xs: 0, sm: 1 }, pt: 4, pb: 4 }}>
-                <FormControl sx={{ py: Boolean(selectedDate) ? 0 : 2 }} fullWidth>
-                  <InputLabel
-                    sx={{
-                      color: Boolean(selectedDate) ? '#0095ff' : '',
-                    }}
-                    shrink={Boolean(selectedDate)}
-                    id='slot-select-label'
-                  >
-                    Select Pick Up TimeSlot
-                  </InputLabel>
-                </FormControl>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                  <FormControl fullWidth>
-                    <DatePicker
-                      value={selectedDate}
+              <Box sx={{ px: { xs: 0, sm: 0 }, pt: 0, pb: 4 }}>
+                <Typography component='h5' variant='h5' sx={{ color: 'text.primary', pb: 4 }}>
+                  Select Pick Up Date & TimeSlot
+                </Typography>
+                <Grid container>
+                  <Grid item xs={12} sm={7} md={7}>
+                    <Calendar
+                      colorPrimary='hsl(205, 100%, 50%)'
+                      colorPrimaryLight='hsla(205, 100%, 50%, 0.2)'
+                      minimumDate={minimumDate}
+                      maximumDate={maximumDate}
+                      value={selectedDateObj}
                       onChange={(newValue) => onDateSelect(newValue)}
-                      label={''}
-                      format={Boolean(selectedDate) ? 'ddd, MMM DD YYYY' : 'DD/MM/YYYY'}
-                      maxDate={moment().add(15, 'day')}
-                      minDate={Number(moment().format('HH')) > 21 ? moment().add(1, 'day') : moment()}
-                      sx={{ width: '100%' }}
-                      slotProps={{
-                        textField: {
-                          onKeyDown: (e) => {
-                            e.preventDefault();
-                          },
-                          inputProps: {
-                            sx: {
-                              textAlign: 'center',
-                            },
-                          },
-                          variant: 'standard',
-                        },
-                        day: {
-                          sx: {
-                            '&.MuiPickersDay-root.Mui-selected': {
-                              color: 'white',
-                            },
-                          },
-                        },
-                      }}
-                      inputRef={dateInputRef}
+                      shouldHighlightWeekends
                     />
-                  </FormControl>
-                </LocalizationProvider>
-                <FormControl disabled={!selectedDate} fullWidth sx={{ my: 4 }}>
-                  <InputLabel id='slot-select-label'>Select Pick Up TimeSlot</InputLabel>
-                  <Select
-                    labelId='demo-simple-select-label'
-                    id='demo-simple-select'
-                    variant='standard'
-                    value={selectedSlot}
-                    label='Age'
-                    onChange={(event) => {
-                      setSelectedSlot(event.target.value);
-                    }}
-                  >
-                    {timeSlots?.map((item, index) => (
-                      <MenuItem key={index} value={item.title}>{item.title}</MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-                <Button onClick={completeDelivery} sx={{ mt: 4, px: 4 }} variant='contained'>
-                  {loading ? (
-                    <CircularProgress size={25} color='inherit' />
-                  ) : (
-                    <Typography variant='subtitle1'>Next</Typography>
-                  )}
-                </Button>
+                  </Grid>
+                  <Grid item xs={12} sm={5} md={5} sx={{ pt: 3.8 }}>
+                    <Typography component='subtitle1' variant='h6' sx={{ color: 'text.secondary', pb: 5 }}>
+                      TimeSlot
+                    </Typography>
+                    <Box>
+                      <Grid container sx={{ mt: 2 }}>
+                        {timeSlots?.map((item, index) => (
+                          <Grid
+                            item
+                            xs={5.5}
+                            sm={5.5}
+                            md={5.5}
+                            sx={{
+                              p: 0.5,
+                              border: '1.5px solid',
+                              backgroundColor: selectedSlot === item.title ? 'primary.main' : 'actionLite.selected',
+                              borderColor: 'primary.main',
+                              mt: 2,
+                              mx: 0.5,
+                              borderRadius: '15px',
+                            }}
+                            key={index}
+                          >
+                            <div
+                              style={{
+                                position: 'relative',
+                                cursor: 'pointer',
+                              }}
+                              onClick={() => setSelectedSlot(item.title)}
+                            >
+                              <Typography
+                                component='body1'
+                                sx={{ color: selectedSlot === item.title ? 'text.white' : 'text.primary' }}
+                              >
+                                {item.title}
+                              </Typography>
+                            </div>
+                          </Grid>
+                        ))}
+                      </Grid>
+                    </Box>
+                    <Button onClick={completeDelivery} sx={{ mt: 5, px: 4 }} variant='contained'>
+                      {loading ? (
+                        <CircularProgress size={25} color='inherit' />
+                      ) : (
+                        <Typography variant='subtitle1'>Next</Typography>
+                      )}
+                    </Button>
+                  </Grid>
+                </Grid>
               </Box>
             )}
             {activeStep === 2 && (
@@ -657,237 +677,307 @@ function BookOrder(props) {
                     {typeValue === 0 ? (
                       <>
                         {services.map((item, index) => (
-                          <Box key={item.id}>
+                          <Box
+                            sx={{
+                              backgroundColor: '#ededed',
+                              borderRadius: '15px',
+                              mt: 5,
+                              mx: 1,
+                              px: 2,
+                            }}
+                            key={item.id}
+                          >
                             {item.isItem ? (
-                              <Grid
-                                container
-                                alignItems='center'
-                                justifyContent='center'
-                                spacing={2.5}
-                                sx={{ py: 2, px: 4, borderBottomWidth: 1 }}
-                              >
-                                <Grid sx={{ textAlign: 'start' }} item xs={7} sm={8} md={8}>
-                                  <Typography variant='subtitle2' component='h6'>
-                                    {item.name} ($ {Number(item.currentPrice).toFixed(2)} / lbs)
-                                  </Typography>
-                                </Grid>
-                                <Grid item xs={5} sm={4} md={4}>
-                                  <Box
-                                    sx={{
-                                      width: 'fit-content',
-                                      ml: 'auto',
-                                      display: 'flex',
-                                      flexDirection: 'row',
-                                      alignItems: 'center',
-                                    }}
-                                  >
-                                    <IconButton
-                                      onClick={() => {
-                                        if (item.units < 10) {
-                                          let itemObj = { ...item };
-                                          itemObj.units = itemObj.units + 1;
-                                          let servicesObj = [...services];
-                                          servicesObj[index] = itemObj;
-                                          setServices(servicesObj);
-                                          addToCart(itemObj);
-                                        }
-                                      }}
-                                    >
-                                      <Add sx={{ fontSize: 28 }} />
-                                    </IconButton>
-                                    <Typography sx={{ mx: { xs: 0, sm: 1 } }} variant='h6' component='h5'>
-                                      {item.units}
+                              <Box sx={{ pr: 0, pl: 0 }}>
+                                <Grid container alignItems='center' justifyContent='center' spacing={2.5} sx={{ pb: 2 }}>
+                                  <Grid style={{ paddingLeft: 0 }} sx={{ textAlign: 'start' }} item xs={2.5} sm={2} md={2}>
+                                    <img className='checkout-icon' src={item.pic2} alt='new' />
+                                  </Grid>
+                                  <Grid sx={{ textAlign: 'start' }} item xs={5.5} sm={7} md={7}>
+                                    <Typography variant='title' component='h6'>
+                                      {item.name}
                                     </Typography>
-                                    <IconButton
-                                      onClick={() => {
-                                        if (item.units > 0) {
-                                          let itemObj = { ...item };
-                                          itemObj.units = itemObj.units - 1;
-                                          let servicesObj = [...services];
-                                          servicesObj[index] = itemObj;
-                                          setServices(servicesObj);
-                                          removeFromCart(itemObj);
-                                        }
+                                    <Typography variant='title' component='h6'>
+                                      $ {Number(item.currentPrice).toFixed(2)} / lbs
+                                    </Typography>
+                                  </Grid>
+                                  <Grid
+                                    sx={{ pr: { xs: 0.5, sm: 0.5 } }}
+                                    style={{ paddingLeft: 0 }}
+                                    item
+                                    xs={4}
+                                    sm={3}
+                                    md={3}
+                                  >
+                                    <Typography
+                                      sx={{ mx: { xs: 0, sm: 1 }, textAlign: 'right', color: 'secondary' }}
+                                      variant='h6'
+                                      component='h5'
+                                    >
+                                      x {item.units}
+                                    </Typography>
+                                    <Box
+                                      sx={{
+                                        width: 'fit-content',
+                                        ml: 'auto',
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
                                       }}
                                     >
-                                      <Remove sx={{ fontSize: 28 }} />
-                                    </IconButton>
-                                  </Box>
+                                      <IconButton
+                                        size='small'
+                                        sx={{
+                                          borderRadius: '5px',
+                                          mt: 1,
+                                          ml: 1,
+                                          backgroundColor: 'grey',
+                                          color: 'text.white',
+                                        }}
+                                        onClick={() => {
+                                          if (item.units > 0) {
+                                            let itemObj = { ...item };
+                                            itemObj.units = itemObj.units - 1;
+                                            let servicesObj = [...services];
+                                            servicesObj[index] = itemObj;
+                                            setServices(servicesObj);
+                                            removeFromCart(itemObj);
+                                          }
+                                        }}
+                                      >
+                                        <Remove sx={{ fontSize: 25 }} />
+                                      </IconButton>
+                                      <IconButton
+                                        size='small'
+                                        sx={{
+                                          borderRadius: '5px',
+                                          mt: 1,
+                                          ml: 1,
+                                          backgroundColor: 'primary.main',
+                                          color: 'text.white',
+                                        }}
+                                        onClick={() => {
+                                          if (item.units < 10) {
+                                            let itemObj = { ...item };
+                                            itemObj.units = itemObj.units + 1;
+                                            let servicesObj = [...services];
+                                            servicesObj[index] = itemObj;
+                                            setServices(servicesObj);
+                                            addToCart(itemObj);
+                                          }
+                                        }}
+                                      >
+                                        <Add sx={{ fontSize: 25 }} />
+                                      </IconButton>
+                                    </Box>
+                                  </Grid>
                                 </Grid>
-                              </Grid>
+                              </Box>
                             ) : (
-                              <>
+                              <Box sx={{ paddingBottom: 2, pr: 0, pl: 0 }}>
                                 <Grid
+                                  onClick={() => {
+                                    let itemObj = { ...item };
+                                    itemObj.isExpanded = !itemObj.isExpanded;
+                                    let servicesObj = [...services];
+                                    servicesObj[index] = itemObj;
+                                    setServices(servicesObj);
+                                  }}
                                   container
                                   alignItems='center'
                                   justifyContent='center'
                                   spacing={2.5}
-                                  sx={{ py: 2, px: 4, borderBottomWidth: 1 }}
+                                  sx={{ pb: 2 }}
                                 >
-                                  <Grid sx={{ textAlign: 'start' }} item xs={7} sm={8} md={8}>
-                                    <Typography variant='subtitle2' component='h6'>
+                                  <Grid style={{ paddingLeft: 0 }} sx={{ textAlign: 'start' }} item xs={2.5} sm={2} md={2}>
+                                    <img className='checkout-icon' src={item.pic2} alt='new' />
+                                  </Grid>
+                                  <Grid sx={{ textAlign: 'start' }} item xs={5.5} sm={7} md={7}>
+                                    <Typography variant='title' component='h6'>
                                       {item.name}
                                     </Typography>
                                   </Grid>
-                                  <Grid sx={{ textAlign: 'end' }} item xs={5} sm={4} md={4}>
-                                    <IconButton
-                                      onClick={() => {
-                                        let itemObj = { ...item };
-                                        itemObj.isExpanded = !itemObj.isExpanded;
-                                        let servicesObj = [...services];
-                                        servicesObj[index] = itemObj;
-                                        setServices(servicesObj);
-                                      }}
-                                    >
+                                  <Grid sx={{ textAlign: 'end' }} item xs={4} sm={3} md={3}>
+                                    <IconButton>
                                       {!item.isExpanded && <KeyboardArrowDown sx={{ fontSize: 28 }} />}
                                       {item.isExpanded && <KeyboardArrowUp sx={{ fontSize: 28 }} />}
                                     </IconButton>
                                   </Grid>
                                 </Grid>
-                                {item.isExpanded &&
-                                  item.items &&
-                                  item.items.length &&
-                                  item.items.map((serviceItem, serviceItemIndex) => (
-                                    <Box sx={{ px: 5 }}>
-                                      <Grid
-                                        key={'item' + serviceItemIndex}
-                                        container
-                                        alignItems='center'
-                                        justifyContent='center'
-                                        spacing={2.5}
-                                        sx={{ py: 2, borderBottomWidth: 1 }}
+                                <Box sx={{ pr: 0, pl: 2 }}>
+                                  {item.isExpanded &&
+                                    item.items &&
+                                    item.items.length &&
+                                    item.items.map((serviceItem, serviceItemIndex) => (
+                                      <Box
+                                        key={serviceItemIndex}
+                                        sx={{ pl: { xs: 0.5, sm: 2, md: 3 }, pr: { xs: 0, sm: 1.5, md: 2.5 } }}
                                       >
-                                        <Grid item xs={7} sm={7} md={7}>
-                                          <Box
-                                            sx={{
-                                              width: '100%',
-                                              display: 'flex',
-                                              flexDirection: 'row',
-                                              alignItems: 'center',
-                                            }}
+                                        <Grid
+                                          key={'item' + serviceItemIndex}
+                                          container
+                                          alignItems='center'
+                                          justifyContent='center'
+                                          spacing={2.5}
+                                          sx={{ my: 2, py: 1.5, backgroundColor: 'white', borderRadius: '15px' }}
+                                        >
+                                          <Grid
+                                            style={{ paddingTop: 0, paddingLeft: 0 }}
+                                            sx={{ textAlign: 'start' }}
+                                            item
+                                            xs={2.5}
+                                            sm={2}
+                                            md={2}
                                           >
-                                            <Typography variant='body1' component='h6'>
-                                              {serviceItem.name} ($ {Number(serviceItem.currentPrice).toFixed(2)})
+                                            <img className='checkout-icon-mini' src={serviceItem.pic} alt='new' />
+                                          </Grid>
+                                          <Grid
+                                            style={{ paddingTop: 0 }}
+                                            sx={{ textAlign: 'start' }}
+                                            item
+                                            xs={5}
+                                            sm={6}
+                                            md={6}
+                                          >
+                                            <Typography variant='subtitle1' component='h6'>
+                                              {serviceItem.name}
                                             </Typography>
-                                          </Box>
-                                        </Grid>
-                                        <Grid item xs={5} sm={5} md={5}>
-                                          <Box
-                                            sx={{
-                                              width: 'fit-content',
-                                              ml: 'auto',
-                                              display: 'flex',
-                                              flexDirection: 'row',
-                                              alignItems: 'center',
-                                            }}
+                                            <Typography variant='subtitle1' component='h6'>
+                                              $ {Number(serviceItem.currentPrice).toFixed(2)}
+                                            </Typography>
+                                          </Grid>
+                                          <Grid
+                                            style={{ paddingLeft: 0, paddingTop: 0 }}
+                                            sx={{ pr: { xs: 2, sm: 2 } }}
+                                            item
+                                            xs={4.5}
+                                            sm={4}
+                                            md={4}
                                           >
-                                            <IconButton
-                                              onClick={() => {
-                                                if (serviceItem.units < 10) {
-                                                  let serviceItemObj = { ...serviceItem };
-                                                  let itemObj = { ...item };
-                                                  serviceItemObj.units = serviceItemObj.units + 1;
-                                                  itemObj.items[serviceItemIndex] = serviceItemObj;
-                                                  let servicesObj = [...services];
-                                                  servicesObj[index] = itemObj;
-                                                  setServices(servicesObj);
-                                                  addToCart(serviceItemObj);
-                                                }
+                                            <Typography
+                                              sx={{ mx: { xs: 0, sm: 1 }, textAlign: 'right', color: 'secondary' }}
+                                              variant='subtitle1'
+                                              component='h6'
+                                            >
+                                              x {serviceItem.units}
+                                            </Typography>
+                                            <Box
+                                              sx={{
+                                                width: 'fit-content',
+                                                ml: 'auto',
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
                                               }}
                                             >
-                                              <Add sx={{ fontSize: 24 }} />
-                                            </IconButton>
-                                            <Typography sx={{ mx: { xs: 0, sm: 0.5 } }} variant='subtitle2' component='h5'>
-                                              {serviceItem.units}
-                                            </Typography>
-                                            <IconButton
-                                              onClick={() => {
-                                                if (serviceItem.units > 0) {
-                                                  let serviceItemObj = { ...serviceItem };
-                                                  let itemObj = { ...item };
-                                                  serviceItemObj.units = serviceItemObj.units - 1;
-                                                  itemObj.items[serviceItemIndex] = serviceItemObj;
-                                                  let servicesObj = [...services];
-                                                  servicesObj[index] = itemObj;
-                                                  setServices(servicesObj);
-                                                  removeFromCart(serviceItemObj);
-                                                }
-                                              }}
-                                            >
-                                              <Remove sx={{ fontSize: 24 }} />
-                                            </IconButton>
-                                          </Box>
+                                              <IconButton
+                                                size='small'
+                                                sx={{
+                                                  borderRadius: '5px',
+                                                  mt: 1,
+                                                  ml: 1,
+                                                  backgroundColor: 'grey',
+                                                  color: 'text.white',
+                                                }}
+                                                onClick={() => {
+                                                  if (serviceItem.units > 0) {
+                                                    let serviceItemObj = { ...serviceItem };
+                                                    let itemObj = { ...item };
+                                                    serviceItemObj.units = serviceItemObj.units - 1;
+                                                    itemObj.items[serviceItemIndex] = serviceItemObj;
+                                                    let servicesObj = [...services];
+                                                    servicesObj[index] = itemObj;
+                                                    setServices(servicesObj);
+                                                    removeFromCart(serviceItemObj);
+                                                  }
+                                                }}
+                                              >
+                                                <Remove sx={{ fontSize: 20 }} />
+                                              </IconButton>
+                                              <IconButton
+                                                size='small'
+                                                sx={{
+                                                  borderRadius: '5px',
+                                                  mt: 1,
+                                                  ml: 1,
+                                                  backgroundColor: 'primary.main',
+                                                  color: 'text.white',
+                                                }}
+                                                onClick={() => {
+                                                  if (serviceItem.units < 10) {
+                                                    let serviceItemObj = { ...serviceItem };
+                                                    let itemObj = { ...item };
+                                                    serviceItemObj.units = serviceItemObj.units + 1;
+                                                    itemObj.items[serviceItemIndex] = serviceItemObj;
+                                                    let servicesObj = [...services];
+                                                    servicesObj[index] = itemObj;
+                                                    setServices(servicesObj);
+                                                    addToCart(serviceItemObj);
+                                                  }
+                                                }}
+                                              >
+                                                <Add sx={{ fontSize: 20 }} />
+                                              </IconButton>
+                                            </Box>
+                                          </Grid>
                                         </Grid>
-                                      </Grid>
-                                    </Box>
-                                  ))}
-                              </>
+                                      </Box>
+                                    ))}
+                                </Box>
+                              </Box>
                             )}
                           </Box>
                         ))}
                       </>
                     ) : (
-                      <Box
-                        className='services-book'
-                        sx={{
-                          width: '100%',
-                          display: 'flex',
-                          flexDirection: 'row',
-                          overflowX: 'scroll',
-                          overflowY: 'hidden',
-                          py: 2,
-                        }}
-                      >
-                        {services.map((item, index) => (
-                          <Paper
-                            key={'services-' + index}
-                            sx={{
-                              mt: 4,
-                              mx: 1,
-                              height: '125px',
-                              borderRadius: '15px',
-                              backgroundImage: `url(${item.pic})`,
-                              width: '125px',
-                              backgroundPosition: 'center',
-                              backgroundSize: 'cover',
-                              backgroundRepeat: 'no-repeat',
-                            }}
-                          >
+                      <Grid container alignItems='center' justifyContent='center' spacing={3} sx={{ pt: 4, pb: 4 }}>
+                        {services.map((serviceItem, index) => (
+                          <Grid item xs={6} sm={4} md={4} key={index}>
                             <Box
                               sx={{
                                 height: '125px',
-                                width: '125px',
                                 borderRadius: '15px',
-                                backgroundColor: 'rgba(0,0,0, 0.70)',
+                                backgroundImage: `url(${serviceItem.pic})`,
+                                backgroundPosition: 'center',
+                                backgroundSize: 'cover',
+                                backgroundRepeat: 'no-repeat',
                               }}
                             >
-                              <div
-                                onClick={() => selectUnselectService(item.id)}
-                                style={{ height: '125px', width: '125px', position: 'relative', cursor: 'pointer' }}
+                              <Box
+                                sx={{
+                                  height: '125px',
+                                  width: '100%',
+                                  borderRadius: '15px',
+                                  backgroundColor: 'rgba(0,0,0, 0.70)',
+                                }}
                               >
-                                <Typography
-                                  component='h6'
-                                  sx={{
-                                    alignContent: 'center',
-                                    color: 'text.primary',
-                                    height: '125px',
-                                    width: '125px',
-                                    typography: { sm: 'subtitle1', xs: 'subtitle1' },
-                                    userSelect: 'none',
-                                  }}
+                                <div
+                                  onClick={() => selectUnselectService(serviceItem.id)}
+                                  style={{ height: '125px', position: 'relative', cursor: 'pointer' }}
                                 >
-                                  {item.name}
-                                </Typography>
-                                {selectedServices.indexOf(item.id) > -1 && (
-                                  <IconButton sx={{ position: 'absolute', top: 0, right: 0, marginLeft: 'auto' }}>
-                                    <CheckCircle></CheckCircle>
-                                  </IconButton>
-                                )}
-                              </div>
+                                  <Typography
+                                    component='h6'
+                                    sx={{
+                                      alignContent: 'center',
+                                      color: 'text.primary',
+                                      height: '125px',
+                                      typography: { md: 'h5', sm: 'h6', xs: 'h6' },
+                                      userSelect: 'none',
+                                    }}
+                                  >
+                                    {serviceItem.name}
+                                  </Typography>
+                                  {selectedServices.indexOf(serviceItem.id) > -1 && (
+                                    <IconButton sx={{ position: 'absolute', top: 0, right: 0, marginLeft: 'auto' }}>
+                                      <CheckCircle></CheckCircle>
+                                    </IconButton>
+                                  )}
+                                </div>
+                              </Box>
                             </Box>
-                          </Paper>
+                          </Grid>
                         ))}
-                      </Box>
+                      </Grid>
                     )}
                   </>
                 ) : null}
@@ -901,10 +991,10 @@ function BookOrder(props) {
               </Box>
             )}
           </Box>
-          <Box sx={{ width: { xs: '100%', sm: '35%' }, mt: { xs: 5 } }}>
+          <Box sx={{ width: { xs: '100%', sm: '35%' }, mt: { xs: 5, sm: 2 } }}>
             <List sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: '15px' }}>
               <Typography sx={{ py: 2, color: 'text.primary' }} variant='h6' textAlign='center'>
-                Summary
+                -- Summary --
               </Typography>
               <ListItem
                 sx={{ height: '100px' }}
@@ -993,6 +1083,15 @@ function BookOrder(props) {
                 </ListItemText>
               </ListItem>
             </List>
+            {activeStep === 2 && (
+              <Button onClick={bookOrder} sx={{ mt: 4, px: 4 }} variant='contained'>
+                {loading ? (
+                  <CircularProgress size={25} color='inherit' />
+                ) : (
+                  <Typography variant='subtitle1'>Confirm Order</Typography>
+                )}
+              </Button>
+            )}
           </Box>
         </Box>
       </Box>

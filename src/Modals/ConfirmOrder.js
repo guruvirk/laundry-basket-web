@@ -11,7 +11,7 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import { CloseRounded, CurrencyExchange, DateRange, DryCleaning, PersonPin } from '@mui/icons-material';
+import { CloseRounded, DryCleaning } from '@mui/icons-material';
 import moment from 'moment';
 import { createOrder, createTransactionOrder } from '../utils/api_base';
 import PayOrder from './PayOrder';

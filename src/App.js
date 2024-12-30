@@ -13,6 +13,7 @@ import Profile from './components/Profile';
 import Pricing from './components/Pricing';
 import BookOrder from './components/BookOrder';
 import OrderDetails from './components/OrderDetails';
+import Orders from './components/Orders';
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -111,6 +112,10 @@ function App() {
             <Route
               path='/my-profile'
               element={<Profile isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser} user={user} />}
+            />
+            <Route
+              path='/orders'
+              element={<Orders isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser} user={user} />}
             />
             <Route
               path='/orders/:id'

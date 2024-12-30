@@ -15,6 +15,19 @@ export const brand = {
   900: 'hsl(205, 100%, 50%)',
 };
 
+export const neutral = {
+  50: 'hsl(214, 14%, 50%)',
+  100: 'hsl(214, 14%, 50%)',
+  200: 'hsl(214, 14%, 50%)',
+  300: 'hsl(214, 14%, 50%)',
+  400: 'hsl(214, 14%, 50%)',
+  500: 'hsl(214, 14%, 50%)',
+  600: 'hsl(214, 14%, 50%)',
+  700: 'hsl(214, 14%, 50%)',
+  800: 'hsl(214, 14%, 50%)',
+  900: 'hsl(214, 14%, 50%)',
+};
+
 export const gray = {
   50: 'hsl(220, 60%, 99%)',
   100: 'hsl(220, 35%, 94%)',
@@ -148,7 +161,8 @@ const getDesignTokens = (mode) => ({
     },
     text: {
       primary: brand[800],
-      secondary: gray[600],
+      secondary: gray[800],
+      neutral: neutral[800],
       white: 'white',
       ...(mode === 'dark' && { primary: 'hsl(205, 100%, 50%)', secondary: gray[400] }),
     },
@@ -156,6 +170,12 @@ const getDesignTokens = (mode) => ({
       selected: `${alpha(brand[200], 0.2)}`,
       ...(mode === 'dark' && {
         selected: alpha(brand[800], 0.2),
+      }),
+    },
+    actionLite: {
+      selected: `${alpha(brand[200], 0.1)}`,
+      ...(mode === 'dark' && {
+        selected: alpha(brand[800], 0.1),
       }),
     },
   },
@@ -166,31 +186,67 @@ const getDesignTokens = (mode) => ({
       fontWeight: 600,
       lineHeight: 1.2,
       letterSpacing: -0.5,
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(41),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(40),
+      },
     },
     h2: {
       fontSize: customTheme.typography.pxToRem(48),
       fontWeight: 600,
       lineHeight: 1.2,
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(47),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(46),
+      },
     },
     h3: {
       fontSize: customTheme.typography.pxToRem(42),
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.2,
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(41),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(40),
+      },
     },
     h4: {
       fontSize: customTheme.typography.pxToRem(32),
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.2,
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(31),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(30),
+      },
     },
     h5: {
       fontSize: customTheme.typography.pxToRem(26),
-      fontWeight: 500,
+      fontWeight: 600,
       lineHeight: 1.2,
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(25),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(24),
+      },
     },
     h6: {
       fontSize: customTheme.typography.pxToRem(20),
       fontWeight: 600,
       lineHeight: 1.2,
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(19),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(18),
+      },
     },
     nav: {
       color: brand[800],
@@ -198,19 +254,49 @@ const getDesignTokens = (mode) => ({
       fontWeight: 600,
       lineHeight: 1.2,
     },
+    title: {
+      fontWeight: 600,
+      fontSize: customTheme.typography.pxToRem(19),
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(18),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(17),
+      },
+    },
     subtitle1: {
+      fontWeight: 500,
       fontSize: customTheme.typography.pxToRem(18),
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(17),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(16),
+      },
     },
     subtitle2: {
+      fontWeight: 500,
       fontSize: customTheme.typography.pxToRem(16),
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(15),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(14),
+      },
     },
     body1: {
       fontSize: customTheme.typography.pxToRem(15),
-      fontWeight: 400,
+      fontWeight: 500,
+      '@media (min-width:480px)': {
+        fontSize: customTheme.typography.pxToRem(14),
+      },
+      '@media (min-width:320px)': {
+        fontSize: customTheme.typography.pxToRem(14),
+      },
     },
     body2: {
       fontSize: customTheme.typography.pxToRem(14),
-      fontWeight: 400,
+      fontWeight: 500,
     },
     caption: {
       fontSize: customTheme.typography.pxToRem(12),
@@ -317,23 +403,6 @@ export default function getLPTheme(mode) {
               {
                 props: {
                   color: 'primary',
-                  variant: 'contained-banner',
-                },
-                style: {
-                  color: 'white',
-                  background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
-                  '&:hover': {
-                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
-                    boxShadow: 'none',
-                  },
-                  '&:active': {
-                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
-                  },
-                },
-              },
-              {
-                props: {
-                  color: 'primary',
                   variant: 'contained',
                 },
                 style: {
@@ -343,8 +412,9 @@ export default function getLPTheme(mode) {
                   boxShadow: `inset 0 2px 0 ${alpha(brand[200], 0.2)}, inset 0 -2px 0 ${alpha(brand[700], 0.4)}`,
                   border: `1px solid ${brand[500]}`,
                   '&:hover': {
-                    backgroundColor: brand[700],
+                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
                     boxShadow: 'none',
+                    border: `1px solid hsl(205, 100%, 16%)`,
                   },
                   '&:active': {
                     backgroundColor: brand[700],
@@ -770,7 +840,7 @@ export default function getLPTheme(mode) {
         defaultProps: {
           useFlexGap: true,
         },
-      }
+      },
     },
   };
 }

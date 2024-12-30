@@ -61,11 +61,11 @@ function Item(props) {
         }}
       >
         <div className='text-center'>
-          <div className='text-center' style={{ height: 120 }}>
+          <div className='text-center' style={{ height: { sm: 120, xs: 150 } }}>
             <Typography
               component='h1'
               className='text-center pb-5'
-              sx={{ color: 'text.primary', typography: { sm: 'h2', xs: 'h5' } }}
+              sx={{ color: 'text.primary', typography: { sm: 'h2', xs: 'h3' } }}
             >
               {props.item.title}
             </Typography>
@@ -73,7 +73,7 @@ function Item(props) {
               {props.item.text}
             </Typography>
           </div>
-          <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained-banner'>
+          <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained'>
             <Link to='/book-order'>Book Now</Link>
           </Button>
         </div>

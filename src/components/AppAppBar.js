@@ -86,9 +86,16 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
       >
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
           <Link to='/'>
-            <img alt='logo' style={{ height: 60 }} src={require('../assets/images/logo.png')} />
+            <img alt='logo' style={{ height: 55 }} src={require('../assets/images/logo.png')} />
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, pl: 2 }}>
+            <Link to='/'>
+              <MenuItem onClick={() => setOpen(false)}>
+                <Typography variant='nav' textAlign='center'>
+                  Home
+                </Typography>
+              </MenuItem>
+            </Link>
             <MenuItem onClick={() => scrollToSection('about')}>
               <Typography variant='nav' textAlign='center'>
                 About Us
@@ -141,6 +148,11 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                 </IconButton>
               </Box>
               <Divider sx={{ my: 1 }} />
+              <Link to='/'>
+                <MenuItem onClick={() => setOpen(false)}>
+                  <Typography variant='subtitle2'>Home</Typography>
+                </MenuItem>
+              </Link>
               <MenuItem onClick={() => scrollToSection('about')}>
                 <Typography variant='subtitle2'>About Us</Typography>
               </MenuItem>
@@ -167,7 +179,15 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                             setAnchorElUser(null);
                             setOpen(false);
                           }}
-                          to={setting === 'My Addresses' ? '/my-addresses' : setting === 'Account' ? '/my-profile' : ''}
+                          to={
+                            setting === 'Orders'
+                              ? '/orders'
+                              : setting === 'My Addresses'
+                              ? '/my-addresses'
+                              : setting === 'Account'
+                              ? '/my-profile'
+                              : ''
+                          }
                         >
                           <Typography variant='subtitle2'>{setting}</Typography>
                           {setting === 'My Addresses' && user.addresses && user.addresses.length && (
@@ -249,7 +269,15 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                   ) : (
                     <Link
                       onClick={() => setAnchorElUser(null)}
-                      to={setting === 'My Addresses' ? '/my-addresses' : setting === 'Account' ? '/my-profile' : ''}
+                      to={
+                        setting === 'Orders'
+                          ? '/orders'
+                          : setting === 'My Addresses'
+                          ? '/my-addresses'
+                          : setting === 'Account'
+                          ? '/my-profile'
+                          : ''
+                      }
                     >
                       <Typography sx={{ marginLeft: 0.5 }} variant='subtitle1' textAlign='start'>
                         {setting}
