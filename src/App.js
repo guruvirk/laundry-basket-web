@@ -95,10 +95,10 @@ function App() {
         <AppAppBar isLoggedIn={isLoggedIn} user={user} mode={mode} toggleColorMode={toggleColorMode} logout={logout} />
         <Box sx={{ bgcolor: 'background.default', minHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
           <Routes>
-            <Route path='/' element={<Dashboard tenant={tenant} services={services} servicesLoaded={servicesLoaded} />} />
+            <Route path='/' element={<Dashboard isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />} />
             <Route
               path='/pricing'
-              element={<Pricing tenant={tenant} services={services} servicesLoaded={servicesLoaded} />}
+              element={<Pricing isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />}
             />
             <Route
               path='/book-order'

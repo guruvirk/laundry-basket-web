@@ -21,8 +21,8 @@ export default function FAQ() {
       maxWidth='xlg'
       id='faq'
       sx={{
-        pt: { xs: 4, sm: 8 },
-        pb: { xs: 8, sm: 8 },
+        pt: { xs: 4, sm: 6 },
+        pb: { xs: 8, sm: 6 },
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
@@ -31,25 +31,27 @@ export default function FAQ() {
       }}
     >
       <Typography
-        component='h2'
-        variant='h4'
-        sx={{
-          color: 'text.primary',
-          width: { sm: '100%', md: '60%' },
-          textAlign: { sm: 'left', md: 'center' },
-        }}
+        component='h3'
+        variant='h3'
+        sx={{ color: 'text.secondary', width: { sm: '100%', md: '60%' }, textAlign: { sm: 'left', md: 'center' } }}
       >
-        Frequently asked questions
+        Frequently Asked Questions
       </Typography>
-      <Box sx={{ width: '100%', px: { xs: 0, sm: 2, md: 5 } }} >
+      <Box sx={{ width: '100%', px: { xs: 0, sm: 2, md: 5 } }}>
         <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel1d-content' id='panel1d-header'>
-            <Typography component='h3' variant='subtitle2'>
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+              component='h3'
+              variant='subtitle1'
+            >
               How do I contact customer support if I have a question or issue?
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <Typography variant='body2' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' } }}>
+          <AccordionDetails sx={{ pt: 1, pb: 0 }}>
+            <Typography variant='body1' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' }, color: 'text.secondary' }}>
               You can reach our customer support team by emailing
               <Link> support@email.com </Link>
               or calling our toll-free number. We&apos;re here to assist you promptly.
@@ -58,12 +60,18 @@ export default function FAQ() {
         </Accordion>
         <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel2d-content' id='panel2d-header'>
-            <Typography component='h3' variant='subtitle2'>
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+              component='h3'
+              variant='subtitle1'
+            >
               Do you offer pickup and delivery services?
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <Typography variant='body2' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' } }}>
+          <AccordionDetails sx={{ pt: 1, pb: 0 }}>
+            <Typography variant='body1' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' }, color: 'text.secondary' }}>
               Yes, we provide convenient pickup and delivery services. You can schedule a pickup through our website or by
               calling us.
             </Typography>
@@ -71,12 +79,18 @@ export default function FAQ() {
         </Accordion>
         <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel3d-content' id='panel3d-header'>
-            <Typography component='h3' variant='subtitle2'>
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+              component='h3'
+              variant='subtitle1'
+            >
               How do you handle delicate or special fabrics?
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <Typography variant='body2' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' } }}>
+          <AccordionDetails sx={{ pt: 1, pb: 0 }}>
+            <Typography variant='body1' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' }, color: 'text.secondary' }}>
               We treat delicate and special fabrics with the utmost care. Our team is trained in handling various fabric
               types and follows specific guidelines to ensure the best care for your items.
             </Typography>
@@ -84,12 +98,18 @@ export default function FAQ() {
         </Accordion>
         <Accordion expanded={expanded === 'panel4'} onChange={handleChange('panel4')}>
           <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls='panel4d-content' id='panel4d-header'>
-            <Typography component='h3' variant='subtitle2'>
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+              component='h3'
+              variant='subtitle1'
+            >
               What payment methods do you accept?
             </Typography>
           </AccordionSummary>
-          <AccordionDetails>
-            <Typography variant='body2' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' } }}>
+          <AccordionDetails sx={{ pt: 1, pb: 0 }}>
+            <Typography variant='body1' gutterBottom sx={{ maxWidth: { sm: '100%', md: '70%' }, color: 'text.secondary' }}>
               We accept cash, credit/debit cards, and mobile payment options like Apple Pay and Google Wallet.
             </Typography>
           </AccordionDetails>

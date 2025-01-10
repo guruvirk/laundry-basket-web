@@ -4,6 +4,7 @@ import Services from './Services';
 import FAQ from './FAQ';
 import Banners from './Banners';
 import BookNow from './BookNow';
+import BookNowEffort from './BookNowEffort';
 
 function Dashboard(props) {
   const [tenant, setTenant] = useState({});
@@ -22,10 +23,11 @@ function Dashboard(props) {
 
   return (
     <>
-      <Banners tenant={tenant}></Banners>
-      <Services services={services} servicesLoaded={servicesLoaded} />
-      <BookNow />
-      <Highlights />
+      <Banners isLoggedIn={props.isLoggedIn} tenant={tenant}></Banners>
+      <Services isLoggedIn={props.isLoggedIn} services={services} servicesLoaded={servicesLoaded} />
+      <BookNow isLoggedIn={props.isLoggedIn} />
+      <Highlights isLoggedIn={props.isLoggedIn} />
+      <BookNowEffort isLoggedIn={props.isLoggedIn} />
       <FAQ />
     </>
   );

@@ -11,15 +11,16 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ToggleColorMode from './ToggleColorMode';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Avatar, Menu, Tooltip, Typography } from '@mui/material';
-import { LocationOn, Person } from '@mui/icons-material';
+import { AttachMoney, House, Info, LocalLaundryService, LocationOn, Person } from '@mui/icons-material';
 
 function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
   const [open, setOpen] = React.useState(false);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const navigation = useNavigate();
+  const location = useLocation();
 
   const settings = ['Orders', 'My Addresses', 'Account', 'Logout'];
 
@@ -76,7 +77,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
           flexShrink: 0,
           backdropFilter: 'blur(24px)',
           maxHeight: 40,
-          border: '1px solid',
+          borderBottom: '1px solid',
           borderColor: 'divider',
           bgcolor: 'white',
           ...theme.applyStyles('dark', {
@@ -86,33 +87,53 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
       >
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
           <Link to='/'>
-            <img alt='logo' style={{ height: 55 }} src={require('../assets/images/logo.png')} />
+            <img alt='logo' className='header-logo' src={require('../assets/images/logo.png')} />
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, pl: 2 }}>
-            <Link to='/'>
-              <MenuItem onClick={() => setOpen(false)}>
-                <Typography variant='nav' textAlign='center'>
-                  Home
-                </Typography>
-              </MenuItem>
-            </Link>
-            <MenuItem onClick={() => scrollToSection('about')}>
+            <Button
+              sx={{
+                backgroundColor: location.pathname === '/' ? 'primary.main' : 'white',
+                px: 2,
+              }}
+              className='nav-buttons'
+              onClick={() => navigation('/')}
+              startIcon={<House sx={{ color: location.pathname === '/' ? 'white' : 'primary.main' }} />}
+            >
+              <Typography
+                sx={{ color: location.pathname === '/' ? 'white' : 'primary.main' }}
+                variant='nav'
+                textAlign='center'
+              >
+                Home
+              </Typography>
+            </Button>
+            <Button className='nav-buttons' onClick={() => scrollToSection('about')} startIcon={<Info />}>
               <Typography variant='nav' textAlign='center'>
                 About Us
               </Typography>
-            </MenuItem>
-            <MenuItem onClick={() => scrollToSection('services')}>
+            </Button>
+            <Button className='nav-buttons' onClick={() => scrollToSection('services')} startIcon={<LocalLaundryService />}>
               <Typography variant='nav' textAlign='center'>
                 Services
               </Typography>
-            </MenuItem>
-            <Link to='/pricing'>
-              <MenuItem onClick={() => setOpen(false)}>
-                <Typography variant='nav' textAlign='center'>
-                  Pricing
-                </Typography>
-              </MenuItem>
-            </Link>
+            </Button>
+            <Button
+              sx={{
+                backgroundColor: location.pathname === '/pricing' ? 'primary.main' : 'white',
+                px: 2,
+              }}
+              className='nav-buttons'
+              onClick={() => navigation('/pricing')}
+              startIcon={<AttachMoney sx={{ color: location.pathname === '/pricing' ? 'white' : 'primary.main' }} />}
+            >
+              <Typography
+                sx={{ color: location.pathname === '/pricing' ? 'white' : 'primary.main' }}
+                variant='nav'
+                textAlign='center'
+              >
+                Pricing
+              </Typography>
+            </Button>
           </Box>
         </Box>
         <Box
@@ -122,6 +143,19 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
             alignItems: 'center',
           }}
         >
+          <Button
+            sx={{
+              backgroundColor: 'primary.main',
+              px: 2,
+              mr: 2,
+            }}
+            className='nav-buttons'
+            onClick={() => navigation(isLoggedIn ? '/book-order' : '/login')}
+          >
+            <Typography sx={{ color: 'white' }} variant='nav' textAlign='center'>
+              Schedule PickUp
+            </Typography>
+          </Button>
           <ToggleColorMode sx={{ mr: 2 }} data-screenshot='toggle-mode' mode={mode} toggleColorMode={toggleColorMode} />
           {isLoggedIn ? null : (
             <Button onClick={openLogin} color='primary' variant='contained' size='small'>

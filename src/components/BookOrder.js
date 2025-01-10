@@ -494,6 +494,8 @@ function BookOrder(props) {
                             direction='column'
                             spacing={1}
                             useFlexGap
+                            justifyContent='center'
+                            alignItems='center'
                             sx={{
                               borderRadius: '15px',
                               py: 2,
@@ -502,6 +504,7 @@ function BookOrder(props) {
                               backgroundColor: index === selectedAddress ? 'action.selected' : 'none',
                               borderColor: index === selectedAddress ? 'primary.main' : 'hsla(220, 25%, 25%, .3)',
                               boxShadow: 'none',
+                              height: '22vh',
                             }}
                           >
                             <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
@@ -532,6 +535,46 @@ function BookOrder(props) {
                         </div>
                       </Grid>
                     ))}
+                    <Grid item xs={12} sm={6} md={6}>
+                      <div
+                        style={{
+                          position: 'relative',
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => navigate('/my-addresses')}
+                      >
+                        <Stack
+                          direction='row'
+                          gap={0}
+                          justifyContent='center'
+                          alignItems='center'
+                          useFlexGap
+                          sx={{
+                            height: '22vh',
+                            borderRadius: '15px',
+                            py: 2,
+                            px: 1,
+                            border: '2px solid',
+                            backgroundColor: 'action.selected',
+                            borderColor: 'primary.main',
+                            boxShadow: 'none',
+                          }}
+                        >
+                          <IconButton
+                            size='large'
+                            sx={{
+                              width: '20%',
+                            }}
+                            onClick={() => {}}
+                          >
+                            <Add sx={{ fontSize: 25 }} />
+                          </IconButton>
+                          <Typography sx={{ color: 'text.secondary' }} variant='title'>
+                            Add New Address
+                          </Typography>
+                        </Stack>
+                      </div>
+                    </Grid>
                   </Grid>
                 )}
                 <TextField

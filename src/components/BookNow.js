@@ -13,8 +13,8 @@ export default function BookNow() {
       id='how-we-work'
       style={{ paddingRight: 0, paddingLeft: 0 }}
       sx={{
-        pt: { xs: 4, sm: 8 },
-        pb: { xs: 8, sm: 8 },
+        pt: { xs: 4, sm: 6 },
+        pb: { xs: 8, sm: 6 },
       }}
     >
       <Grid container sx={{ display: { xs: 'none', sm: 'flex' } }}>

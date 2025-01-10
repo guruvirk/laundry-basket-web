@@ -298,6 +298,10 @@ const getDesignTokens = (mode) => ({
       fontSize: customTheme.typography.pxToRem(14),
       fontWeight: 500,
     },
+    body3: {
+      fontSize: customTheme.typography.pxToRem(13),
+      fontWeight: 500,
+    },
     caption: {
       fontSize: customTheme.typography.pxToRem(12),
       fontWeight: 400,
@@ -380,7 +384,7 @@ export default function getLPTheme(mode) {
         styleOverrides: {
           root: ({ theme }) => ({
             boxShadow: 'none',
-            borderRadius: theme.shape.borderRadius,
+            borderRadius: '.3rem',
             textTransform: 'none',
             variants: [
               {
@@ -408,18 +412,28 @@ export default function getLPTheme(mode) {
                 style: {
                   color: 'white',
                   backgroundColor: brand[300],
+                  borderRadius: '.3rem',
                   backgroundImage: `linear-gradient(to bottom, ${alpha(brand[400], 0.8)}, ${brand[500]})`,
                   boxShadow: `inset 0 2px 0 ${alpha(brand[200], 0.2)}, inset 0 -2px 0 ${alpha(brand[700], 0.4)}`,
                   border: `1px solid ${brand[500]}`,
                   '&:hover': {
-                    background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
+                    background: 'white',
                     boxShadow: 'none',
-                    border: `1px solid hsl(205, 100%, 16%)`,
+                    border: `1.5px solid ${brand[500]}`,
+                    color: brand[300],
                   },
                   '&:active': {
                     backgroundColor: brand[700],
                     boxShadow: `inset 0 2.5px 0 ${alpha(brand[700], 0.4)}`,
                   },
+                  ...theme.applyStyles('dark', {
+                    '&:hover': {
+                      background: 'hsla(220, 0%, 0%, 0.8)',
+                      boxShadow: 'none',
+                      border: `1px solid hsla(220, 0%, 0%, 0.8)`,
+                      color: brand[300],
+                    },
+                  }),
                 },
               },
               {
@@ -430,12 +444,14 @@ export default function getLPTheme(mode) {
                 style: {
                   color: brand[300],
                   backgroundColor: 'white',
-                  backgroundImage: `linear-gradient(to bottom, ${alpha(white[400], 0.8)}, ${white[500]})`,
+                  borderRadius: '.3rem',
                   boxShadow: `inset 0 2px 0 ${alpha(white[200], 0.2)}, inset 0 -2px 0 ${alpha(white[700], 0.4)}`,
-                  border: `1px solid ${white[500]}`,
+                  border: `1.5px solid ${brand[300]}`,
                   '&:hover': {
-                    backgroundColor: white[700],
+                    backgroundColor: brand[300],
                     boxShadow: 'none',
+                    color: 'white',
+                    border: `1px solid ${brand[500]}`,
                   },
                   '&:active': {
                     backgroundColor: white[700],
@@ -451,7 +467,7 @@ export default function getLPTheme(mode) {
                   color: brand[700],
                   backgroundColor: alpha(brand[300], 0.1),
                   borderColor: alpha(brand[200], 0.8),
-                  boxShadow: `inset 0 2px ${alpha(brand[50], 0.5)}, inset 0 -2px ${alpha(brand[200], 0.2)}`,
+                  borderRadius: '.3rem',
                   '&:hover': {
                     backgroundColor: alpha(brand[300], 0.2),
                     borderColor: alpha(brand[300], 0.5),
@@ -488,6 +504,7 @@ export default function getLPTheme(mode) {
                 style: {
                   backgroundColor: alpha(gray[300], 0.1),
                   borderColor: alpha(gray[300], 0.5),
+                  borderRadius: '.3rem',
                   color: gray[700],
                   '&:hover': {
                     backgroundColor: alpha(gray[300], 0.3),

@@ -14,7 +14,7 @@ export default function Banners(props) {
     },
     {
       image: require('../assets/images/coats.jpg'),
-      text: 'Experience the Magic of Clean Clothes',
+      text: 'Laundry services collected and delivered to you!',
       title: 'Laundry Basket',
     },
   ]);
@@ -26,10 +26,19 @@ export default function Banners(props) {
   }, []);
 
   return (
-    <Container maxWidth='xlg' id='features' sx={{ pt: { xs: 12, sm: 16 } }}>
+    <Container
+      style={{
+        paddingLeft: '0px',
+        paddingRight: '0px',
+        paddingTop: '60px',
+        paddingBottom: '30px',
+        maxWidth: 'none',
+      }}
+      sx={{ width: '100%' }}
+    >
       <Carousel swipe={false}>
         {banners.map((item, i) => (
-          <Item key={i} item={item} />
+          <Item isLoggedIn={props.isLoggedIn} key={i} item={item} />
         ))}
       </Carousel>
     </Container>
@@ -40,9 +49,8 @@ function Item(props) {
   return (
     <Paper
       style={{
-        borderRadius: '15px',
         backgroundImage: `url(${props.item.image})`,
-        height: 400,
+        height: '77vh',
         width: '100%',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
@@ -50,8 +58,8 @@ function Item(props) {
       }}
     >
       <div
+        className='wrapper'
         style={{
-          borderRadius: '15px',
           height: '100%',
           backgroundColor: 'rgba(0,0,0, 0.65)',
           display: 'flex',
@@ -60,8 +68,53 @@ function Item(props) {
           padding: 20,
         }}
       >
-        <div className='text-center'>
-          <div className='text-center' style={{ height: { sm: 120, xs: 150 } }}>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div className='wrapper-div'>
+          <span className='dot'></span>
+        </div>
+        <div style={{ zIndex: 99 }} className='text-center'>
+          <div className='text-center' style={{ height: { sm: 150, xs: 180 } }}>
             <Typography
               component='h1'
               className='text-center pb-5'
@@ -74,7 +127,7 @@ function Item(props) {
             </Typography>
           </div>
           <Button sx={{ mt: { xs: 2, sm: 5 }, fontSize: 18, fontWeight: 600, px: 3 }} variant='contained'>
-            <Link to='/book-order'>Book Now</Link>
+            <Link to={props.isLoggedIn ? '/book-order' : '/login'}>Schedule PickUp</Link>
           </Button>
         </div>
       </div>

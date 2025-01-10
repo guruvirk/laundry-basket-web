@@ -20,8 +20,8 @@ export default function ServicesPricing(props) {
     <Container
       maxWidth='xlg'
       sx={{
-        pt: { xs: 4, sm: 8 },
-        pb: { xs: 8, sm: 8 },
+        pt: { xs: 4, sm: 6 },
+        pb: { xs: 8, sm: 6 },
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
