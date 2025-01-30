@@ -11,7 +11,7 @@ import {
   RadioGroup,
   Typography,
 } from '@mui/material';
-import { CloseRounded, DryCleaning } from '@mui/icons-material';
+import { CloseRounded, DryCleaning, LocalShipping } from '@mui/icons-material';
 import moment from 'moment';
 import { createOrder, createTransactionOrder } from '../utils/api_base';
 import PayOrder from './PayOrder';
@@ -37,6 +37,7 @@ function ConfirmOrder(props) {
   const [typeValue, setTypeValue] = useState(0);
   const [amount, setAmount] = useState(0.0);
   const [order, setOrder] = useState(null);
+  const [delivery, setDelivery] = useState('standard');
 
   useEffect(() => {
     if (props.cart.length) {
@@ -48,23 +49,6 @@ function ConfirmOrder(props) {
       }
     }
   }, []);
-
-  const getFormattedAddress = (selectedAddress) => {
-    let address = '';
-    if (selectedAddress) {
-      address =
-        selectedAddress.address1 +
-        ', ' +
-        selectedAddress.address2 +
-        ', ' +
-        selectedAddress.city +
-        ', ' +
-        selectedAddress.state +
-        ' ' +
-        selectedAddress.zipCode;
-    }
-    return address;
-  };
 
   const getFormattedMiniAddress = (selectedAddress) => {
     let address = '';
@@ -100,8 +84,8 @@ function ConfirmOrder(props) {
         return;
       }
       let deliveryPrice = 0;
-      if (amount < 20 || props.delivery === 'express') {
-        if (props.delivery === 'express') {
+      if (amount < 20 || delivery === 'express') {
+        if (delivery === 'express') {
           if (amount < 20) {
             deliveryPrice = 20;
           } else {
@@ -120,7 +104,7 @@ function ConfirmOrder(props) {
         items: props.cart,
         category: 'laundry',
         method: 'cod',
-        deliveryType: props.delivery,
+        deliveryType: delivery,
         deliveryPrice,
       };
       setLoading(true);
@@ -168,7 +152,7 @@ function ConfirmOrder(props) {
             alignItems='center'
             justifyContent='center'
             spacing={1}
-            sx={{ my: 1, pb: 1, borderBottomWidth: 1 }}
+            sx={{ my: 1, pb: 1 }}
           >
             <Grid
               item
@@ -178,14 +162,14 @@ function ConfirmOrder(props) {
               alignItems='center'
               justifyContent='center'
               spacing={1}
-              sx={{ my: 1, pb: 1, borderBottomWidth: 1, height: 130 }}
+              sx={{ mt: 1, borderBottomWidth: 1, height: 130 }}
             >
               <Grid
                 container
                 alignItems='center'
                 justifyContent='center'
                 spacing={1}
-                sx={{ my: 1, pb: 1, borderBottomWidth: 1 }}
+                sx={{ mt: 1, pb: 1, borderBottomWidth: 1 }}
               >
                 <Typography variant='subtitle1'>Address</Typography>
               </Grid>
@@ -201,7 +185,7 @@ function ConfirmOrder(props) {
               alignItems='center'
               justifyContent='center'
               spacing={1}
-              sx={{ my: 1, pb: 1, borderBottomWidth: 1, height: 130 }}
+              sx={{ mt: 1, pb: 1, borderBottomWidth: 1, height: 130 }}
             >
               <Grid
                 container
@@ -226,7 +210,7 @@ function ConfirmOrder(props) {
               alignItems='center'
               justifyContent='center'
               spacing={1}
-              sx={{ my: 1, pb: 1, borderBottomWidth: 1, height: 130 }}
+              sx={{ mt: 1, pb: 1, borderBottomWidth: 1, height: 130 }}
             >
               <Grid
                 container
@@ -248,6 +232,46 @@ function ConfirmOrder(props) {
               </RadioGroup>
             </Grid>
           </Grid>
+          <Grid
+            sx={{ textAlign: 'start', alignItems: 'center', display: 'flex', flexDirection: 'row', pb: 2, pt: 1 }}
+            item
+            xs={10}
+            sm={10}
+            md={10}
+          >
+            <Avatar
+              item
+              xs={2}
+              sm={2}
+              md={2}
+              sx={{
+                background: 'radial-gradient(circle at 50% 0%, hsl(205, 98%, 35%), hsl(205, 100%, 16%))',
+              }}
+            >
+              <LocalShipping />
+            </Avatar>
+            <Typography item xs={6} sm={6} md={6} sx={{ ml: 2, mr: 4 }} variant='subtitle1'>
+              Delivey Type:{' '}
+            </Typography>
+            <RadioGroup
+              sx={{ alignItems: 'start' }}
+              row
+              value={delivery}
+              onChange={(event) => setDelivery(event.target.value)}
+            >
+              <FormControlLabel value='standard' control={<Radio sx={{ padding: 0, marginX: 1 }} />} label='Standard' />
+              <FormControlLabel value='express' control={<Radio sx={{ padding: 0, marginX: 1 }} />} label='Express' />
+            </RadioGroup>
+          </Grid>
+          {/* {delivery === 'standard' ? (
+            <Typography sx={{ color: 'text.secondary', marginRight: 2, textAlign: 'left' }} variant='body2'>
+              Note: Free Standard delivery worth $5 on order above $20.
+            </Typography>
+          ) : (
+            <Typography sx={{ color: 'text.secondary', marginRight: 2, textAlign: 'left' }} variant='body2'>
+              Note: Express delivery worth $10 would be only $5 on order above $20.
+            </Typography>
+          )} */}
           <Grid
             container
             alignItems='start'
@@ -309,7 +333,7 @@ function ConfirmOrder(props) {
                     </Grid>
                   </Grid>
                 ))}
-                {(amount < 20 || props.delivery === 'express') && (
+                {(amount < 20 || delivery === 'express') && (
                   <Grid
                     container
                     alignItems='center'
@@ -319,7 +343,7 @@ function ConfirmOrder(props) {
                   >
                     <Grid sx={{ textAlign: 'start' }} item xs={7} sm={7} md={7}>
                       <Typography sx={{ color: 'text.secondary' }} variant='body1' component='h6'>
-                        {props.delivery === 'express' ? 'Express Delivery' : 'Standard Delivery'}
+                        {delivery === 'express' ? 'Express Delivery' : 'Standard Delivery'}
                       </Typography>
                     </Grid>
                     <Grid item xs={5} sm={5} md={5}>
@@ -333,7 +357,7 @@ function ConfirmOrder(props) {
                         }}
                       >
                         <Typography sx={{ color: 'text.secondary' }} variant='body1' component='h6'>
-                          $ {props.delivery === 'express' ? (amount < 20 ? '10.00' : '5.00') : '5.00'}
+                          $ {delivery === 'express' ? (amount < 20 ? '10.00' : '5.00') : '5.00'}
                         </Typography>
                       </Box>
                     </Grid>
@@ -359,7 +383,7 @@ function ConfirmOrder(props) {
                     <Typography sx={{ color: 'text.secondary' }} variant='body1' component='h6'>
                       ${' '}
                       {(
-                        Number(amount) + Number(props.delivery === 'express' ? (amount < 20 ? 10 : 5) : amount < 20 ? 5 : 0)
+                        Number(amount) + Number(delivery === 'express' ? (amount < 20 ? 10 : 5) : amount < 20 ? 5 : 0)
                       ).toFixed(2)}
                     </Typography>
                   </Box>

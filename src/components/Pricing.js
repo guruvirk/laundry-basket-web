@@ -423,7 +423,7 @@ export default function Pricing(props) {
                         style={{
                           height: '18px',
                         }}
-                        src='https://i.imghippo.com/files/GgWE1198cnU.png'
+                        src='https://iili.io/2QrYSRa.png'
                         alt='new'
                       />
                       <Typography sx={{ width: '100%', color: 'text.secondary' }} variant='body3'>

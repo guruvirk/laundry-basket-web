@@ -21,7 +21,7 @@ export default function BookNowEffort(props) {
         <Grid sx={{ display: { xs: 'none', sm: 'block' } }} item xs={12} sm={6} md={6}>
           <img
             style={{ width: '75%', marginLeft: 'auto', marginRight: 'auto', marginTop: '-3rem' }}
-            src='https://i.imghippo.com/files/yufw2013MnY.png'
+            src='https://iili.io/2QrA63g.png'
             alt='new'
           />
         </Grid>

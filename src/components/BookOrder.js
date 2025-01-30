@@ -42,6 +42,7 @@ import {
   KeyboardArrowUp,
   LocationOn,
   PersonPin,
+  Phone,
   Remove,
 } from '@mui/icons-material';
 import moment from 'moment';
@@ -183,25 +184,56 @@ function BookOrder(props) {
   const [addressSelected, setAddressSelected] = useState(false);
   const [addressNotes, setAddressNotes] = useState('');
   const [deliverySelected, setDeliverySelected] = useState(false);
-  const [delivery, setDelivery] = useState('standard');
 
-  const defaultValue = {
-    year: 2024,
-    month: 12,
-    day: 30,
-  };
+  let nextDayDate = new Date();
+  nextDayDate.setDate(nextDayDate.getDate() + 1);
 
-  const minimumDate = {
-    year: 2024,
-    month: 12,
-    day: 30,
-  };
+  let next15DayDate = new Date();
+  next15DayDate.setDate(next15DayDate.getDate() + 15);
 
-  const maximumDate = {
-    year: 2025,
-    month: 1,
-    day: 14,
-  };
+  let next16DayDate = new Date();
+  next16DayDate.setDate(next16DayDate.getDate() + 16);
+
+  let todayDate = new Date();
+
+  const defaultValue =
+    new Date().getHours() > 18
+      ? {
+          year: nextDayDate.getFullYear(),
+          month: nextDayDate.getMonth() + 1,
+          day: nextDayDate.getUTCDate(),
+        }
+      : {
+          year: todayDate.getFullYear(),
+          month: todayDate.getMonth() + 1,
+          day: todayDate.getUTCDate(),
+        };
+
+  const minimumDate =
+    new Date().getHours() > 18
+      ? {
+          year: nextDayDate.getFullYear(),
+          month: nextDayDate.getMonth() + 1,
+          day: nextDayDate.getUTCDate(),
+        }
+      : {
+          year: todayDate.getFullYear(),
+          month: todayDate.getMonth() + 1,
+          day: todayDate.getUTCDate(),
+        };
+
+  const maximumDate =
+    new Date().getHours() > 18
+      ? {
+          year: next16DayDate.getFullYear(),
+          month: next16DayDate.getMonth() + 1,
+          day: next16DayDate.getUTCDate(),
+        }
+      : {
+          year: next15DayDate.getFullYear(),
+          month: next15DayDate.getMonth() + 1,
+          day: next15DayDate.getUTCDate(),
+        };
 
   const [selectedDate, setSelectedDate] = useState();
   const [selectedDateObj, setSelectedDateObj] = useState(defaultValue);
@@ -393,7 +425,7 @@ function BookOrder(props) {
       if (hour < 12) {
         newTimeSlots.push({
           code: 'mornning-2',
-          title: '10 PM - 12 PM',
+          title: '10 AM - 12 PM',
         });
       }
       if (hour < 17) {
@@ -423,7 +455,7 @@ function BookOrder(props) {
         },
         {
           code: 'mornning-2',
-          title: '10 PM - 12 PM',
+          title: '10 AM - 12 PM',
         },
         {
           code: 'afternoon',
@@ -495,26 +527,29 @@ function BookOrder(props) {
                             spacing={1}
                             useFlexGap
                             justifyContent='center'
-                            alignItems='center'
+                            alignItems='start'
                             sx={{
                               borderRadius: '15px',
                               py: 2,
-                              px: 1,
+                              pr: 1,
                               border: '2px solid',
-                              backgroundColor: index === selectedAddress ? 'action.selected' : 'none',
                               borderColor: index === selectedAddress ? 'primary.main' : 'hsla(220, 25%, 25%, .3)',
                               boxShadow: 'none',
-                              height: '22vh',
+                              minHeight: '12vh',
+                              pl: 2,
                             }}
                           >
-                            <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
-                              {address.address1}, {address.address2}{' '}
+                            <Typography sx={{ color: 'text.secondary' }} variant='title'>
+                              {user.name}
                             </Typography>
                             <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
-                              {address.city}, {address.state}
+                              {address.address1}, {address.address2}, {address.city}
                             </Typography>
                             <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
-                              {address.zipCode}
+                              {address.state} {address.zipCode}
+                            </Typography>
+                            <Typography sx={{ color: 'text.secondary' }} variant='subtitle1'>
+                              <Phone sx={{ fontSize: 16 }} /> {user.phone}
                             </Typography>
                           </Stack>
                           {index === selectedAddress && (
@@ -550,7 +585,7 @@ function BookOrder(props) {
                           alignItems='center'
                           useFlexGap
                           sx={{
-                            height: '22vh',
+                            minHeight: '12vh',
                             borderRadius: '15px',
                             py: 2,
                             px: 1,
@@ -596,39 +631,6 @@ function BookOrder(props) {
                   }}
                   variant='standard'
                 />
-                <Grid
-                  sx={{ textAlign: 'start', alignItems: 'center', display: 'flex', flexDirection: 'row', mt: 2 }}
-                  item
-                  xs={10}
-                  sm={10}
-                  md={10}
-                >
-                  <Typography sx={{ marginRight: 2 }} variant='subtitle1'>
-                    Delivey Type:{' '}
-                  </Typography>
-                  <RadioGroup
-                    sx={{ alignItems: 'start' }}
-                    row
-                    value={delivery}
-                    onChange={(event) => setDelivery(event.target.value)}
-                  >
-                    <FormControlLabel
-                      value='standard'
-                      control={<Radio sx={{ padding: 0, marginX: 1 }} />}
-                      label='Standard'
-                    />
-                    <FormControlLabel value='express' control={<Radio sx={{ padding: 0, marginX: 1 }} />} label='Express' />
-                  </RadioGroup>
-                </Grid>
-                {delivery === 'standard' ? (
-                  <Typography sx={{ color: 'text.secondary', marginRight: 2, textAlign: 'left' }} variant='body2'>
-                    Note: Free Standard delivery worth $5 on order above $20.
-                  </Typography>
-                ) : (
-                  <Typography sx={{ color: 'text.secondary', marginRight: 2, textAlign: 'left' }} variant='body2'>
-                    Note: Express delivery worth $10 would be only $5 on order above $20.
-                  </Typography>
-                )}
                 <Button onClick={completeAddress} sx={{ mt: 4, px: 4 }} variant='contained'>
                   {loading ? (
                     <CircularProgress size={25} color='inherit' />
@@ -1157,7 +1159,6 @@ function BookOrder(props) {
             services={services}
             selectedServices={selectedServices}
             typeValue={typeValue}
-            delivery={delivery}
           ></ConfirmOrder>
         </div>
       </Modal>
