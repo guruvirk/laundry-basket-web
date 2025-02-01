@@ -107,8 +107,20 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                 Home
               </Typography>
             </Button>
-            <Button className='nav-buttons' onClick={() => scrollToSection('about')} startIcon={<Info />}>
-              <Typography variant='nav' textAlign='center'>
+            <Button
+              sx={{
+                backgroundColor: location.pathname === '/about' ? 'primary.main' : 'white',
+                px: 2,
+              }}
+              className='nav-buttons'
+              onClick={() => navigation('/about')}
+              startIcon={<AttachMoney sx={{ color: location.pathname === '/about' ? 'white' : 'primary.main' }} />}
+            >
+              <Typography
+                sx={{ color: location.pathname === '/about' ? 'white' : 'primary.main' }}
+                variant='nav'
+                textAlign='center'
+              >
                 About Us
               </Typography>
             </Button>
@@ -187,9 +199,11 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                   <Typography variant='subtitle2'>Home</Typography>
                 </MenuItem>
               </Link>
-              <MenuItem onClick={() => scrollToSection('about')}>
-                <Typography variant='subtitle2'>About Us</Typography>
-              </MenuItem>
+              <Link to='/about'>
+                <MenuItem onClick={() => setOpen(false)}>
+                  <Typography variant='subtitle2'>About Us</Typography>
+                </MenuItem>
+              </Link>
               <MenuItem onClick={() => scrollToSection('services')}>
                 <Typography variant='subtitle2'>Services</Typography>
               </MenuItem>

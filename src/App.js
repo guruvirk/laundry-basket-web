@@ -14,6 +14,7 @@ import Pricing from './components/Pricing';
 import BookOrder from './components/BookOrder';
 import OrderDetails from './components/OrderDetails';
 import Orders from './components/Orders';
+import AboutUs from './components/AboutUs';
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -95,10 +96,23 @@ function App() {
         <AppAppBar isLoggedIn={isLoggedIn} user={user} mode={mode} toggleColorMode={toggleColorMode} logout={logout} />
         <Box sx={{ bgcolor: 'background.default', minHeight: '80vh', display: 'flex', flexDirection: 'column' }}>
           <Routes>
-            <Route path='/' element={<Dashboard isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />} />
+            <Route
+              path='/'
+              element={
+                <Dashboard isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />
+              }
+            />
+            <Route
+              path='/about'
+              element={
+                <AboutUs isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />
+              }
+            />
             <Route
               path='/pricing'
-              element={<Pricing isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />}
+              element={
+                <Pricing isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />
+              }
             />
             <Route
               path='/book-order'

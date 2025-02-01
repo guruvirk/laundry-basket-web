@@ -473,12 +473,12 @@ function BookOrder(props) {
     }
   };
 
-  const selectUnselectService = (code) => {
+  const selectUnselectService = (id) => {
     let services = [...selectedServices];
-    if (services.indexOf(code) > -1) {
-      services.splice(services.indexOf(code), 1);
+    if (services.indexOf(id) > -1) {
+      services.splice(services.indexOf(id), 1);
     } else {
-      services.push(code);
+      services.push(id);
     }
     setSelectedServices(services);
   };
@@ -492,7 +492,7 @@ function BookOrder(props) {
   };
 
   return (
-    <Container maxWidth='lg' id='features' sx={{ pt: { xs: 12, sm: 16 } }}>
+    <Container maxWidth='xlg' id='features' sx={{ pt: { xs: 12, sm: 16 } }}>
       <Box
         sx={{
           width: '100%',
@@ -505,7 +505,20 @@ function BookOrder(props) {
             <Stepper sx={{ pb: 4 }} alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
               {steps.map((label) => (
                 <Step key={label}>
-                  <StepLabel StepIconComponent={ColorlibStepIcon}>{label}</StepLabel>
+                  <StepLabel
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      if (label === 'Address') {
+                        setActiveStep(0);
+                      }
+                      if (label === 'Date' && addressSelected) {
+                        setActiveStep(1);
+                      }
+                    }}
+                    StepIconComponent={ColorlibStepIcon}
+                  >
+                    {label}
+                  </StepLabel>
                 </Step>
               ))}
             </Stepper>
@@ -641,12 +654,12 @@ function BookOrder(props) {
               </Box>
             )}
             {activeStep === 1 && (
-              <Box sx={{ px: { xs: 0, sm: 0 }, pt: 0, pb: 4 }}>
+              <Box sx={{ px: { xs: 0, sm: 5 }, pt: 0, pb: 4 }}>
                 <Typography component='h5' variant='h5' sx={{ color: 'text.primary', pb: 4 }}>
                   Select Pick Up Date & TimeSlot
                 </Typography>
                 <Grid container>
-                  <Grid item xs={12} sm={7} md={7}>
+                  <Grid item xs={12} sm={6.5} md={6.5}>
                     <Calendar
                       colorPrimary='hsl(205, 100%, 50%)'
                       colorPrimaryLight='hsla(205, 100%, 50%, 0.2)'
@@ -657,12 +670,12 @@ function BookOrder(props) {
                       shouldHighlightWeekends
                     />
                   </Grid>
-                  <Grid item xs={12} sm={5} md={5} sx={{ pt: 3.8 }}>
-                    <Typography component='subtitle1' variant='h6' sx={{ color: 'text.secondary', pb: 5 }}>
+                  <Grid item xs={12} sm={5.5} md={5.5} sx={{}}>
+                    {/* <Typography component='subtitle1' variant='h6' sx={{ color: 'text.secondary', pb: 5 }}>
                       TimeSlot
-                    </Typography>
+                    </Typography> */}
                     <Box>
-                      <Grid container sx={{ mt: 2 }}>
+                      <Grid container>
                         {timeSlots?.map((item, index) => (
                           <Grid
                             item
@@ -1036,7 +1049,7 @@ function BookOrder(props) {
               </Box>
             )}
           </Box>
-          <Box sx={{ width: { xs: '100%', sm: '35%' }, mt: { xs: 5, sm: 2 } }}>
+          <Box sx={{ width: { xs: '100%', sm: '30%' }, mt: { xs: 5, sm: 2 }, ml: 'auto', mr: '2.5%' }}>
             <List sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: '15px' }}>
               <Typography sx={{ py: 2, color: 'text.primary' }} variant='h6' textAlign='center'>
                 -- Summary --
@@ -1119,9 +1132,9 @@ function BookOrder(props) {
                     secondary={
                       typeValue === 0
                         ? `Total: ${Number(amount).toFixed(2)}`
-                        : services
-                            .filter((i) => selectedServices.indexOf(i.id) > -1)
-                            .map((i) => i.name)
+                        : selectedServices
+                            .reverse()
+                            .map((i) => services[services.findIndex((x) => x.id === i)].name)
                             .join(', ')
                     }
                   />
