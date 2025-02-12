@@ -9,7 +9,7 @@ function Copyright() {
     <Typography variant='body2' color='text.secondary'>
       {'Copyright © '}
       <Link color='inherit' to='/'>
-        Laundry Basket
+        Laundry Basket Tdot Inc.
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}

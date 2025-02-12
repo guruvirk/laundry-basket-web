@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 
 library.add(faUser);
 
-export default function ServicesPricing(props) {
+export default function Services(props) {
   return (
     <Container
       maxWidth='xlg'
@@ -42,8 +42,8 @@ export default function ServicesPricing(props) {
           </Typography>
         </Typography>
         <Typography variant='body1' sx={{ color: 'text.neutral', mt: 2 }}>
-          Laundry Basket is committed to provide you with the best dry clean, laundry, shoe repairs and bag repairs, leather
-          spa services in Bangalore at the most affordable rates with no compromise on quality.
+          Tired of spending hours at the laundromat or dealing with endless laundry piles? At Laundry Basket, we make laundry
+          effortless with free pickup & delivery, ensuring fresh, clean clothes without the hassle.
         </Typography>
       </Box>
       {props.servicesLoaded ? (

@@ -124,8 +124,22 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                 About Us
               </Typography>
             </Button>
-            <Button className='nav-buttons' onClick={() => scrollToSection('services')} startIcon={<LocalLaundryService />}>
-              <Typography variant='nav' textAlign='center'>
+            <Button
+              sx={{
+                backgroundColor: location.pathname === '/services' ? 'primary.main' : 'white',
+                px: 2,
+              }}
+              className='nav-buttons'
+              onClick={() => navigation('/services')}
+              startIcon={
+                <LocalLaundryService sx={{ color: location.pathname === '/services' ? 'white' : 'primary.main' }} />
+              }
+            >
+              <Typography
+                sx={{ color: location.pathname === '/services' ? 'white' : 'primary.main' }}
+                variant='nav'
+                textAlign='center'
+              >
                 Services
               </Typography>
             </Button>
@@ -168,10 +182,19 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
               Schedule PickUp
             </Typography>
           </Button>
-          <ToggleColorMode sx={{ mr: 2 }} data-screenshot='toggle-mode' mode={mode} toggleColorMode={toggleColorMode} />
           {isLoggedIn ? null : (
-            <Button onClick={openLogin} color='primary' variant='contained' size='small'>
-              Login
+            <Button
+              onClick={openLogin}
+              sx={{
+                backgroundColor: 'primary.main',
+                px: 2,
+                ml: 2,
+              }}
+              className='nav-buttons'
+            >
+              <Typography sx={{ color: 'white' }} variant='nav' textAlign='center'>
+                Login
+              </Typography>
             </Button>
           )}
         </Box>
@@ -204,9 +227,11 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
                   <Typography variant='subtitle2'>About Us</Typography>
                 </MenuItem>
               </Link>
-              <MenuItem onClick={() => scrollToSection('services')}>
-                <Typography variant='subtitle2'>Services</Typography>
-              </MenuItem>
+              <Link to='/services'>
+                <MenuItem onClick={() => setOpen(false)}>
+                  <Typography variant='subtitle2'>Services</Typography>
+                </MenuItem>
+              </Link>
               <Link to='/pricing'>
                 <MenuItem onClick={() => setOpen(false)}>
                   <Typography variant='subtitle2'>Pricing</Typography>
@@ -280,7 +305,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
           </Drawer>
         </Box>
         {isLoggedIn ? (
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ flexGrow: 0, ml: 2 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar sx={{ backgroundColor: 'primary.main', color: 'white' }} alt='username' src={user.pic}>
@@ -365,6 +390,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
             </Menu>
           </Box>
         ) : null}
+        <ToggleColorMode sx={{ ml: 2 }} data-screenshot='toggle-mode' mode={mode} toggleColorMode={toggleColorMode} />
       </Toolbar>
     </AppBar>
   );

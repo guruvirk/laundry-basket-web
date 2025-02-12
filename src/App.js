@@ -1,6 +1,8 @@
 import { Box, ThemeProvider, createTheme } from '@mui/material';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 import { useEffect, useState } from 'react';
 import getLPTheme from './getLPTheme';
 import AppAppBar from './components/AppAppBar';
@@ -15,6 +17,7 @@ import BookOrder from './components/BookOrder';
 import OrderDetails from './components/OrderDetails';
 import Orders from './components/Orders';
 import AboutUs from './components/AboutUs';
+import OurServices from './components/OurServices';
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -106,6 +109,12 @@ function App() {
               path='/about'
               element={
                 <AboutUs isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />
+              }
+            />
+            <Route
+              path='/services'
+              element={
+                <OurServices isLoggedIn={isLoggedIn} tenant={tenant} services={services} servicesLoaded={servicesLoaded} />
               }
             />
             <Route
