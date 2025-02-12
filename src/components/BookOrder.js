@@ -32,6 +32,7 @@ import Check from '@mui/icons-material/Check';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import {
   Add,
+  AddLocation,
   AssignmentLate,
   AssignmentTurnedIn,
   CheckCircle,
@@ -416,34 +417,28 @@ function BookOrder(props) {
     if (iscurrentDate) {
       let hour = Number(moment(date).format('HH'));
       let newTimeSlots = [];
-      if (hour < 10) {
+      if (hour < 11) {
         newTimeSlots.push({
           code: 'mornning-1',
-          title: '8 AM - 10 AM',
+          title: '9 AM - 12 PM',
         });
       }
-      if (hour < 12) {
+      if (hour < 14) {
         newTimeSlots.push({
           code: 'mornning-2',
-          title: '10 AM - 12 PM',
+          title: '12 PM - 3 PM',
         });
       }
       if (hour < 17) {
         newTimeSlots.push({
           code: 'afternoon',
-          title: '2 PM - 5 PM',
+          title: '3 PM - 6 PM',
         });
       }
-      if (hour < 19) {
+      if (hour < 21) {
         newTimeSlots.push({
-          code: 'evening-1',
-          title: '5 PM - 7 PM',
-        });
-      }
-      if (hour < 22) {
-        newTimeSlots.push({
-          code: 'evening-2',
-          title: '7 PM - 10 PM',
+          code: 'evening',
+          title: '6 PM - 10 PM',
         });
       }
       setTimeSlots(newTimeSlots);
@@ -451,23 +446,19 @@ function BookOrder(props) {
       setTimeSlots([
         {
           code: 'mornning-1',
-          title: '8 AM - 10 AM',
+          title: '9 AM - 12 PM',
         },
         {
           code: 'mornning-2',
-          title: '10 AM - 12 PM',
+          title: '12 PM - 3 PM',
         },
         {
           code: 'afternoon',
-          title: '2 PM - 5 PM',
+          title: '3 PM - 6 PM',
         },
         {
-          code: 'evening-1',
-          title: '5 PM - 7 PM',
-        },
-        {
-          code: 'evening-2',
-          title: '7 PM - 10 PM',
+          code: 'evening',
+          title: '6 PM - 10 PM',
         },
       ]);
     }
@@ -525,105 +516,77 @@ function BookOrder(props) {
             {activeStep === 0 && (
               <Box sx={{ px: { xs: 0, sm: 1 } }}>
                 {userLoaded && (
-                  <Grid container alignItems='center' justifyContent='center' spacing={2.5} sx={{ pt: 2, pb: 4 }}>
-                    {addresses.map((address, index) => (
-                      <Grid item xs={12} sm={6} md={6} key={index}>
-                        <div
-                          style={{
-                            position: 'relative',
-                            cursor: 'pointer',
-                          }}
-                          onClick={() => setSelectedAddress(index)}
-                        >
-                          <Stack
-                            direction='column'
-                            spacing={1}
-                            useFlexGap
-                            justifyContent='center'
-                            alignItems='start'
-                            sx={{
-                              borderRadius: '15px',
-                              py: 2,
-                              pr: 1,
-                              border: '2px solid',
-                              borderColor: index === selectedAddress ? 'primary.main' : 'hsla(220, 25%, 25%, .3)',
-                              boxShadow: 'none',
-                              minHeight: '12vh',
-                              pl: 2,
+                  <>
+                    <Grid container alignItems='center' justifyContent='center' spacing={2.5} sx={{ pt: 2, pb: 4 }}>
+                      {addresses.map((address, index) => (
+                        <Grid item xs={12} sm={6} md={6} key={index}>
+                          <div
+                            style={{
+                              position: 'relative',
+                              cursor: 'pointer',
                             }}
+                            onClick={() => setSelectedAddress(index)}
                           >
-                            <Typography sx={{ color: 'text.secondary' }} variant='title'>
-                              {user.name}
-                            </Typography>
-                            <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
-                              {address.address1}, {address.address2}, {address.city}
-                            </Typography>
-                            <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
-                              {address.state} {address.zipCode}
-                            </Typography>
-                            <Typography sx={{ color: 'text.secondary' }} variant='subtitle1'>
-                              <Phone sx={{ fontSize: 16 }} /> {user.phone}
-                            </Typography>
-                          </Stack>
-                          {index === selectedAddress && (
-                            <IconButton
-                              className='flex items-center ml-3 px-3 py-1.5'
-                              style={{
-                                position: 'absolute',
-                                top: 5,
-                                right: 5,
-                                marginLeft: 'auto',
-                                alignContent: 'flex-end',
-                                zIndex: 30,
+                            <Stack
+                              direction='column'
+                              spacing={1}
+                              useFlexGap
+                              justifyContent='center'
+                              alignItems='start'
+                              sx={{
+                                borderRadius: '15px',
+                                py: 2,
+                                pr: 1,
+                                border: '2px solid',
+                                borderColor: index === selectedAddress ? 'primary.main' : 'hsla(220, 25%, 25%, .3)',
+                                boxShadow: 'none',
+                                minHeight: '12vh',
+                                pl: 2,
                               }}
                             >
-                              <CheckCircle sx={{ fontSize: 30 }} />
-                            </IconButton>
-                          )}
-                        </div>
-                      </Grid>
-                    ))}
-                    <Grid item xs={12} sm={6} md={6}>
-                      <div
-                        style={{
-                          position: 'relative',
-                          cursor: 'pointer',
-                        }}
-                        onClick={() => navigate('/my-addresses')}
-                      >
-                        <Stack
-                          direction='row'
-                          gap={0}
-                          justifyContent='center'
-                          alignItems='center'
-                          useFlexGap
-                          sx={{
-                            minHeight: '12vh',
-                            borderRadius: '15px',
-                            py: 2,
-                            px: 1,
-                            border: '2px solid',
-                            backgroundColor: 'action.selected',
-                            borderColor: 'primary.main',
-                            boxShadow: 'none',
-                          }}
-                        >
-                          <IconButton
-                            size='large'
-                            sx={{
-                              width: '20%',
-                            }}
-                            onClick={() => {}}
-                          >
-                            <Add sx={{ fontSize: 25 }} />
-                          </IconButton>
-                          <Typography sx={{ color: 'text.secondary' }} variant='title'>
-                            Add New Address
-                          </Typography>
-                        </Stack>
-                      </div>
+                              <Typography sx={{ color: 'text.secondary' }} variant='title'>
+                                {user.name}
+                              </Typography>
+                              <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                                {address.address1}, {address.address2}, {address.city}
+                              </Typography>
+                              <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                                {address.state} {address.zipCode}
+                              </Typography>
+                              <Typography sx={{ color: 'text.secondary' }} variant='subtitle1'>
+                                <Phone sx={{ fontSize: 16 }} /> {user.phone}
+                              </Typography>
+                            </Stack>
+                            {index === selectedAddress && (
+                              <IconButton
+                                className='flex items-center ml-3 px-3 py-1.5'
+                                style={{
+                                  position: 'absolute',
+                                  top: 5,
+                                  right: 5,
+                                  marginLeft: 'auto',
+                                  alignContent: 'flex-end',
+                                  zIndex: 30,
+                                }}
+                              >
+                                <CheckCircle sx={{ fontSize: 30 }} />
+                              </IconButton>
+                            )}
+                          </div>
+                        </Grid>
+                      ))}
                     </Grid>
-                  </Grid>
+                    <Button
+                      sx={{ mb: 2 }}
+                      onClick={() => navigate('/my-addresses')}
+                      variant='contained'
+                      startIcon={<AddLocation />}
+                    >
+                      <Typography sx={{ color: 'white' }} variant='nav' textAlign='center'>
+                        Add Address
+                      </Typography>
+                    </Button>
+                  </>
                 )}
                 <TextField
                   inputProps={{ type: 'text', readOnly: loading }}
@@ -734,6 +697,9 @@ function BookOrder(props) {
                   <>
                     {typeValue === 0 ? (
                       <>
+                        <Typography sx={{ pt: 4, pb: 1, textAlign: 'start' }} variant='h6' component='h6'>
+                          Please select items you need us to wash or dry clean
+                        </Typography>
                         {services.map((item, index) => (
                           <Box
                             sx={{
@@ -772,7 +738,7 @@ function BookOrder(props) {
                                       variant='h6'
                                       component='h5'
                                     >
-                                      x {item.units}
+                                      x {item.units} lbs
                                     </Typography>
                                     <Box
                                       sx={{
@@ -897,10 +863,10 @@ function BookOrder(props) {
                                             sm={6}
                                             md={6}
                                           >
-                                            <Typography variant='subtitle1' component='h6'>
+                                            <Typography sx={{ fontWeight: 'bold' }} variant='subtitle1' component='h6'>
                                               {serviceItem.name}
                                             </Typography>
-                                            <Typography variant='subtitle1' component='h6'>
+                                            <Typography sx={{ fontWeight: 'bold' }} variant='subtitle1' component='h6'>
                                               $ {Number(serviceItem.currentPrice).toFixed(2)}
                                             </Typography>
                                           </Grid>
@@ -913,8 +879,13 @@ function BookOrder(props) {
                                             md={4}
                                           >
                                             <Typography
-                                              sx={{ mx: { xs: 0, sm: 1 }, textAlign: 'right', color: 'secondary' }}
-                                              variant='subtitle1'
+                                              sx={{
+                                                mx: { xs: 0, sm: 1 },
+                                                textAlign: 'right',
+                                                color: 'secondary',
+                                                fontWeight: 'bold',
+                                              }}
+                                              variant='title'
                                               component='h6'
                                             >
                                               x {serviceItem.units}
@@ -988,54 +959,59 @@ function BookOrder(props) {
                         ))}
                       </>
                     ) : (
-                      <Grid container alignItems='center' justifyContent='center' spacing={3} sx={{ pt: 4, pb: 4 }}>
-                        {services.map((serviceItem, index) => (
-                          <Grid item xs={6} sm={4} md={4} key={index}>
-                            <Box
-                              sx={{
-                                height: '125px',
-                                borderRadius: '15px',
-                                backgroundImage: `url(${serviceItem.pic})`,
-                                backgroundPosition: 'center',
-                                backgroundSize: 'cover',
-                                backgroundRepeat: 'no-repeat',
-                              }}
-                            >
+                      <>
+                        <Typography sx={{ pt: 4, pb: 1, textAlign: 'start' }} variant='h6' component='h6'>
+                          Please select services you need us to do
+                        </Typography>
+                        <Grid container alignItems='center' justifyContent='center' spacing={3} sx={{ pt: 4, pb: 4 }}>
+                          {services.map((serviceItem, index) => (
+                            <Grid item xs={6} sm={4} md={4} key={index}>
                               <Box
                                 sx={{
                                   height: '125px',
-                                  width: '100%',
                                   borderRadius: '15px',
-                                  backgroundColor: 'rgba(0,0,0, 0.70)',
+                                  backgroundImage: `url(${serviceItem.pic})`,
+                                  backgroundPosition: 'center',
+                                  backgroundSize: 'cover',
+                                  backgroundRepeat: 'no-repeat',
                                 }}
                               >
-                                <div
-                                  onClick={() => selectUnselectService(serviceItem.id)}
-                                  style={{ height: '125px', position: 'relative', cursor: 'pointer' }}
+                                <Box
+                                  sx={{
+                                    height: '125px',
+                                    width: '100%',
+                                    borderRadius: '15px',
+                                    backgroundColor: 'rgba(0,0,0, 0.70)',
+                                  }}
                                 >
-                                  <Typography
-                                    component='h6'
-                                    sx={{
-                                      alignContent: 'center',
-                                      color: 'text.primary',
-                                      height: '125px',
-                                      typography: { md: 'h5', sm: 'h6', xs: 'h6' },
-                                      userSelect: 'none',
-                                    }}
+                                  <div
+                                    onClick={() => selectUnselectService(serviceItem.id)}
+                                    style={{ height: '125px', position: 'relative', cursor: 'pointer' }}
                                   >
-                                    {serviceItem.name}
-                                  </Typography>
-                                  {selectedServices.indexOf(serviceItem.id) > -1 && (
-                                    <IconButton sx={{ position: 'absolute', top: 0, right: 0, marginLeft: 'auto' }}>
-                                      <CheckCircle></CheckCircle>
-                                    </IconButton>
-                                  )}
-                                </div>
+                                    <Typography
+                                      component='h6'
+                                      sx={{
+                                        alignContent: 'center',
+                                        color: 'text.primary',
+                                        height: '125px',
+                                        typography: { md: 'h5', sm: 'h6', xs: 'h6' },
+                                        userSelect: 'none',
+                                      }}
+                                    >
+                                      {serviceItem.name}
+                                    </Typography>
+                                    {selectedServices.indexOf(serviceItem.id) > -1 && (
+                                      <IconButton sx={{ position: 'absolute', top: 0, right: 0, marginLeft: 'auto' }}>
+                                        <CheckCircle></CheckCircle>
+                                      </IconButton>
+                                    )}
+                                  </div>
+                                </Box>
                               </Box>
-                            </Box>
-                          </Grid>
-                        ))}
-                      </Grid>
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </>
                     )}
                   </>
                 ) : null}
@@ -1043,7 +1019,7 @@ function BookOrder(props) {
                   {loading ? (
                     <CircularProgress size={25} color='inherit' />
                   ) : (
-                    <Typography variant='subtitle1'>Confirm Order</Typography>
+                    <Typography variant='title'>Confirm Order</Typography>
                   )}
                 </Button>
               </Box>
@@ -1146,7 +1122,7 @@ function BookOrder(props) {
                 {loading ? (
                   <CircularProgress size={25} color='inherit' />
                 ) : (
-                  <Typography variant='subtitle1'>Confirm Order</Typography>
+                  <Typography variant='title'>Confirm Order</Typography>
                 )}
               </Button>
             )}

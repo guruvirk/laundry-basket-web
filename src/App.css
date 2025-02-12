@@ -113,6 +113,10 @@ div.services-book::-webkit-scrollbar-thumb {
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
 }
 
+.header-logo-dark {
+  background-color: hsla(220, 0%, 0%, 0.7) !important;
+}
+
 .nav-buttons {
   margin-left: 10px !important;
 }

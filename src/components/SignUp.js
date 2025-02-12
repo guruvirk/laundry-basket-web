@@ -488,7 +488,11 @@ export default function SignUp(props) {
         aria-describedby='modal-modal-description'
       >
         <div>
-          <AddressPicker closeModal={closeAddressDialog} addAddress={addAddress}></AddressPicker>
+          <AddressPicker
+            closeModal={closeAddressDialog}
+            addAddress={addAddress}
+            user={{ name: name, phone: mobile }}
+          ></AddressPicker>
         </div>
       </Modal>
       <Box sx={{ width: 500 }}>

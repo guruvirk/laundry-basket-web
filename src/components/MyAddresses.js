@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AddressPicker from '../Modals/AddressPicker';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Container, Grid, IconButton, Modal, Stack, Typography } from '@mui/material';
-import { AddLocation, Delete, Edit } from '@mui/icons-material';
+import { AddLocation, Delete, Edit, Phone } from '@mui/icons-material';
 
 function MyAddresses(props) {
   const navigate = useNavigate();
@@ -66,7 +66,13 @@ function MyAddresses(props) {
         </Typography>
 
         {addresseLoaded && (
-          <Grid container alignItems='center' justifyContent='center' spacing={2.5} sx={{ pt: 6, pb: 4 }}>
+          <Grid
+            container
+            alignItems='center'
+            justifyContent='center'
+            spacing={2.5}
+            sx={{ pt: 6, pb: 4, width: '85%', mx: 'auto' }}
+          >
             {addresses.map((address, index) => (
               <Grid item xs={12} sm={6} md={6} key={index}>
                 <Stack
@@ -77,28 +83,37 @@ function MyAddresses(props) {
                     borderRadius: '15px',
                     py: 4,
                     px: 2,
-                    border: '1px solid',
-                    borderColor: 'hsla(220, 25%, 25%, .3)',
+                    border: '1.5px solid',
+                    borderColor: 'hsla(220, 25%, 25%, .5)',
                     boxShadow: 'none',
                     position: 'relative',
                   }}
                 >
                   <Grid container spacing={2.5}>
                     <Grid item xs={9} sm={9} md={9}>
-                      <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                      <Typography sx={{ color: 'text.secondary', textAlign: 'start', pb: 1 }} variant='h6'>
+                        {address.name}
+                      </Typography>
+                      <Typography sx={{ color: 'text.secondary', textAlign: 'start' }} variant='subtitle1'>
                         {address.address1}, {address.address2}{' '}
                       </Typography>
-                      <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                      <Typography sx={{ color: 'text.secondary', textAlign: 'start' }} variant='subtitle1'>
                         {address.city}, {address.state}
                       </Typography>
-                      <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                      <Typography sx={{ color: 'text.secondary', textAlign: 'start' }} variant='subtitle1'>
                         {address.zipCode}
+                      </Typography>
+                      <Typography
+                        sx={{ color: 'text.secondary', textAlign: 'start', fontWeight: 'bold', pt: 0.5 }}
+                        variant='h6'
+                      >
+                        <Phone sx={{ fontSize: 18 }} /> {address.phone}
                       </Typography>
                       {address.isDefault && (
                         <Box
                           className='flex items-center ml-3 px-3 py-1.5'
                           style={{
-                            borderTopRightRadius: '14px',
+                            borderTopRightRadius: '13px',
                             borderBottomLeftRadius: '14px',
                             backgroundColor: '#0095ff',
                             position: 'absolute',
@@ -109,7 +124,7 @@ function MyAddresses(props) {
                             zIndex: 30,
                           }}
                         >
-                          <Typography className='font-semibold text-white text-center'>Default</Typography>
+                          <Typography variant='subtitle1' className='text-white text-center'>Default</Typography>
                         </Box>
                       )}
                     </Grid>
@@ -137,7 +152,9 @@ function MyAddresses(props) {
           </Grid>
         )}
         <Button onClick={() => openAddressDialog(null)} variant='contained' startIcon={<AddLocation />}>
-          Add Address
+          <Typography sx={{ color: 'white' }} variant='nav' textAlign='center'>
+            Add Address
+          </Typography>
         </Button>
         <Modal
           open={isAddressDialogOpen}
@@ -151,6 +168,7 @@ function MyAddresses(props) {
               refreshAddress={refreshAddress}
               addressId={addressId}
               canUpdate={true}
+              user={props.user}
             ></AddressPicker>
           </div>
         </Modal>

@@ -14,6 +14,7 @@ import ToggleColorMode from './ToggleColorMode';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Avatar, Menu, Tooltip, Typography } from '@mui/material';
 import { AttachMoney, House, Info, LocalLaundryService, LocationOn, Person } from '@mui/icons-material';
+import { useTheme } from '@emotion/react';
 
 function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
   const [open, setOpen] = React.useState(false);
@@ -51,19 +52,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
     }
   };
 
-  const scrollToSection = (sectionId) => {
-    const sectionElement = document.getElementById(sectionId);
-    const offset = 128;
-    if (sectionElement) {
-      const targetScroll = sectionElement.offsetTop - offset;
-      sectionElement.scrollIntoView({ behavior: 'smooth' });
-      window.scrollTo({
-        top: targetScroll,
-        behavior: 'smooth',
-      });
-      setOpen(false);
-    }
-  };
+  const theme = useTheme();
 
   return (
     <AppBar position='fixed' sx={{ boxShadow: 0, bgcolor: 'transparent', backgroundImage: 'none' }}>
@@ -87,14 +76,17 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
       >
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
           <Link to='/'>
-            <img alt='logo' className='header-logo' src={require('../assets/images/logo.png')} />
+            <img alt='logo' className={theme.palette.mode === 'light' ? 'header-logo' : 'header-logo header-logo-dark'} src={require('../assets/images/logo.png')} />
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, pl: 2 }}>
             <Button
-              sx={{
+              sx={(theme) => ({
                 backgroundColor: location.pathname === '/' ? 'primary.main' : 'white',
                 px: 2,
-              }}
+                ...theme.applyStyles('dark', {
+                  backgroundColor: location.pathname === '/' ? 'primary.main' : 'hsla(220, 0%, 0%, 0.7)',
+                }),
+              })}
               className='nav-buttons'
               onClick={() => navigation('/')}
               startIcon={<House sx={{ color: location.pathname === '/' ? 'white' : 'primary.main' }} />}
@@ -108,10 +100,13 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
               </Typography>
             </Button>
             <Button
-              sx={{
+              sx={(theme) => ({
                 backgroundColor: location.pathname === '/about' ? 'primary.main' : 'white',
                 px: 2,
-              }}
+                ...theme.applyStyles('dark', {
+                  backgroundColor: location.pathname === '/about' ? 'primary.main' : 'hsla(220, 0%, 0%, 0.7)',
+                }),
+              })}
               className='nav-buttons'
               onClick={() => navigation('/about')}
               startIcon={<AttachMoney sx={{ color: location.pathname === '/about' ? 'white' : 'primary.main' }} />}
@@ -125,10 +120,13 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
               </Typography>
             </Button>
             <Button
-              sx={{
+              sx={(theme) => ({
                 backgroundColor: location.pathname === '/services' ? 'primary.main' : 'white',
                 px: 2,
-              }}
+                ...theme.applyStyles('dark', {
+                  backgroundColor: location.pathname === '/services' ? 'primary.main' : 'hsla(220, 0%, 0%, 0.7)',
+                }),
+              })}
               className='nav-buttons'
               onClick={() => navigation('/services')}
               startIcon={
@@ -144,10 +142,13 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
               </Typography>
             </Button>
             <Button
-              sx={{
+              sx={(theme) => ({
                 backgroundColor: location.pathname === '/pricing' ? 'primary.main' : 'white',
                 px: 2,
-              }}
+                ...theme.applyStyles('dark', {
+                  backgroundColor: location.pathname === '/pricing' ? 'primary.main' : 'hsla(220, 0%, 0%, 0.7)',
+                }),
+              })}
               className='nav-buttons'
               onClick={() => navigation('/pricing')}
               startIcon={<AttachMoney sx={{ color: location.pathname === '/pricing' ? 'white' : 'primary.main' }} />}

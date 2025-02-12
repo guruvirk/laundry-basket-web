@@ -3,6 +3,7 @@ import {
   Button,
   CircularProgress,
   FormHelperText,
+  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -13,7 +14,7 @@ import {
 import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 import { updateUser } from '../utils/api_base';
-import { CloseRounded, Home, LocationCity, LocationOn, Map, Signpost } from '@mui/icons-material';
+import { CloseRounded, Home, LocationCity, LocationOn, Map, Person, Phone, Signpost } from '@mui/icons-material';
 import GooglePlacesInput from '../shared/GooglePlacesInput';
 
 const modalStyle = {
@@ -34,6 +35,8 @@ export default function AddressPicker(props) {
   const address1Ref = useRef();
 
   const [isgoogleEditable, setGoogleEditable] = useState(true);
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
   const [addressId, setAddressId] = useState(null);
   const [userId, setUserId] = useState([]);
   const [addresses, setAddresses] = useState([]);
@@ -48,6 +51,8 @@ export default function AddressPicker(props) {
   const [state, setState] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [address2Error, setAddres2Error] = useState(null);
+  const [nameError, setNameError] = useState(null);
+  const [phoneError, setPhoneError] = useState(null);
   const [cityError, setCityError] = useState(null);
   const [stateError, setStateError] = useState(null);
   const [zipCodeError, setZipCodeError] = useState(null);
@@ -187,6 +192,8 @@ export default function AddressPicker(props) {
         setUserId(user.id);
         if (user && user.addresses && user.addresses.length) {
           setAddresses(user.addresses);
+          setName(user.addresses[props.addressId].name || props.user.name);
+          setPhone(user.addresses[props.addressId].phone || props.user.phone);
           setZipCode(user.addresses[props.addressId].zipCode);
           setState(user.addresses[props.addressId].state);
           setCity(user.addresses[props.addressId].city);
@@ -210,6 +217,8 @@ export default function AddressPicker(props) {
         }
       }
     } else {
+      setName(props.user.name || '');
+      setPhone(props.user.phone || '');
       if (props.canUpdate) {
         let res = localStorage.getItem('user');
         if (res) {
@@ -261,6 +270,8 @@ export default function AddressPicker(props) {
       }, 2500);
       if (!props.canUpdate) {
         if (props.address) {
+          setName(props.address.name || props.user.name);
+          setPhone(props.address.phone || props.user.phone);
           setZipCode(props.address.zipCode);
           setState(props.address.state);
           setCity(props.address.city);
@@ -293,6 +304,13 @@ export default function AddressPicker(props) {
 
   const addAddress = async () => {
     let isError = false;
+    if (phone && phone.length !== 10) {
+      setPhoneError('Invalid Contact No.');
+      setTimeout(() => {
+        setPhoneError(null);
+      }, 3000);
+      return;
+    }
     if (!address1 || address1.length < 3) {
       setAddres1Error('Invalid Address 1');
       setTimeout(() => {
@@ -345,6 +363,8 @@ export default function AddressPicker(props) {
         });
       }
       if (addressId || addressId === 0) {
+        addresses[addressId].name = name;
+        addresses[addressId].phone = phone;
         addresses[addressId].zipCode = zipCode;
         addresses[addressId].state = state;
         addresses[addressId].city = city;
@@ -355,6 +375,8 @@ export default function AddressPicker(props) {
         addresses[addressId].isDefault = isDefault;
       } else {
         addresses.push({
+          name,
+          phone,
           zipCode,
           state,
           city,
@@ -377,6 +399,8 @@ export default function AddressPicker(props) {
       setIsLoading(false);
     } else {
       let address = {
+        name,
+        phone,
         zipCode,
         state,
         city,
@@ -428,6 +452,72 @@ export default function AddressPicker(props) {
       >
         <GooglePlacesInput ref={googleRef} editable={isgoogleEditable} setAddress={setAddress}></GooglePlacesInput>
       </Box>
+      <Grid container spacing={2.5}>
+        <Grid item xs={12} sm={6} md={6}>
+          <Box
+            sx={{
+              width: '100%',
+              margin: 'auto',
+              textAlign: 'center',
+              pb: 2,
+            }}
+          >
+            <TextField
+              inputProps={{ type: 'text' }}
+              id='name'
+              name='name'
+              required
+              label='Name'
+              value={name}
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Person />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              variant='standard'
+            />
+            {nameError ? <FormHelperText error>{nameError}</FormHelperText> : null}
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={6} md={6}>
+          <Box
+            sx={{
+              width: '100%',
+              margin: 'auto',
+              textAlign: 'center',
+              pb: 2,
+            }}
+          >
+            <TextField
+              inputProps={{ type: 'tel' }}
+              id='phone'
+              name='phone'
+              required
+              label='Contact No.'
+              value={phone}
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <Phone />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setPhone(e.target.value);
+              }}
+              variant='standard'
+            />
+            {phoneError ? <FormHelperText error>{phoneError}</FormHelperText> : null}
+          </Box>
+        </Grid>
+      </Grid>
       <Box
         sx={{
           width: '100%',
@@ -489,66 +579,72 @@ export default function AddressPicker(props) {
         />
         {address2Error ? <FormHelperText error>{address2Error}</FormHelperText> : null}
       </Box>
-      <Box
-        sx={{
-          width: '100%',
-          margin: 'auto',
-          textAlign: 'center',
-          pb: 2,
-        }}
-      >
-        <TextField
-          inputProps={{ type: 'text' }}
-          id='city'
-          name='city'
-          required
-          label='City'
-          value={city}
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <LocationCity />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => {
-            setCity(e.target.value);
-          }}
-          variant='standard'
-        />
-        {cityError ? <FormHelperText error>{cityError}</FormHelperText> : null}
-      </Box>
-      <Box
-        sx={{
-          width: '100%',
-          margin: 'auto',
-          textAlign: 'center',
-          pb: 2,
-        }}
-      >
-        <TextField
-          inputProps={{ type: 'text' }}
-          id='state'
-          name='state'
-          required
-          label='State'
-          value={state}
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <LocationOn />
-              </InputAdornment>
-            ),
-          }}
-          onChange={(e) => {
-            setState(e.target.value);
-          }}
-          variant='standard'
-        />
-        {stateError ? <FormHelperText error>{stateError}</FormHelperText> : null}
-      </Box>
+      <Grid container spacing={2.5}>
+        <Grid item xs={12} sm={6} md={6}>
+          <Box
+            sx={{
+              width: '100%',
+              margin: 'auto',
+              textAlign: 'center',
+              pb: 2,
+            }}
+          >
+            <TextField
+              inputProps={{ type: 'text' }}
+              id='city'
+              name='city'
+              required
+              label='City'
+              value={city}
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <LocationCity />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setCity(e.target.value);
+              }}
+              variant='standard'
+            />
+            {cityError ? <FormHelperText error>{cityError}</FormHelperText> : null}
+          </Box>
+        </Grid>
+        <Grid item xs={12} sm={6} md={6}>
+          <Box
+            sx={{
+              width: '100%',
+              margin: 'auto',
+              textAlign: 'center',
+              pb: 2,
+            }}
+          >
+            <TextField
+              inputProps={{ type: 'text' }}
+              id='state'
+              name='state'
+              required
+              label='State'
+              value={state}
+              fullWidth
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <LocationOn />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => {
+                setState(e.target.value);
+              }}
+              variant='standard'
+            />
+            {stateError ? <FormHelperText error>{stateError}</FormHelperText> : null}
+          </Box>
+        </Grid>
+      </Grid>
       <Box
         sx={{
           width: '100%',
