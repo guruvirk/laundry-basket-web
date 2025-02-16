@@ -72,13 +72,14 @@ function App() {
       setIsLoggedIn(true);
       let userResp = await getUser('my');
       if (userResp) {
-        localStorage.setItem('user', JSON.stringify({ ...userResp, session: user.session }));
+        localStorage.setItem('user', JSON.stringify(userResp));
       }
     }
   };
 
   const logout = () => {
     localStorage.removeItem('user');
+    localStorage.removeItem('session');
     setIsLoggedIn(false);
     setUser(null);
   };

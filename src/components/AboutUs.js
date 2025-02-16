@@ -173,7 +173,7 @@ export default function AboutUs(props) {
           <div className='wrapper-div'>
             <span className='dot'></span>
           </div>
-          <div>
+          <div className='wrapper-div'>
             <span className='dot'></span>
           </div>
           <div className='wrapper-div'>
@@ -203,7 +203,7 @@ export default function AboutUs(props) {
             }}
           >
             <Grid item xs={12} sm={5.5} md={5.5} sx={{}}>
-              <img class='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
+              <img className='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
             </Grid>
             <Grid item xs={12} sm={6.5} md={6.5}>
               <Box sx={{ width: { xs: '100%', sm: '95%' }, ml: 'auto' }}>
@@ -358,7 +358,7 @@ export default function AboutUs(props) {
             }}
           >
             <Grid item xs={12} sm={6.5} md={6.5} sx={{ display: { xs: 'block', sm: 'none' } }}>
-              <img class='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
+              <img className='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
             </Grid>
             <Grid item xs={12} sm={5.5} md={5.5}>
               <Box sx={{ width: '95%', mr: 'auto' }}>
@@ -388,10 +388,10 @@ export default function AboutUs(props) {
               </Box>
             </Grid>
             <Grid item xs={12} sm={6.5} md={6.5} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-              <img class='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
+              <img className='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
             </Grid>
           </Grid>
-          <Box
+          {/* <Box
             sx={{
               pt: { xs: 8, sm: 12 },
               px: { xs: 0, sm: 2, md: 5 },
@@ -509,7 +509,7 @@ export default function AboutUs(props) {
                 </Box>
               </div>
             </Slider>
-          </Box>
+          </Box> */}
         </Box>
       )}
     </Container>

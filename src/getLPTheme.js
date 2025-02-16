@@ -536,6 +536,44 @@ export default function getLPTheme(mode) {
               },
               {
                 props: {
+                  color: 'error',
+                  variant: 'outlined',
+                },
+                style: {
+                  backgroundColor: alpha(gray[300], 0.1),
+                  borderColor: alpha(red[300], 0.5),
+                  borderRadius: '.3rem',
+                  color: red[300],
+                  '&:hover': {
+                    backgroundColor: alpha(gray[300], 0.3),
+                    borderColor: alpha(red[300], 0.5),
+                    boxShadow: 'none',
+                  },
+                  '&:active': {
+                    backgroundColor: alpha(gray[300], 0.4),
+                    boxShadow: `inset 0 2.5px 0 ${alpha(red[400], 0.2)}`,
+                    backgroundImage: 'none',
+                  },
+                  ...theme.applyStyles('dark', {
+                    color: red[300],
+                    backgroundColor: alpha(gray[600], 0.1),
+                    borderColor: alpha(red[700], 0.5),
+                    boxShadow: `inset 0 2.5px ${alpha(red[600], 0.1)}, inset 0 -2px ${alpha(red[900], 0.5)}`,
+                    '&:hover': {
+                      backgroundColor: alpha(gray[700], 0.2),
+                      borderColor: alpha(red[700], 0.5),
+                      boxShadow: 'none',
+                    },
+                    '&:active': {
+                      backgroundColor: alpha(gray[800], 0.2),
+                      boxShadow: `inset 0 2.5px 0 ${alpha(red[900], 0.4)}`,
+                      backgroundImage: 'none',
+                    },
+                  }),
+                },
+              },
+              {
+                props: {
                   color: 'primary',
                   variant: 'text',
                 },

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const URL = 'https://comfortcare.co.nz/gs/api/';
+// const URL = 'https://comfortcare.co.nz/gs/api/';
+const URL = 'http://localhost:8080/api/';
 const tenant = 'gs';
 
 const translateObj = {
@@ -53,14 +54,14 @@ const config = {
 };
 
 const getTokenConfig = async () => {
-  let res = localStorage.getItem('user');
+  let res = localStorage.getItem('session');
   if (!res) {
     return {};
   }
-  const user = JSON.parse(res);
+  const session = JSON.parse(res);
   return {
     headers: {
-      Authorization: user?.session?.token,
+      Authorization: session?.token,
     },
   };
 };

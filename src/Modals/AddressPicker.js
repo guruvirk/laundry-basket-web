@@ -190,24 +190,25 @@ export default function AddressPicker(props) {
       if (res) {
         const user = JSON.parse(res);
         setUserId(user.id);
-        if (user && user.addresses && user.addresses.length) {
-          setAddresses(user.addresses);
-          setName(user.addresses[props.addressId].name || props.user.name);
-          setPhone(user.addresses[props.addressId].phone || props.user.phone);
-          setZipCode(user.addresses[props.addressId].zipCode);
-          setState(user.addresses[props.addressId].state);
-          setCity(user.addresses[props.addressId].city);
-          setAddres1(user.addresses[props.addressId].address1);
-          setAddres2(user.addresses[props.addressId].address2);
-          setCountry(user.addresses[props.addressId].country);
-          setAddressString(user.addresses[props.addressId].addressString);
-          if (user.addresses[props.addressId].addressString) {
+        let addressesArr = props.addresses || user.addresses;
+        if (addressesArr && addressesArr.length) {
+          setAddresses(addressesArr);
+          setName(addressesArr[props.addressId].name || props.user.name);
+          setPhone(addressesArr[props.addressId].phone || props.user.phone);
+          setZipCode(addressesArr[props.addressId].zipCode);
+          setState(addressesArr[props.addressId].state);
+          setCity(addressesArr[props.addressId].city);
+          setAddres1(addressesArr[props.addressId].address1);
+          setAddres2(addressesArr[props.addressId].address2);
+          setCountry(addressesArr[props.addressId].country);
+          setAddressString(addressesArr[props.addressId].addressString);
+          if (addressesArr[props.addressId].addressString) {
             setTimeout(() => {
-              googleRef.current.updateAddress(user.addresses[props.addressId].addressString);
+              googleRef.current.updateAddress(addressesArr[props.addressId].addressString);
             });
           }
-          setIsDefault(user.addresses[props.addressId].isDefault || false);
-          user.addresses.forEach((element, index) => {
+          setIsDefault(addressesArr[props.addressId].isDefault || false);
+          addressesArr.forEach((element, index) => {
             if (index !== props.addressId) {
               if (element.isDefault) {
                 setIsDefaultOtherExists(true);
@@ -224,9 +225,10 @@ export default function AddressPicker(props) {
         if (res) {
           const user = JSON.parse(res);
           setUserId(user.id);
-          if (user && user.addresses && user.addresses.length) {
-            setAddresses(user.addresses);
-            user.addresses.forEach((element, index) => {
+          let addressesArr = props.addresses || user.addresses;
+          if (addressesArr && addressesArr.length) {
+            setAddresses(addressesArr);
+            addressesArr.forEach((element, index) => {
               if (index !== props.addressId) {
                 if (element.isDefault) {
                   setIsDefaultOtherExists(true);

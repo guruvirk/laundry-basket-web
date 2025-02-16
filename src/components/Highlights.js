@@ -51,7 +51,7 @@ export default function Highlights() {
     >
       <Grid container spacing={2.5} sx={{ px: { xs: 0, sm: 2, md: 5 } }}>
         <Grid item xs={12} sm={5} md={5} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-          <img class='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
+          <img className='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
         </Grid>
         <Grid item xs={12} sm={7} md={7}>
           <Typography component='h3' variant='h3' sx={{ color: 'text.secondary', pl: { xs: 0, sm: 2 }, pb: 2 }}>
@@ -87,7 +87,7 @@ export default function Highlights() {
           ))}
         </Grid>
         <Grid item xs={12} sm={5} md={5} sx={{ display: { xs: 'block', sm: 'none' }, mt: 5 }}>
-          <img class='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
+          <img className='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
         </Grid>
       </Grid>
     </Container>

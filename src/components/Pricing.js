@@ -118,7 +118,7 @@ export default function Pricing(props) {
           <div className='wrapper-div'>
             <span className='dot'></span>
           </div>
-          <div>
+          <div className='wrapper-div'>
             <span className='dot'></span>
           </div>
           <div className='wrapper-div'>

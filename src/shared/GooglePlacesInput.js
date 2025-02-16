@@ -26,7 +26,6 @@ const GooglePlacesInput = (props, ref) => {
 
   const updateAddress = (address) => {
     if (inputRef && inputRef.current) {
-      console.log(address);
       inputRef.current.value = address;
     }
   };

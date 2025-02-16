@@ -79,7 +79,7 @@ div.services-book::-webkit-scrollbar-thumb {
 }
 
 .progress-box {
-  width: 25% !important;
+  width: 50% !important;
 }
 
 .checkout-icon {
@@ -242,9 +242,32 @@ div.services-book::-webkit-scrollbar-thumb {
   }
 }
 
+.primary-contained h6 {
+  color: white;
+}
+
+.primary-contained:hover h6 {
+  color: #0095ff;
+}
+
+.order-details-payment {
+  padding-top: 15px !important;
+}
+
+.order-details-address {
+  padding-top: 15px !important;
+}
+
+.order-list {
+  cursor: pointer;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 @media (min-width: 320px) {
   .progress-box {
-    width: 75% !important;
+    width: 85% !important;
   }
 
   .checkout-icon {
@@ -297,11 +320,23 @@ div.services-book::-webkit-scrollbar-thumb {
     top: 20%;
     right: 20%;
   }
+
+  .order-details-payment {
+    padding-top: 20px !important;
+  }
+
+  .order-details-address {
+    padding-top: 25px !important;
+  }
+
+  .order-list {
+    width: 100%;
+  }
 }
 
 @media (min-width: 480px) {
   .progress-box {
-    width: 60% !important;
+    width: 70% !important;
   }
 
   .checkout-icon {
@@ -355,11 +390,23 @@ div.services-book::-webkit-scrollbar-thumb {
     top: 20%;
     right: 20%;
   }
+
+  .order-details-payment {
+    padding-top: 20px !important;
+  }
+
+  .order-details-address {
+    padding-top: 25px !important;
+  }
+
+  .order-list {
+    width: 100%;
+  }
 }
 
 @media (min-width: 600px) {
   .progress-box {
-    width: 45% !important;
+    width: 80% !important;
   }
 
   .checkout-icon {
@@ -405,11 +452,23 @@ div.services-book::-webkit-scrollbar-thumb {
     top: 20%;
     right: 20%;
   }
+
+  .order-details-payment {
+    padding-top: 15px !important;
+  }
+
+  .order-details-address {
+    padding-top: 15px !important;
+  }
+
+  .order-list {
+    width: 90%;
+  }
 }
 
 @media (min-width: 801px) {
   .progress-box {
-    width: 25% !important;
+    width: 75% !important;
   }
 
   .checkout-icon {
@@ -433,5 +492,17 @@ div.services-book::-webkit-scrollbar-thumb {
     border: none;
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  .order-details-payment {
+    padding-top: 15px !important;
+  }
+
+  .order-details-address {
+    padding-top: 15px !important;
+  }
+
+  .order-list {
+    width: 80%;
   }
 }

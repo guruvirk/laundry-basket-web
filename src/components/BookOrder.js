@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -14,14 +15,12 @@ import {
   ListItemAvatar,
   ListItemText,
   Modal,
+  Snackbar,
   Stack,
   Tab,
   Tabs,
   TextField,
   Typography,
-  RadioGroup,
-  Radio,
-  FormControlLabel,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
@@ -240,8 +239,10 @@ function BookOrder(props) {
   const [selectedDateObj, setSelectedDateObj] = useState(defaultValue);
   const [selectedSlot, setSelectedSlot] = useState();
   const [timeSlots, setTimeSlots] = useState();
+  const [slotError, setSlotError] = useState(null);
 
   const [cart, setCart] = useState([]);
+  const [itemsError, setItemsError] = useState(null);
   const [amount, setAmount] = useState(0.0);
   const [services, setServices] = useState([]);
   const [servicesLoaded, setServicesLoaded] = useState(false);
@@ -249,6 +250,7 @@ function BookOrder(props) {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
   const [selectedServices, setSelectedServices] = useState([]);
+  const [servicesError, setServicesError] = useState(null);
 
   const [typeValue, setTypeValue] = React.useState(0);
 
@@ -285,12 +287,14 @@ function BookOrder(props) {
       if (user) {
         setUser(user);
         if (user && user.addresses && user.addresses.length) {
-          user.addresses.forEach((element, index) => {
+          let addressesArr = user.addresses;
+          addressesArr.sort((a, b) => b.isDefault - a.isDefault);
+          addressesArr.forEach((element, index) => {
             if (element.isDefault) {
               setSelectedAddress(index);
             }
           });
-          setAddresses(user.addresses);
+          setAddresses(addressesArr);
         }
       }
     }
@@ -383,6 +387,10 @@ function BookOrder(props) {
   const completeDelivery = async () => {
     let isError = false;
     if (!selectedSlot) {
+      setSlotError('Please select pickup timeslot!');
+      setTimeout(() => {
+        setSlotError(null);
+      }, 3000);
       isError = true;
     }
     if (isError) {
@@ -394,6 +402,25 @@ function BookOrder(props) {
 
   const bookOrder = async () => {
     let isError = false;
+    if (typeValue === 0 && !cart.length) {
+      setItemsError('Please add items to proceed.');
+      setTimeout(() => {
+        setItemsError(null);
+      }, 5000);
+      isError = true;
+    } else if (typeValue === 0 && amount < 10) {
+      setItemsError('Add more items! Minimum order amount is $10');
+      setTimeout(() => {
+        setItemsError(null);
+      }, 5000);
+      isError = true;
+    } else if (typeValue !== 0 && !selectedServices.length) {
+      setServicesError('Select a service, and our agent will finalize your order at pickup');
+      setTimeout(() => {
+        setServicesError(null);
+      }, 5000);
+      isError = true;
+    }
     if (isError) {
       return;
     }
@@ -545,7 +572,7 @@ function BookOrder(props) {
                               }}
                             >
                               <Typography sx={{ color: 'text.secondary' }} variant='title'>
-                                {user.name}
+                                {address.name}
                               </Typography>
                               <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
                                 {address.address1}, {address.address2}, {address.city}
@@ -554,7 +581,7 @@ function BookOrder(props) {
                                 {address.state} {address.zipCode}
                               </Typography>
                               <Typography sx={{ color: 'text.secondary' }} variant='subtitle1'>
-                                <Phone sx={{ fontSize: 16 }} /> {user.phone}
+                                <Phone sx={{ fontSize: 16 }} /> {address.phone}
                               </Typography>
                             </Stack>
                             {index === selectedAddress && (
@@ -578,11 +605,12 @@ function BookOrder(props) {
                     </Grid>
                     <Button
                       sx={{ mb: 2 }}
+                      className='primary-contained'
                       onClick={() => navigate('/my-addresses')}
                       variant='contained'
                       startIcon={<AddLocation />}
                     >
-                      <Typography sx={{ color: 'white' }} variant='nav' textAlign='center'>
+                      <Typography className='text-white-imp' component='h6' variant='nav' textAlign='center'>
                         Add Address
                       </Typography>
                     </Button>
@@ -630,7 +658,6 @@ function BookOrder(props) {
                       maximumDate={maximumDate}
                       value={selectedDateObj}
                       onChange={(newValue) => onDateSelect(newValue)}
-                      shouldHighlightWeekends
                     />
                   </Grid>
                   <Grid item xs={12} sm={5.5} md={5.5} sx={{}}>
@@ -664,7 +691,7 @@ function BookOrder(props) {
                               onClick={() => setSelectedSlot(item.title)}
                             >
                               <Typography
-                                component='body1'
+                                variant='body1'
                                 sx={{ color: selectedSlot === item.title ? 'text.white' : 'text.primary' }}
                               >
                                 {item.title}
@@ -698,7 +725,7 @@ function BookOrder(props) {
                     {typeValue === 0 ? (
                       <>
                         <Typography sx={{ pt: 4, pb: 1, textAlign: 'start' }} variant='h6' component='h6'>
-                          Please select items you need us to wash or dry clean
+                          Select exact items for pricing upfront
                         </Typography>
                         {services.map((item, index) => (
                           <Box
@@ -961,7 +988,7 @@ function BookOrder(props) {
                     ) : (
                       <>
                         <Typography sx={{ pt: 4, pb: 1, textAlign: 'start' }} variant='h6' component='h6'>
-                          Please select services you need us to do
+                          Select services, and our agent will add items at pickup
                         </Typography>
                         <Grid container alignItems='center' justifyContent='center' spacing={3} sx={{ pt: 4, pb: 4 }}>
                           {services.map((serviceItem, index) => (
@@ -1019,7 +1046,7 @@ function BookOrder(props) {
                   {loading ? (
                     <CircularProgress size={25} color='inherit' />
                   ) : (
-                    <Typography variant='title'>Confirm Order</Typography>
+                    <Typography variant='title'>View & Confirm</Typography>
                   )}
                 </Button>
               </Box>
@@ -1107,7 +1134,7 @@ function BookOrder(props) {
                     primary='Services'
                     secondary={
                       typeValue === 0
-                        ? `Total: ${Number(amount).toFixed(2)}`
+                        ? null
                         : selectedServices
                             .reverse()
                             .map((i) => services[services.findIndex((x) => x.id === i)].name)
@@ -1116,13 +1143,60 @@ function BookOrder(props) {
                   />
                 </ListItemText>
               </ListItem>
+              {typeValue === 0 &&
+                cart.map((item, index) => (
+                  <Grid container alignItems='center' justifyContent='center' spacing={1} sx={{ px: 9, pb: 2 }}>
+                    <Grid sx={{ textAlign: 'start' }} item xs={7} sm={7} md={7}>
+                      <Typography sx={{ color: 'text.secondary' }} variant='body1' component='h6'>
+                        {item.name} ({item.units})
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={5} sm={5} md={5}>
+                      <Box
+                        sx={{
+                          width: 'fit-content',
+                          ml: 'auto',
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <Typography sx={{ color: 'text.secondary' }} variant='body1' component='h6'>
+                          $ {(Number(item.currentPrice) * item.units).toFixed(2)}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  </Grid>
+                ))}
+              <Grid container alignItems='center' justifyContent='center' spacing={1} sx={{ px: 9, pb: 2 }}>
+                <Grid sx={{ textAlign: 'start' }} item xs={7} sm={7} md={7}>
+                  <Typography sx={{ color: 'text.secondary', fontWeight: 'bold' }} variant='body1' component='h6'>
+                    Total
+                  </Typography>
+                </Grid>
+                <Grid item xs={5} sm={5} md={5}>
+                  <Box
+                    sx={{
+                      width: 'fit-content',
+                      ml: 'auto',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <Typography sx={{ color: 'text.secondary', fontWeight: 'bold' }} variant='body1' component='h6'>
+                      $ {Number(amount).toFixed(2)}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
             </List>
             {activeStep === 2 && (
               <Button onClick={bookOrder} sx={{ mt: 4, px: 4 }} variant='contained'>
                 {loading ? (
                   <CircularProgress size={25} color='inherit' />
                 ) : (
-                  <Typography variant='title'>Confirm Order</Typography>
+                  <Typography variant='title'>View & Confirm</Typography>
                 )}
               </Button>
             )}
@@ -1151,6 +1225,24 @@ function BookOrder(props) {
           ></ConfirmOrder>
         </div>
       </Modal>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={!!slotError}
+        message={slotError}
+        key={'bottomcenter'}
+      />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={!!itemsError}
+        message={itemsError}
+        key={'bottomcenter'}
+      />
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={!!servicesError}
+        message={servicesError}
+        key={'bottomcenter'}
+      />
     </Container>
   );
 }

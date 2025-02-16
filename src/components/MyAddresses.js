@@ -20,7 +20,9 @@ function MyAddresses(props) {
     if (res) {
       const user = JSON.parse(res);
       if (user && user.addresses && user.addresses.length) {
-        setAddresses(user.addresses);
+        let addressesArr = user.addresses;
+        addressesArr.sort((a, b) => b.isDefault - a.isDefault);
+        setAddresses(addressesArr);
       }
     }
     setAddresseLoaded(true);
@@ -45,7 +47,9 @@ function MyAddresses(props) {
     if (res) {
       const user = JSON.parse(res);
       if (user && user.addresses && user.addresses.length) {
-        setAddresses(user.addresses);
+        let addressesArr = user.addresses;
+        addressesArr.sort((a, b) => b.isDefault - a.isDefault);
+        setAddresses(addressesArr);
         props.setUser(user);
       }
     }
@@ -124,7 +128,9 @@ function MyAddresses(props) {
                             zIndex: 30,
                           }}
                         >
-                          <Typography variant='subtitle1' className='text-white text-center'>Default</Typography>
+                          <Typography variant='subtitle1' className='text-white text-center'>
+                            Default
+                          </Typography>
                         </Box>
                       )}
                     </Grid>
@@ -138,10 +144,10 @@ function MyAddresses(props) {
                         }}
                       >
                         <IconButton onClick={() => openAddressDialog(index)} className='flex items-center justify-center'>
-                          <Edit></Edit>
+                          <Edit sx={{ fontSize: 27 }}></Edit>
                         </IconButton>
                         <IconButton className='ml-3 flex items-center justify-center'>
-                          <Delete></Delete>
+                          <Delete sx={{ fontSize: 27 }}></Delete>
                         </IconButton>
                       </Box>
                     </Grid>
@@ -151,8 +157,14 @@ function MyAddresses(props) {
             ))}
           </Grid>
         )}
-        <Button onClick={() => openAddressDialog(null)} variant='contained' startIcon={<AddLocation />}>
-          <Typography sx={{ color: 'white' }} variant='nav' textAlign='center'>
+        <Button
+          sx={{ mb: 2 }}
+          className='primary-contained'
+          onClick={() => openAddressDialog(null)}
+          variant='contained'
+          startIcon={<AddLocation />}
+        >
+          <Typography className='text-white-imp' component='h6' variant='nav' textAlign='center'>
             Add Address
           </Typography>
         </Button>
@@ -169,6 +181,7 @@ function MyAddresses(props) {
               addressId={addressId}
               canUpdate={true}
               user={props.user}
+              addresses={addresses}
             ></AddressPicker>
           </div>
         </Modal>

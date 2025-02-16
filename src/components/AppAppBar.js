@@ -76,7 +76,11 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
       >
         <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
           <Link to='/'>
-            <img alt='logo' className={theme.palette.mode === 'light' ? 'header-logo' : 'header-logo header-logo-dark'} src={require('../assets/images/logo.png')} />
+            <img
+              alt='logo'
+              className={theme.palette.mode === 'light' ? 'header-logo' : 'header-logo header-logo-dark'}
+              src={require('../assets/images/logo.png')}
+            />
           </Link>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, pl: 2 }}>
             <Button
@@ -177,7 +181,7 @@ function AppAppBar({ mode, toggleColorMode, isLoggedIn, user, logout }) {
               mr: 2,
             }}
             className='nav-buttons'
-            onClick={() => navigation(isLoggedIn ? '/book-order' : '/login')}
+            onClick={() => navigation(isLoggedIn ? '/book-order' : '/login?redirect=book-order')}
           >
             <Typography sx={{ color: 'white' }} variant='nav' textAlign='center'>
               Schedule PickUp

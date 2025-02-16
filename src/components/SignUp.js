@@ -16,7 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 import { getError, post } from '../utils/api_base';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { AddLocation, Edit, Mail, Person, Phone } from '@mui/icons-material';
 import AddressPicker from '../Modals/AddressPicker';
 
@@ -28,6 +28,7 @@ export function matchIsNumeric(text) {
 
 export default function SignUp(props) {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const otpRef = useRef();
 
   const [otpSent, setOtpSent] = useState(false);
@@ -48,6 +49,7 @@ export default function SignUp(props) {
   const [isAddressDialogOpen, setIsAddressDialogOpen] = useState(false);
   const [addressError, setAddressError] = useState(null);
   const [apiError, setApiError] = useState(null);
+  const [redirectTo, setRedirectTo] = useState(null);
 
   const [loading, setLoading] = useState(false);
 
@@ -68,6 +70,9 @@ export default function SignUp(props) {
       props.setIsLoggedIn(true);
     } else if (user && (!user.name || !user.addresses || !user.addresses.length)) {
       navigate('/signup');
+    }
+    if (searchParams.get('redirect')) {
+      setRedirectTo(searchParams.get('redirect'));
     }
   }, []);
 
@@ -168,9 +173,14 @@ export default function SignUp(props) {
       let user = await post('users/confirm', userObj);
       if (user) {
         localStorage.setItem('user', JSON.stringify(user));
+        localStorage.setItem('session', JSON.stringify(user.session));
         props.setIsLoggedIn(true);
         props.setUser(user);
-        navigate('/');
+        if (redirectTo) {
+          navigate('/' + redirectTo);
+        } else {
+          navigate('/');
+        }
       } else {
         setApiError(getError(''));
         setTimeout(() => {
@@ -387,8 +397,16 @@ export default function SignUp(props) {
                     textAlign: 'center',
                   }}
                 >
-                  <Button onClick={openAddressDialog} variant='contained' startIcon={<AddLocation />}>
-                    Add Address
+                  <Button
+                    sx={{ mb: 2 }}
+                    className='primary-contained'
+                    onClick={openAddressDialog}
+                    variant='contained'
+                    startIcon={<AddLocation />}
+                  >
+                    <Typography className='text-white-imp' component='h6' variant='nav' textAlign='center'>
+                      Add Address
+                    </Typography>
                   </Button>
                 </Box>
               ) : (

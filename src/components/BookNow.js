@@ -55,10 +55,10 @@ export default function BookNow() {
               }}
             >
               <Box>
-                <Typography component='body2' variant='body2' sx={{ color: 'text.white', fontWeight: 600 }}>
+                <Typography variant='body2' sx={{ color: 'text.white', fontWeight: 600 }}>
                   Starting at only
                 </Typography>
-                <Typography component='h2' variant='h2' sx={{ color: 'text.white', marginTop: '-5px' }}>
+                <Typography variant='h2' sx={{ color: 'text.white', marginTop: '-5px' }}>
                   $1.99
                 </Typography>
               </Box>
@@ -85,7 +85,7 @@ export default function BookNow() {
                 pickup & delivery
               </Typography>
             </Typography>
-            <Typography component='body1' sx={{ color: 'text.white' }}>
+            <Typography variant='body1' sx={{ color: 'text.white' }}>
               Experience premium laundry care with expert cleaning and meticulous attention to detail. Enjoy free pickup and
               delivery for ultimate convenience!
             </Typography>
@@ -123,7 +123,7 @@ export default function BookNow() {
                 pickup & delivery
               </Typography>
             </Typography>
-            <Typography component='body1' sx={{ color: 'text.white' }}>
+            <Typography variant='body1' sx={{ color: 'text.white' }}>
               Experience premium laundry care with expert cleaning and meticulous attention to detail. Enjoy free pickup and
               delivery for ultimate convenience!
             </Typography>
@@ -171,7 +171,7 @@ export default function BookNow() {
               }}
             >
               <Box>
-                <Typography component='body2' variant='body2' sx={{ color: 'text.white', fontWeight: 600 }}>
+                <Typography variant='body2' sx={{ color: 'text.white', fontWeight: 600 }}>
                   Starting at only
                 </Typography>
                 <Typography component='h2' variant='h2' sx={{ color: 'text.white', marginTop: '-5px' }}>
