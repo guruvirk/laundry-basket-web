@@ -5,7 +5,7 @@ import { getOrders } from '../utils/api_base';
 import Icon from '@mui/material/Icon';
 import { buildStyles, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 import { useNavigate } from 'react-router-dom';
-import { LocalActivity, LocationOn } from '@mui/icons-material';
+import { LocationOn } from '@mui/icons-material';
 
 const CurrentOrders = (props) => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const CurrentOrders = (props) => {
     if (page && page.items && page.items.length) {
       setListData(page.items);
     }
-    setIsLoading(false);
+    // setIsLoading(false);
   };
 
   const getData = async (page) => {
@@ -131,7 +131,11 @@ const CurrentOrders = (props) => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        position: 'relative',
+      }}
+    >
       {listData.map((item, index) => (
         <Container>
           <div className='order-list' key={index} onClick={() => navigate('/orders/' + item.id)}>
@@ -324,7 +328,8 @@ const CurrentOrders = (props) => {
                       </Typography>
                     )}
                     <Typography sx={{ color: 'text.secondary', mt: 0.5 }} variant='subtitle1'>
-                      <LocationOn />{'  '}
+                      <LocationOn />
+                      {'  '}
                       {getFormattedMiniAddress(item.address)}
                     </Typography>
                   </Box>

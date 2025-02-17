@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const URL = 'https://comfortcare.co.nz/gs/api/';
-const URL = 'http://localhost:8080/api/';
+const URL = 'https://comfortcare.co.nz/gs/api/';
+// const URL = 'http://localhost:8080/api/';
 const tenant = 'gs';
 
 const translateObj = {

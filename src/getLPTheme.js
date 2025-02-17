@@ -256,12 +256,12 @@ const getDesignTokens = (mode) => ({
     },
     title: {
       fontWeight: 600,
-      fontSize: customTheme.typography.pxToRem(19),
+      fontSize: customTheme.typography.pxToRem(18),
       '@media (min-width:480px)': {
-        fontSize: customTheme.typography.pxToRem(18),
+        fontSize: customTheme.typography.pxToRem(17),
       },
       '@media (min-width:320px)': {
-        fontSize: customTheme.typography.pxToRem(17),
+        fontSize: customTheme.typography.pxToRem(16),
       },
     },
     subtitle1: {
