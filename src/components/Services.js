@@ -81,6 +81,8 @@ export default function Services(props) {
                     <img
                       style={{
                         width: '50%',
+                        marginLeft: 'auto',
+                        marginRight: 'auto'
                       }}
                       src={service.pic3}
                       alt='new'

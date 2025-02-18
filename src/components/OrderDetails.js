@@ -363,11 +363,15 @@ function OrderDetails(props) {
             {Boolean(nextStep) && Boolean(nextStep.time) && (
               <Box sx={{ pb: 2.5 }}>
                 {Boolean(nextStep.time) && (
-                  <Typography sx={{ pb: 0.5 }} variant='h5'>
+                  <Typography sx={{ pb: 0.5, textAlign: { xs: 'center', sm: 'start' } }} variant='h5'>
                     {nextStep.time}
                   </Typography>
                 )}
-                {Boolean(nextStep.agent) && <Typography variant='h6'>Agent: {nextStep.agent}</Typography>}
+                {Boolean(nextStep.agent) && (
+                  <Typography sx={{ textAlign: { xs: 'center', sm: 'start' } }} variant='h6'>
+                    Agent: {nextStep.agent}
+                  </Typography>
+                )}
               </Box>
             )}
             <Grid container alignItems='center' justifyContent='center' spacing={{ xs: 1.5, sm: 3 }}>

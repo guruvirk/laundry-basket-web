@@ -39,7 +39,7 @@ const modalStyle = {
   px: { xs: 2, sm: 4 },
   py: 2,
   textAlign: 'center',
-  maxHeight: '92vh',
+  maxHeight: '75vh',
   overflowY: 'scroll'
 };
 
@@ -278,7 +278,7 @@ function ConfirmOrder(props) {
                 )}
               </Box>
               <Typography
-                sx={{ mt: { xs: 1, sm: 2 }, mb: 1, color: 'text.primary', textAlign: 'start' }}
+                sx={{ mt: { xs: 2, sm: 3 }, mb: 1, color: 'text.primary', textAlign: 'start' }}
                 variant='h6'
                 textAlign='center'
               >
@@ -597,7 +597,7 @@ function ConfirmOrder(props) {
                 )}
               </Box>
               <Typography
-                sx={{ mt: { xs: 1, sm: 2 }, mb: { xs: 0.5, sm: 1 }, color: 'text.primary', textAlign: 'start' }}
+                sx={{ mt: { xs: 3, sm: 3 }, mb: { xs: 0.5, sm: 1 }, color: 'text.primary', textAlign: 'start' }}
                 variant='h6'
                 textAlign='center'
               >
@@ -698,7 +698,7 @@ function ConfirmOrder(props) {
               </Grid>
             </Grid>
           </Grid>
-          <Button onClick={create} sx={{ mt: { xs: 1, sm: 2 }, px: 4, mb: 1 }} variant='contained'>
+          <Button onClick={create} sx={{ mt: { xs: 2, sm: 2 }, px: 4, mb: 1 }} variant='contained'>
             {loading ? (
               <CircularProgress size={25} color='inherit' />
             ) : (
