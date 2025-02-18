@@ -29,7 +29,7 @@ import Icon from '@mui/material/Icon';
 
 const modalStyle = {
   position: 'absolute',
-  width: { xs: '92.5%', sm: '60%' },
+  width: { xs: '92.5%', sm: '80%', md: '60%' },
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -173,7 +173,7 @@ function ConfirmOrder(props) {
                       py: { xs: 1, sm: 1 },
                       backgroundColor: delivery === 'standard' ? 'primary.main' : 'actionLite.selected',
                       borderRadius: '15px',
-                      width: { xs: '45%', sm: '33%' },
+                      width: { xs: '45%', sm: '45%', md: '33%' },
                     }}
                   >
                     <div onClick={() => setDelivery('standard')} style={{ cursor: 'pointer', position: 'relative' }}>
@@ -216,7 +216,7 @@ function ConfirmOrder(props) {
                       py: { xs: 1, sm: 1 },
                       backgroundColor: delivery === 'express' ? 'primary.main' : 'actionLite.selected',
                       borderRadius: '15px',
-                      width: { xs: '45%', sm: '33%' },
+                      width: { xs: '45%', sm: '45%', md: '33%' },
                     }}
                   >
                     <div onClick={() => setDelivery('express')} style={{ cursor: 'pointer', position: 'relative' }}>
@@ -340,7 +340,7 @@ function ConfirmOrder(props) {
                       py: { xs: 1, sm: 1 },
                       backgroundColor: payment === 'card' ? 'primary.main' : 'actionLite.selected',
                       borderRadius: '15px',
-                      width: { xs: '45%', sm: '33%' },
+                      width: { xs: '45%', sm: '45%', md: '33%' },
                     }}
                   >
                     <div onClick={() => setPayment('card')} style={{ cursor: 'pointer', position: 'relative' }}>
@@ -383,7 +383,7 @@ function ConfirmOrder(props) {
                       py: { xs: 1, sm: 1 },
                       backgroundColor: payment === 'cash' ? 'primary.main' : 'actionLite.selected',
                       borderRadius: '15px',
-                      width: { xs: '45%', sm: '33%' },
+                      width: { xs: '45%', sm: '45%', md: '33%' },
                     }}
                   >
                     <div onClick={() => setPayment('cash')} style={{ cursor: 'pointer', position: 'relative' }}>

@@ -519,7 +519,7 @@ function BookOrder(props) {
         }}
       >
         <Box sx={{ display: { xs: 'inherit', sm: 'flex' }, flexDirection: { xs: 'inherit', sm: 'row' } }}>
-          <Box sx={{ width: { xs: '100%', sm: '65%' }, px: { xs: 1, sm: 5 }, mt: 2 }}>
+          <Box sx={{ width: { xs: '100%', sm: '60%', md: '65%' }, px: { xs: 1, sm: 2.5, md: 5 }, mt: 2 }}>
             <Stepper sx={{ pb: 4 }} alternativeLabel activeStep={activeStep} connector={<ColorlibConnector />}>
               {steps.map((label) => (
                 <Step key={label}>
@@ -571,16 +571,16 @@ function BookOrder(props) {
                                 pl: 2,
                               }}
                             >
-                              <Typography sx={{ color: 'text.secondary' }} variant='title'>
+                              <Typography sx={{ color: 'text.secondary', textAlign: 'left' }} variant='title'>
                                 {address.name}
                               </Typography>
-                              <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                              <Typography sx={{ color: 'text.secondary', textAlign: 'left' }} variant='subtitle2'>
                                 {address.address1}, {address.address2}, {address.city}
                               </Typography>
-                              <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                              <Typography sx={{ color: 'text.secondary', textAlign: 'left' }} variant='subtitle2'>
                                 {address.state} {address.zipCode}
                               </Typography>
-                              <Typography sx={{ color: 'text.secondary' }} variant='subtitle1'>
+                              <Typography sx={{ color: 'text.secondary', textAlign: 'left' }} variant='subtitle1'>
                                 <Phone sx={{ fontSize: 16 }} /> {address.phone}
                               </Typography>
                             </Stack>
@@ -650,53 +650,50 @@ function BookOrder(props) {
                   Select Pick Up Date & TimeSlot
                 </Typography>
                 <Grid container>
-                  <Grid item xs={12} sm={6.5} md={6.5}>
-                    <Calendar
-                      colorPrimary='hsl(205, 100%, 50%)'
-                      colorPrimaryLight='hsla(205, 100%, 50%, 0.2)'
-                      minimumDate={minimumDate}
-                      maximumDate={maximumDate}
-                      value={selectedDateObj}
-                      onChange={(newValue) => onDateSelect(newValue)}
-                    />
+                  <Grid item xs={12} sm={12} md={6.5}>
+                    <Box sx={{ width: 'fit-content', mx: 'auto' }}>
+                      <Calendar
+                        colorPrimary='hsl(205, 100%, 50%)'
+                        colorPrimaryLight='hsla(205, 100%, 50%, 0.2)'
+                        minimumDate={minimumDate}
+                        maximumDate={maximumDate}
+                        value={selectedDateObj}
+                        onChange={(newValue) => onDateSelect(newValue)}
+                        sty
+                      />
+                    </Box>
                   </Grid>
-                  <Grid item xs={12} sm={5.5} md={5.5} sx={{}}>
-                    {/* <Typography component='subtitle1' variant='h6' sx={{ color: 'text.secondary', pb: 5 }}>
-                      TimeSlot
-                    </Typography> */}
-                    <Box>
+                  <Grid item xs={12} sm={12} md={5.5} sx={{ mt: { xs: 1, sm: 1, md: 0 } }}>
+                    <Box sx={{ width: { xs: '24em', sm: '100%' }, mx: 'auto' }}>
                       <Grid container>
                         {timeSlots?.map((item, index) => (
-                          <Grid
-                            item
-                            xs={5.5}
-                            sm={5.5}
-                            md={5.5}
-                            sx={{
-                              p: 0.5,
-                              border: '1.5px solid',
-                              backgroundColor: selectedSlot === item.title ? 'primary.main' : 'actionLite.selected',
-                              borderColor: 'primary.main',
-                              mt: 2,
-                              mx: 0.5,
-                              borderRadius: '15px',
-                            }}
-                            key={index}
-                          >
-                            <div
-                              style={{
-                                position: 'relative',
-                                cursor: 'pointer',
+                          <Grid item xs={6} sm={6} md={6} key={index}>
+                            <Box
+                              sx={{
+                                p: 0.5,
+                                border: '1.5px solid',
+                                backgroundColor: selectedSlot === item.title ? 'primary.main' : 'actionLite.selected',
+                                borderColor: 'primary.main',
+                                mt: 2,
+                                mx: 0.5,
+                                borderRadius: '15px',
                               }}
-                              onClick={() => setSelectedSlot(item.title)}
                             >
-                              <Typography
-                                variant='body1'
-                                sx={{ color: selectedSlot === item.title ? 'text.white' : 'text.primary' }}
+                              <div
+                                style={{
+                                  position: 'relative',
+                                  cursor: 'pointer',
+                                }}
+                                onClick={() => setSelectedSlot(item.title)}
                               >
-                                {item.title}
-                              </Typography>
-                            </div>
+                                <Typography
+                                  variant='body1'
+                                  sx={{ color: selectedSlot === item.title ? 'text.white' : 'text.primary' }}
+                                >
+                                  {item.title}
+                                </Typography>
+                              </div>
+                            </Box>
                           </Grid>
                         ))}
                       </Grid>
@@ -992,7 +989,7 @@ function BookOrder(props) {
                         </Typography>
                         <Grid container alignItems='center' justifyContent='center' spacing={3} sx={{ pt: 4, pb: 4 }}>
                           {services.map((serviceItem, index) => (
-                            <Grid item xs={6} sm={4} md={4} key={index}>
+                            <Grid item xs={6} sm={6} md={4} key={index}>
                               <Box
                                 sx={{
                                   height: '125px',
@@ -1052,7 +1049,7 @@ function BookOrder(props) {
               </Box>
             )}
           </Box>
-          <Box sx={{ width: { xs: '100%', sm: '30%' }, mt: { xs: 5, sm: 2 }, ml: 'auto', mr: '2.5%' }}>
+          <Box sx={{ width: { xs: '100%', sm: '40%', md: '30%' }, mt: { xs: 5, sm: 5, md: 2 }, ml: 'auto', mr: '2.5%' }}>
             <List sx={{ width: '100%', bgcolor: 'background.paper', borderRadius: '15px' }}>
               <Typography sx={{ py: 2, color: 'text.primary' }} variant='h6' textAlign='center'>
                 -- Summary --

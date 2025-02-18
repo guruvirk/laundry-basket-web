@@ -202,11 +202,11 @@ export default function AboutUs(props) {
               px: { xs: 0, sm: 2, md: 5 },
             }}
           >
-            <Grid item xs={12} sm={5.5} md={5.5} sx={{}}>
+            <Grid item xs={12} sm={12} md={5.5} sx={{}}>
               <img className='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
             </Grid>
-            <Grid item xs={12} sm={6.5} md={6.5}>
-              <Box sx={{ width: { xs: '100%', sm: '95%' }, ml: 'auto' }}>
+            <Grid item xs={12} sm={12} md={6.5}>
+              <Box sx={{ width: { xs: '100%', sm: '100%', md: '95%' }, ml: 'auto' }}>
                 <Typography component='h3' variant='h3' sx={{ color: 'text.secondary', pb: 2.5 }}>
                   We Make Laundry{' '}
                   <Typography variant='h3' sx={{ color: 'text.primary', display: 'inline' }}>
@@ -319,9 +319,9 @@ export default function AboutUs(props) {
               }}
             >
               {items.map((item, index) => (
-                <Grid key={index} item xs={12} sm={4} md={4} sx={{ px: 2 }}>
-                  <Grid container spacing={2.5} sx={{ mt: 0 }}>
-                    <Grid item xs={2} sm={2} md={2}>
+                <Grid key={index} item xs={12} sm={6} md={4} sx={{ px: 2 }}>
+                  <Grid container spacing={{ xs: 2.5, sm: 1.5, md: 2.5 }}>
+                    <Grid item xs={2} sm={3} md={2}>
                       <Box
                         sx={{
                           borderRadius: '50px',
@@ -334,7 +334,7 @@ export default function AboutUs(props) {
                         {item.icon}
                       </Box>
                     </Grid>
-                    <Grid item xs={10} sm={10} md={10}>
+                    <Grid item xs={10} sm={9} md={10}>
                       <Box sx={{ pl: 1 }}>
                         <Typography sx={{ color: 'text.secondary', textAlign: 'left' }} component='h5' variant='h5'>
                           {item.title}
@@ -357,10 +357,10 @@ export default function AboutUs(props) {
               px: { xs: 0, sm: 2, md: 5 },
             }}
           >
-            <Grid item xs={12} sm={6.5} md={6.5} sx={{ display: { xs: 'block', sm: 'none' } }}>
+            <Grid item xs={12} sm={12} md={6.5} sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }}>
               <img className='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
             </Grid>
-            <Grid item xs={12} sm={5.5} md={5.5}>
+            <Grid item xs={12} sm={12} md={5.5}>
               <Box sx={{ width: '95%', mr: 'auto' }}>
                 <Typography component='h3' variant='h3' sx={{ color: 'text.secondary', pb: 2.5 }}>
                   The story behind how our{' '}
@@ -387,7 +387,7 @@ export default function AboutUs(props) {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={6.5} md={6.5} sx={{ display: { xs: 'none', sm: 'flex' } }}>
+            <Grid item xs={12} sm={12} md={6.5} sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}>
               <img className='how-it-works-img' src={require('../assets/images/how-it-works.jpg')} alt='new' />
             </Grid>
           </Grid>

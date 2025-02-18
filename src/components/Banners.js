@@ -48,9 +48,9 @@ export default function Banners(props) {
 function Item(props) {
   return (
     <Paper
-      style={{
+      sx={{
         backgroundImage: `url(${props.item.image})`,
-        height: '77vh',
+        height: { xs: '84vh', sm: '85vh', md: '82vh' },
         width: '100%',
         backgroundPosition: 'center',
         backgroundSize: 'cover',

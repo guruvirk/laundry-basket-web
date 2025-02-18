@@ -139,10 +139,7 @@ function Profile(props) {
 
         {userLoaded && (
           <Grid container alignItems='center' justifyContent='center' spacing={2.5} sx={{ pt: 6, pb: 4 }}>
-            <Grid item xs={12} sm={6} md={6}>
-              <InputLabel sx={{}} shrink={false} htmlFor='is-default'>
-                <Typography>Profile Pic</Typography>
-              </InputLabel>
+            <Grid item xs={12} sm={9} md={6}>
               <Box
                 sx={{
                   display: 'flex',
@@ -153,7 +150,7 @@ function Profile(props) {
                 }}
               >
                 <Avatar
-                  sx={{ backgroundColor: 'primary.main', color: 'white', width: 80, height: 80 }}
+                  sx={{ backgroundColor: 'primary.main', color: 'white', width: 120, height: 120 }}
                   alt='username'
                   src={imageUrl || user.pic}
                 >
@@ -162,14 +159,14 @@ function Profile(props) {
                 <Box
                   sx={{
                     display: 'grid',
-                    marginLeft: 2,
+                    marginLeft: 4,
                   }}
                 >
                   <Button
                     variant='contained'
-                    size='small'
-                    sx={{ marginBottom: 1, p: 1 }}
-                    startIcon={<Edit />}
+                    size='medium'
+                    sx={{ marginBottom: 1, p: 1, fontSize: { xs: 16, sm: 20, md: 18 } }}
+                    startIcon={<Edit sx={{ fontSize: { xs: 16, sm: 20, md: 18 } }} />}
                     component='label'
                     disabled={loading}
                   >
@@ -177,14 +174,14 @@ function Profile(props) {
                     <input type='file' hidden accept='image/*' onChange={onImageChange} />
                   </Button>
                   <Button
-                    size='small'
                     onClick={deleteImage}
-                    sx={{ p: 1 }}
                     variant='contained'
                     disabled={loading}
-                    startIcon={<Delete />}
+                    size='medium'
+                    sx={{ marginBottom: 1, p: 1, fontSize: { xs: 16, sm: 20, md: 18 } }}
+                    startIcon={<Delete sx={{ fontSize: { xs: 16, sm: 20, md: 18 } }} />}
                   >
-                    Delete Pic
+                    Delete Pic{'  '}
                   </Button>
                 </Box>
               </Box>

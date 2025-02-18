@@ -236,7 +236,7 @@ const CurrentOrders = (props) => {
                   }}
                   item
                   xs={9}
-                  sm={6}
+                  sm={5}
                   md={6}
                   alignItems='center'
                   justifyContent='center'
@@ -302,7 +302,7 @@ const CurrentOrders = (props) => {
                 <Grid
                   item
                   xs={12}
-                  sm={3}
+                  sm={4}
                   md={3}
                   alignItems='center'
                   justifyContent='center'

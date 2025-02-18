@@ -18,9 +18,16 @@ export default function BookNowEffort(props) {
       }}
     >
       <Grid container sx={{ background: '#13263d' }}>
-        <Grid sx={{ display: { xs: 'none', sm: 'block' } }} item xs={12} sm={6} md={6}>
+      <Grid sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }} item xs={12} sm={6} md={6}>
           <img
             style={{ width: '75%', marginLeft: 'auto', marginRight: 'auto', marginTop: '-3rem' }}
+            src='https://iili.io/2QrA63g.png'
+            alt='new'
+          />
+        </Grid>
+        <Grid sx={{ display: { xs: 'none', sm: 'block', md: 'none' } }} item xs={12} sm={6} md={6}>
+          <img
+            style={{ width: '100%', marginLeft: 'auto', marginRight: 'auto', marginTop: '3rem' }}
             src='https://iili.io/2QrA63g.png'
             alt='new'
           />
@@ -37,7 +44,7 @@ export default function BookNowEffort(props) {
             justifyContent: 'start',
           }}
         >
-          <Box sx={{ width: '80%', margin: 'auto', py: { xs: 4, sm: 0 } }}>
+          <Box sx={{ width: '80%', margin: 'auto', py: { xs: 4, sm: 4, md: 1 } }}>
             <Typography component='h4' variant='h4' sx={{ color: 'text.white' }}>
               Effortless Laundry,
             </Typography>

@@ -340,9 +340,11 @@ function OrderDetails(props) {
                     PayNow
                   </Button>
                 )}
-                <Button color='error' variant='outlined' startIcon={<Delete />}>
-                  Cancle
-                </Button>
+                {(order.status === 'placed' || order.status === 'assigned') && (
+                  <Button color='error' variant='outlined' startIcon={<Delete />}>
+                    Cancel
+                  </Button>
+                )}
                 <Button color='secondary' variant='outlined' startIcon={<SupportAgent />}>
                   Call Us
                 </Button>
@@ -359,9 +361,13 @@ function OrderDetails(props) {
             }}
           >
             {Boolean(nextStep) && Boolean(nextStep.time) && (
-              <Box sx={{ pb: 3 }}>
-                {Boolean(nextStep.time) && <Typography variant='h6'>{nextStep.time}</Typography>}
-                {Boolean(nextStep.agent) && <Typography variant='subtitle1'>Agent: {nextStep.agent}</Typography>}
+              <Box sx={{ pb: 2.5 }}>
+                {Boolean(nextStep.time) && (
+                  <Typography sx={{ pb: 0.5 }} variant='h5'>
+                    {nextStep.time}
+                  </Typography>
+                )}
+                {Boolean(nextStep.agent) && <Typography variant='h6'>Agent: {nextStep.agent}</Typography>}
               </Box>
             )}
             <Grid container alignItems='center' justifyContent='center' spacing={{ xs: 1.5, sm: 3 }}>
@@ -476,7 +482,7 @@ function OrderDetails(props) {
             <Box
               sx={{
                 px: { xs: 1.5, sm: 3 },
-                py: { xs: 4, sm: 6 },
+                py: { xs: 2, sm: 3 },
                 backgroundColor: 'actionLite.selected',
                 borderRadius: '25px',
                 mt: { xs: 4, sm: 6 },
@@ -489,8 +495,8 @@ function OrderDetails(props) {
                 Your Laundry Basket
               </Typography>
 
-              <TableContainer component={Paper}>
-                <Table sx={{ minWidth: 650 }} aria-label='simple table'>
+              <TableContainer sx={{ display: { xs: 'none', sm: 'block' } }} component={Paper}>
+                <Table sx={{ width: '100%' }} aria-label='simple table'>
                   <TableHead>
                     <StyledTableRow>
                       <StyledTableCell>
@@ -599,10 +605,94 @@ function OrderDetails(props) {
                       <StyledTableCell align='right'></StyledTableCell>
                       <StyledTableCell align='right'></StyledTableCell>
                       <StyledTableCell align='right'>
-                        <Typography variant='subtitle1'>0</Typography>
+                        <Typography sx={{ fontWeight: 'bold' }} variant='subtitle1'>
+                          0
+                        </Typography>
                       </StyledTableCell>
                       <StyledTableCell align='right'>
-                        <Typography variant='subtitle1'>$ {Number(order.currentTotal).toFixed(2)}</Typography>
+                        <Typography sx={{ fontWeight: 'bold' }} variant='subtitle1'>
+                          $ {Number(order.currentTotal).toFixed(2)}
+                        </Typography>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              <TableContainer sx={{ display: { xs: 'block', sm: 'none' } }} component={Paper}>
+                <Table sx={{ width: '100%' }} aria-label='simple table'>
+                  <TableHead>
+                    <StyledTableRow>
+                      <StyledTableCell>
+                        <Typography variant='h6' component='h6'>
+                          Item
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell align='right'>
+                        <Typography variant='h6' component='h6'>
+                          Tax
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell align='right'>
+                        <Typography variant='h6' component='h6'>
+                          Amount
+                        </Typography>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  </TableHead>
+                  <TableBody>
+                    {order.items.map((itemsItem, itemsItemIndex) => (
+                      <StyledTableRow key={itemsItem.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <StyledTableCell component='th' scope='row'>
+                          <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>
+                            {itemsItem.name}
+                          </Typography>
+                          <Typography variant='subtitle1'>
+                            ({itemsItem.service ? `$ ${itemsItem.currentPrice}` : `$ ${itemsItem.currentPrice} / lbs`})
+                          </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell align='right'>
+                          <Typography variant='subtitle1'>0</Typography>
+                        </StyledTableCell>
+                        <StyledTableCell align='right'>
+                          <Typography variant='subtitle1'>
+                            $ {(Number(itemsItem.currentPrice) * itemsItem.units).toFixed(2)}
+                          </Typography>
+                          <Typography variant='subtitle1'>
+                            ({itemsItem.service ? `${itemsItem.units}` : `${itemsItem.units} lbs`})
+                          </Typography>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
+                    {order.deliveryPrice > 0 && (
+                      <StyledTableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <StyledTableCell component='th' scope='row'>
+                          <Typography variant='subtitle1' sx={{ fontWeight: 'bold' }}>
+                            {getTitleCase(order.deliveryType)} Delivery
+                          </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell align='right'>
+                          <Typography variant='subtitle1'>0</Typography>
+                        </StyledTableCell>
+                        <StyledTableCell align='right'>
+                          <Typography variant='subtitle1'>$ {order.deliveryPrice}</Typography>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )}
+                    <StyledTableRow>
+                      <StyledTableCell align='right'>
+                        <Typography variant='subtitle1' sx={{ fontWeight: 'bold', textAlign: 'left' }}>
+                          Total
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell align='right'>
+                        <Typography sx={{ fontWeight: 'bold' }} variant='subtitle1'>
+                          0
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell align='right'>
+                        <Typography sx={{ fontWeight: 'bold' }} variant='subtitle1'>
+                          $ {Number(order.currentTotal).toFixed(2)}
+                        </Typography>
                       </StyledTableCell>
                     </StyledTableRow>
                   </TableBody>
@@ -635,64 +725,70 @@ function OrderDetails(props) {
                     py: { xs: 2, sm: 2 },
                     borderRadius: '25px',
                     height: '200px',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'start',
+                    alignItems: 'center',
                   }}
                 >
-                  <Stack
-                    direction='row'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    gap={1.5}
-                    sx={{ my: 1, pl: { xs: 1, sm: 0 } }}
-                  >
-                    <Typography variant='subtitle1' sx={{ color: 'text.neutral', textAlign: 'left', pb: 0.5 }}>
-                      Subtotal
-                    </Typography>
-                    <Typography variant='subtitle1' sx={{ color: 'text.secondary', textAlign: 'left', pb: 0.5 }}>
-                      $ {order.originalTotal}
-                    </Typography>
-                  </Stack>
-                  <Stack
-                    direction='row'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    gap={1.5}
-                    sx={{ my: 1, pl: { xs: 1, sm: 0 } }}
-                  >
-                    <Typography variant='subtitle1' sx={{ color: 'text.neutral', textAlign: 'left', pb: 0.5 }}>
-                      Tax (13%)
-                    </Typography>
-                    <Typography variant='subtitle1' sx={{ color: 'text.secondary', textAlign: 'left', pb: 0.5 }}>
-                      $ 0
-                    </Typography>
-                  </Stack>
-                  <Stack
-                    direction='row'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    gap={1.5}
-                    sx={{ my: 1, pl: { xs: 1, sm: 0 } }}
-                  >
-                    <Typography variant='subtitle1' sx={{ color: 'text.neutral', textAlign: 'left', pb: 0.5 }}>
-                      Total
-                    </Typography>
-                    <Typography variant='subtitle1' sx={{ color: 'text.secondary', textAlign: 'left', pb: 0.5 }}>
-                      $ {order.currentTotal}
-                    </Typography>
-                  </Stack>
-                  <Stack
-                    direction='row'
-                    justifyContent='space-between'
-                    alignItems='center'
-                    gap={1.5}
-                    sx={{ my: 1, pl: { xs: 1, sm: 0 } }}
-                  >
-                    <Typography variant='subtitle1' sx={{ color: 'text.neutral', textAlign: 'left', pb: 0.5 }}>
-                      Payment Status
-                    </Typography>
-                    <Typography variant='subtitle1' sx={{ color: 'text.secondary', textAlign: 'left', pb: 0.5 }}>
-                      {isPaidOff ? 'Paid Off' : 'Pending'}
-                    </Typography>
-                  </Stack>
+                  <Box sx={{ width: '100%', pr: 2 }}>
+                    <Stack
+                      direction='row'
+                      justifyContent='space-between'
+                      alignItems='center'
+                      gap={1.5}
+                      sx={{ my: 1, pl: { xs: 1, sm: 0 } }}
+                    >
+                      <Typography variant='subtitle1' sx={{ color: 'text.neutral', textAlign: 'left', pb: 0.5 }}>
+                        Subtotal
+                      </Typography>
+                      <Typography variant='subtitle1' sx={{ color: 'text.secondary', textAlign: 'left', pb: 0.5 }}>
+                        $ {order.originalTotal}
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction='row'
+                      justifyContent='space-between'
+                      alignItems='center'
+                      gap={1.5}
+                      sx={{ my: 1, pl: { xs: 1, sm: 0 } }}
+                    >
+                      <Typography variant='subtitle1' sx={{ color: 'text.neutral', textAlign: 'left', pb: 0.5 }}>
+                        Tax (13%)
+                      </Typography>
+                      <Typography variant='subtitle1' sx={{ color: 'text.secondary', textAlign: 'left', pb: 0.5 }}>
+                        $ 0
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction='row'
+                      justifyContent='space-between'
+                      alignItems='center'
+                      gap={1.5}
+                      sx={{ my: 1, pl: { xs: 1, sm: 0 } }}
+                    >
+                      <Typography variant='subtitle1' sx={{ color: 'text.neutral', textAlign: 'left', pb: 0.5 }}>
+                        Total
+                      </Typography>
+                      <Typography variant='subtitle1' sx={{ color: 'text.secondary', textAlign: 'left', pb: 0.5 }}>
+                        $ {order.currentTotal}
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction='row'
+                      justifyContent='space-between'
+                      alignItems='center'
+                      gap={1.5}
+                      sx={{ my: 1, pl: { xs: 1, sm: 0 } }}
+                    >
+                      <Typography variant='subtitle1' sx={{ color: 'text.neutral', textAlign: 'left', pb: 0.5 }}>
+                        Payment Status
+                      </Typography>
+                      <Typography variant='subtitle1' sx={{ color: 'text.secondary', textAlign: 'left', pb: 0.5 }}>
+                        {isPaidOff ? 'Paid Off' : 'Pending'}
+                      </Typography>
+                    </Stack>
+                  </Box>
                 </Box>
               </Box>
             </Grid>
@@ -720,23 +816,29 @@ function OrderDetails(props) {
                     py: { xs: 2, sm: 2 },
                     borderRadius: '25px',
                     height: '200px',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'start',
+                    alignItems: 'center',
                   }}
                 >
-                  <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='title'>
-                    {order.address.name}
-                  </Typography>
-                  <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='subtitle1'>
-                    {order.address.address1}, {order.address.address2}, {order.address.city}
-                  </Typography>
-                  <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='subtitle1'>
-                    {order.address.address2}, {order.address.city}
-                  </Typography>
-                  <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='subtitle1'>
-                    {order.address.state} {order.address.zipCode}
-                  </Typography>
-                  <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='subtitle1'>
-                    <Phone sx={{ fontSize: 16 }} /> {order.address.phone}
-                  </Typography>
+                  <Box sx={{ width: '100%' }}>
+                    <Typography sx={{ color: 'text.secondary', pb: 1 }} variant='title'>
+                      {order.address.name}
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='subtitle1'>
+                      {order.address.address1}, {order.address.address2}, {order.address.city}
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='subtitle1'>
+                      {order.address.address2}, {order.address.city}
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='subtitle1'>
+                      {order.address.state} {order.address.zipCode}
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary', pb: 0.5 }} variant='subtitle1'>
+                      <Phone sx={{ fontSize: 16 }} /> {order.address.phone}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
             </Grid>
@@ -748,7 +850,12 @@ function OrderDetails(props) {
             aria-describedby='modal-modal-description'
           >
             <div>
-              <PayExistingOrder setIsPaymentDialogOpen={setIsPaymentDialogOpen} order={order} amount={pendingAmount} loading={false}></PayExistingOrder>
+              <PayExistingOrder
+                setIsPaymentDialogOpen={setIsPaymentDialogOpen}
+                order={order}
+                amount={pendingAmount}
+                loading={false}
+              ></PayExistingOrder>
             </div>
           </Modal>
         </>

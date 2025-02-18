@@ -17,7 +17,7 @@ export default function BookNow() {
         pb: { xs: 8, sm: 6 },
       }}
     >
-      <Grid container sx={{ display: { xs: 'none', sm: 'flex' } }}>
+      <Grid container sx={{ display: { xs: 'none', sm: 'none', md: 'flex' } }}>
         <Grid item xs={12} sm={5.5} md={5.5}>
           <img style={{ width: '100%' }} src={require('../assets/images/book-now.jpg')} alt='new' />
         </Grid>
@@ -106,7 +106,7 @@ export default function BookNow() {
           </Box>
         </Grid>
       </Grid>
-      <Box container sx={{ display: { xs: 'block', sm: 'none' } }}>
+      <Box container sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }}>
         <Box
           sx={{
             background: '#13263d',

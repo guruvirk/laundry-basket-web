@@ -78,7 +78,7 @@ function MyAddresses(props) {
             sx={{ pt: 6, pb: 4, width: '85%', mx: 'auto' }}
           >
             {addresses.map((address, index) => (
-              <Grid item xs={12} sm={6} md={6} key={index}>
+              <Grid item xs={12} sm={12} md={6} key={index}>
                 <Stack
                   direction='column'
                   spacing={1}

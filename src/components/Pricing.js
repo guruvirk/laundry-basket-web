@@ -306,7 +306,7 @@ export default function Pricing(props) {
                         Pricing
                       </Typography>
                       <Box sx={{ width: '100%', mt: 3 }}>
-                        <ImageList sx={{ display: { xs: 'none', sm: 'block' } }} variant='masonry' cols={2} gap={20}>
+                        <ImageList sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }} variant='masonry' cols={2} gap={20}>
                           {getTags(services[index]?.items).map((tag, tagIndex) => (
                             <ImageListItem key={tagIndex}>
                               <Box
@@ -350,7 +350,7 @@ export default function Pricing(props) {
                             </ImageListItem>
                           ))}
                         </ImageList>
-                        <ImageList sx={{ display: { xs: 'block', sm: 'none' } }} variant='masonry' cols={1} gap={20}>
+                        <ImageList sx={{ display: { xs: 'block', sm: 'none', md: 'none' } }} variant='masonry' cols={1} gap={20}>
                           {getTags(services[index]?.items).map((tag, tagIndex) => (
                             <ImageListItem key={tagIndex}>
                               <Box sx={{ backgroundColor: 'white', padding: 3, borderRadius: '25px' }}>
@@ -387,6 +387,45 @@ export default function Pricing(props) {
                             </ImageListItem>
                           ))}
                         </ImageList>
+                        <Box sx={{ display: { xs: 'none', sm: 'block', md: 'none' }, height: '40vh', overflowY: 'scroll', pr: 1 }}>
+                        <ImageList style={{paddingTop: '5px', paddingBottom: '5px'}} variant='masonry' cols={1} gap={20}>
+                          {getTags(services[index]?.items).map((tag, tagIndex) => (
+                            <ImageListItem key={tagIndex}>
+                              <Box sx={{ backgroundColor: 'white', padding: 3, borderRadius: '25px' }}>
+                                <img
+                                  style={{
+                                    height: '60px',
+                                    marginBottom: '0.5rem',
+                                    marginTop: '0.2rem',
+                                  }}
+                                  src={getTagItems(services[index]?.items, tag)[0].pic}
+                                  alt='new'
+                                />
+                                <Typography variant='title' sx={{ color: 'text.secondary' }}>
+                                  {getTitleCase(tag)}
+                                </Typography>
+                                {getTagItems(services[index]?.items, tag).map((tagItem, tagItemIndex) => (
+                                  <Stack
+                                    key={tagItemIndex}
+                                    direction='row'
+                                    alignItems='center'
+                                    justifyContent='space-between'
+                                    gap={2}
+                                    sx={{ my: 1 }}
+                                  >
+                                    <Typography sx={{ color: 'text.secondary' }} variant='subtitle2'>
+                                      {tagItem.name}
+                                    </Typography>
+                                    <Typography sx={{ color: 'primary.main', fontWeight: 'bold' }} variant='subtitle2'>
+                                      ${Number(tagItem.currentPrice).toFixed(2)}
+                                    </Typography>
+                                  </Stack>
+                                ))}
+                              </Box>
+                            </ImageListItem>
+                          ))}
+                        </ImageList>
+                        </Box>
                       </Box>
                     </>
                   )}
